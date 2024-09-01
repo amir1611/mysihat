@@ -10,34 +10,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-/*------------------------------------------
---------------------------------------------
-All Normal Users Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:user'])->group(function () {
-  
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::middleware(['auth', 'user-access:patient'])->group(function () {
+    Route::get('/home', [HomeController::class, 'patientHomepage'])->name('patient.homepage');
 });
   
-/*------------------------------------------
---------------------------------------------
-All Admin Routes List
---------------------------------------------
---------------------------------------------*/
+
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
   
-    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
+    Route::get('/admin/home', [HomeController::class, 'adminHomepage'])->name('admin.homepage');
 });
   
-/*------------------------------------------
---------------------------------------------
-All Admin Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:manager'])->group(function () {
+
+Route::middleware(['auth', 'user-access:doctor'])->group(function () {
   
-    Route::get('/manager/home', [HomeController::class, 'managerHome'])->name('manager.home');
+    Route::get('/doctor/homepage', [HomeController::class, 'doctorHomepage'])->name('doctor.home');
 });
 
 

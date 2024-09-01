@@ -1,12 +1,10 @@
 <?php
-  
+
 namespace Database\Seeders;
-  
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 use App\Models\User;
-  
-class CreateUsersSeeder extends Seeder
+use Carbon\Carbon; class CreateUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,26 +15,29 @@ class CreateUsersSeeder extends Seeder
     {
         $users = [
             [
-               'name'=>'Admin User',
-               'email'=>'admin@itsolutionstuff.com',
-               'type'=>1,
-               'password'=> bcrypt('123456'),
+                'name' => 'Patient',
+                'email' => 'patient@mysihat.com',
+                'type' => 0,
+                'password' => bcrypt('1234'),
+                'email_verified_at' => Carbon::now(), 
             ],
             [
-               'name'=>'Manager User',
-               'email'=>'manager@itsolutionstuff.com',
-               'type'=> 2,
-               'password'=> bcrypt('123456'),
+                'name' => 'Admin',
+                'email' => 'admin@mysihat.com',
+                'type' => 1,
+                'password' => bcrypt('1234'),
+                'email_verified_at' => Carbon::now(), 
             ],
             [
-               'name'=>'User',
-               'email'=>'user@itsolutionstuff.com',
-               'type'=>0,
-               'password'=> bcrypt('123456'),
+                'name' => 'Doctor',
+                'email' => 'doctor@mysihat.com',
+                'type' => 2,
+                'password' => bcrypt('1234'),
+                'email_verified_at' => Carbon::now(), 
             ],
         ];
-    
-        foreach ($users as $key => $user) {
+
+        foreach ($users as $user) {
             User::create($user);
         }
     }

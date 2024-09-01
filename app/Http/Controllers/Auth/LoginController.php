@@ -20,26 +20,28 @@ class LoginController extends Controller
     }
 
     public function login(Request $request): RedirectResponse
-    {   
-        $input = $request->all();
-     
-        $this->validate($request, [
+    {
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-     
-        if(Auth::attempt(['email' => $input['email'], 'password' => $input['password']]))
-        {
-            if (Auth::user()->type == 'admin') {
-                return redirect()->route('admin.home');
-            } else if (Auth::user()->type == 'manager') {
-                return redirect()->route('manager.home');
-            } else {
-                return redirect()->route('home');
-            }
-        } else {
-            return redirect()->route('login')
-                ->with('error','Email-Address And Password Are Wrong.');
+    
+        if (Auth::attempt($credentials)) {
+            $userType = Auth::user()->type;
+            return redirect()->route("{$userType}.homepage");
         }
+    
+        return redirect()->route('login')->with('error', 'Email-Address And Password Are Wrong.');
     }
+
+    public function logout(Request $request): RedirectResponse
+{
+    Auth::logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return redirect('/login'); // Ensure this redirects to the correct login path
+}
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('type')->default(0);
-            /* Users: 0=>User, 1=>Admin, 2=>Manager */
+            /* Users: 0=>Patient, 1=>Admin, 2=>doctor */
         });
     }
 

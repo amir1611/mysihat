@@ -22,9 +22,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(): View
+    public function patientHomepage(): View
     {
-        return view('home');
+        return view('patient-homepage');
     } 
   
     /**
@@ -32,9 +32,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function adminHome(): View
+    public function adminHomepage(): View
     {
-        return view('adminHome');
+        return view('admin-homepage');
     }
   
     /**
@@ -42,8 +42,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function managerHome(): View
+    public function doctorHomepage(): View
     {
-        return view('managerHome');
+        return view('doctor-homepage');
     }
 }

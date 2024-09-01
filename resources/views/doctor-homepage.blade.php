@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <h2>You are a Manager User.</h2>
+                    <h2>You are a doctor User.</h2>
                 </div>
             </div>
         </div>
