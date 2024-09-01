@@ -1,95 +1,62 @@
-# Laravel 11 Multiple Authentication using Middleware Example
-
-  Build an Laravel 11 Multiple Authentication using Middleware Step by Step example. you have to simply follow the below steps:
-  - Step 1: Install Laravel 11
-  - Step 2: Create Migration and Update Model
-  - Step 3: Create Auth using Scaffold
-  - Step 4: Create UserAccess Middleware
-  - Step 5: Create Routes
-  - Step 6: Update Controller
-  - Step 7: Create Blade Files
-  - Step 8: Update LoginController File
-  - Step 9: Create User Seeder
-  - Run Laravel 11 App
-
-![laravel-11-multi-auth-example](https://www.itsolutionstuff.com/upload/laravel-11-multi-auth-user.png)
-![laravel-11-multi-auth-example](https://www.itsolutionstuff.com/upload/laravel-11-multi-auth-admin.png)
-![laravel-11-multi-auth-example](https://www.itsolutionstuff.com/upload/laravel-11-multi-auth-manager.png)
-
- Run `php artisan serve` for a dev server. Navigate to `http://localhost:8000/`. The application will automatically reload if you change any of the source files.
+# MySihat
+Connected Care – Anytime, Anywhere
 
 
-## ⭐️ List of Laravel 11 Tutorial Examples Step by Step: 
+## Install
+
+To clone this project
+```bash
+    1. Open the Terminal.
+    2. Make sure the current directory is '/www'.
+    3. Type in 'git clone <url> <project-name>'.
+    4. Type in 'cd <project-name>' to enter the project's directory.
+```
+
+To setup this project
+```bash
+    1. Make sure the current directory is '/<project-name>'.
+    2. Type in 'composer install' to install the packages and dependencies.
+    3. First, make sure you have pnpm installed. If you don't, you can install it globally using npm ' npm install -g pnpm'
+    4. Once pnpm is installed, navigate to your project directory 'cd /path/to/your/project'
+    5. Type in 'pnpm install' to install the packages and dependencies.
+    6. Click on Database in Laragon/phpMyAdmin.
+    7. Create a new database with the name of your project. Eg: <project_name>
+    8. Type in 'code .' to open the current directory in VS Code.
+    9. In the explorer tab on the left, copy the '.env.example' file and paste it in the same directory.
+```
+
+To publish this project
+```bash
+    1. Open the copied file and rename it to '.env'.
+    2. In the '.env' file, edit the 'DB_DATABASE' value to the new Database name that you   have created.
+    3. If your MySQL is using a password, edit the 'DB_PASSWORD' value with your password.
+    4. In the Terminal, type in 'php artisan key:generate' to generate the project's 'APP_KEY'.
+    5. Finally, type in 'php artisan migrate:fresh --seed' to migrate the database tables for the project.
+```
+
+## Run
+```bash
+  1. Type in 'cd <project-name>' to enter the project's directory.
+  2. php artisan serve
+```
+    
+## Download
+ - [Laragon](https://laragon.org/download/)
+ - [Visual Studio Code](https://code.visualstudio.com/download)
 
 
-<table>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-crud-application-example-tutorialexample.html">Laravel 11 CRUD Application Tutorial</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-import-export-excel-and-csv-file-tutorialexample.html">Laravel 11 Import Export Excel and CSV File</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-user-roles-and-permissions-tutorialexample.html">Laravel 11 User Roles and Permissions</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-json-web-tokenjwt-api-authentication-tutorialexample.html">Laravel 11 JWT API Authentication</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-rest-api-authentication-using-sanctum-tutorialexample.html">Laravel 11 Sanctum REST API Authentication</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-rest-api-with-passport-authentication-tutorialexample.html">Laravel 11 Passport REST API Authentication</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-generate-pdf-file-using-dompdf-exampleexample.html">Laravel 11 Generate PDF File using DomPDF</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-yajra-datatables-example-tutorialexample.html">Laravel 11 Yajra Datatables Example Tutorial</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-and-use-trait-in-laravel-11example.html">How to Create and User Trait in Laravel 11?</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-custom-middleware-in-laravel-11example.html">Laravel 11 Create Custom Middleware</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-publish-api-route-file-in-laravel-11example.html">How to Publish API Routes in Laravel 11?</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-interface-in-laravel-11example.html">How to Create Interface in Laravel 11?</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-custom-class-in-laravel-11example.html">How to Create Custom Class in Laravel 11?</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-custom-class-in-laravel-11example.html">How to Create Custom Class in Laravel 11?</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-pagination-with-relationship-exampleexample.html">Laravel 11 Pagination with Relationship Example</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-upload-files-to-amazon-s3-in-laravel-11example.html">How to Upload Files to Amazon S3 in Laravel 11?</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-scout-full-text-search-tutorialexample.html">Laravel 11 Scout Full Text Search</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-resize-image-before-upload-exampleexample.html">Laravel 11 Resize Image Before Upload Example</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-generate-qr-code-in-laravel-11example.html">How to Generate QR Code in Laravel 11?</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-resize-image-before-upload-exampleexample.html">Laravel 11 One to Many Eloquent Relationship</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-chart-using-highcharts-js-exampleexample.html">Laravel 11 Chart using Highcharts JS</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-socialite-login-with-google-account-exampleexample.html">Laravel 11 Socialite Login with Google</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-drag-and-drop-file-upload-with-dropzone-jsexample.html">Laravel 11 Dropzone Drag and Drop File Upload</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-stripe-payment-gateway-integration-exampleexample.html">Laravel 11 Stripe Payment Gateway Integration</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-event-calendar-in-laravel-11example.html">Laravel 11 Create Event Calendar</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-crud-with-image-upload-tutorialexample.html">Laravel 11 CRUD with Image Upload</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/setup-automatic-daily-database-backup-with-laravel-11example.html">Laravel 11 Automatic Daily Database Backup</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-save-json-data-in-database-in-laravel-11example.html">Laravel 11 Save JSON Data in Database</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-livewire-crud-using-jetstream-tailwind-cssexample.html">Laravel 11 Livewire CRUD using Jetstream</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/how-to-create-zip-archive-file-in-laravel-11example.html">How to Create ZIP Archive File in Laravel 11?</a></td>
-</tr>
-<tr>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-livewire-wizard-multi-step-form-tutorialexample.html">Laravel 11 Livewire Wizard Multi Step Form</a></td>
-    <td>🔗 <a href="https://www.itsolutionstuff.com/post/laravel-11-ckeditor-image-upload-exampleexample.html">Laravel 11 CKeditor Image Upload Example</a></td>
-</tr>
-</table>
+## Appendix
+Developed and Deployed using Visual Studio Code, Laravel Herd, DBngin, TablePlus and Laravel 11.
 
 
-## 🚀 Published By
+## Build By
+- [@Amir](https://github.com/amir1611)
 
-Publish one article daily about Laravel on the [ItSolutionStuff.com](https://www.itsolutionstuff.com).
+
+
+## Documentation
+ - [Laravel](https://laravel.com/docs/10.x)
+ - [Visual Studio Code](https://code.visualstudio.com/docs)
+
+## License
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
