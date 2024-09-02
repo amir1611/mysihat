@@ -7,43 +7,27 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+  
     public function __construct()
     {
         $this->middleware('auth');
     }
   
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function patientHomepage(): View
     {
-        return view('patient-homepage');
+        return view('patient.patient-homepage');
     } 
   
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+  
     public function adminHomepage(): View
     {
-        return view('admin-homepage');
+        return view('admin.admin-homepage');
     }
   
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function doctorHomepage(): View
     {
-        return view('doctor-homepage');
+        return view('doctor.doctor-homepage');
     }
 }
