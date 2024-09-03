@@ -12,5 +12,10 @@
         "laravel-vite-plugin": "^1.0",
         "sass": "^1.56.1",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "@lottiefiles/dotlottie-web": "^0.32.0",
+        "@tabler/core": "1.0.0-beta20",
+        "@tabler/icons": "^3.14.0"
     }
 }
