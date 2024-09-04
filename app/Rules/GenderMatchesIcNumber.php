@@ -2,20 +2,18 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class GenderMatchesIcNumber implements Rule
+class GenderMatchesIcNumber implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate($attribute, $value, $fail): void
     {
         $icNumber = request()->input('ic_number');
         $lastDigit = intval(substr($icNumber, -1));
         $expectedGender = $lastDigit % 2 === 0 ? 'Female' : 'Male';
-        return $value === $expectedGender;
-    }
-
-    public function message()
-    {
-        return 'The gender does not match the IC number.';
+        
+        if ($value !== $expectedGender) {
+            $fail('The gender does not match the IC number.');
+        }
     }
 }
