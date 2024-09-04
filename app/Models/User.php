@@ -21,6 +21,7 @@ class User extends Authenticatable
         'phone_number',
         'type',
         'medical_license_number',
+        'ic_number', 
     ];
 
     protected $hidden = [
@@ -32,5 +33,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'type' => 'integer',
+        'ic_number' => 'integer',
     ];
 }

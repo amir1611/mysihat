@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Rules\GenderMatchesIcNumber;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Database\QueryException; // Add this line
 
 class RegisterController extends Controller
@@ -29,11 +30,14 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'ic_number' => ['required', 'string', 'size:12', 'unique:users'],
+            'gender' => ['required', 'string', 'in:Male,Female', new GenderMatchesIcNumber],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'type' => ['required', 'string', 'in:patient,doctor'],
             'medical_license_number' => ['required_if:type,doctor', 'string', 'nullable'],
-            // ... other validations ...
+            'date_of_birth' => ['required', 'date'],
+            'phone_number' => ['required', 'string', 'regex:/^\+60[0-9]{9,10}$/'],
         ]);
     }
 
@@ -44,11 +48,12 @@ class RegisterController extends Controller
         try {
             $user = User::create([
                 'name' => $data['name'],
+                'ic_number' => (int)$data['ic_number'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'gender' => $data['gender'],
                 'date_of_birth' => $data['date_of_birth'],
-                'phone_number' => $data['phone_number'],
+                'phone_number' => $data['phone_number'], 
                 'type' => $data['type'] === 'doctor' ? 2 : 0,
                 'medical_license_number' => $data['type'] === 'doctor' ? $data['medical_license_number'] : null,
             ]);
@@ -73,10 +78,10 @@ class RegisterController extends Controller
     {
         Log::info('User registered with type: ' . $user->type);
         
-        if ($user->type === 2) {
-            return redirect()->route('doctor.dashboard');
+        if ($user->type == 2) {
+            return redirect('/doctor/dashboard');
         }
-        return redirect()->route('patient.dashboard');
+        return redirect('/patient/dashboard');
     }
 
     public function register(Request $request)

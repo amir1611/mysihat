@@ -21,39 +21,44 @@
                     </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">{{ __('Email') }}</label>
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label">{{ __('Email Address') }}</label>
                             <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                 <input id="email" type="email"
                                     class="form-control @error('email') is-invalid @enderror" name="email"
                                     value="{{ old('email') }}" required autocomplete="email" autofocus
-                                    placeholder="info@mysihat.com">
+                                    placeholder="Enter your email">
                             </div>
                             @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="password" class="form-label">{{ __('Password') }}</label>
                             <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 <input id="password" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password" required
                                     autocomplete="current-password" placeholder="Enter your password">
-
-                                <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
-                                    <i class="bi bi-eye-slash" id="eyeIcon"></i>
-                                </span>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
+                                </button>
                             </div>
                             @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                             @enderror
                         </div>
 
                         <div class="mb-3 d-flex justify-content-end">
                             @if (Route::has('password.request'))
-                                <a class="btn "
-                                    href="{{ route('password.request') }}">{{ __('Forgot password?') }}</a>
+                                <a class="btn " href="{{ route('password.request') }}">{{ __('Forgot password?') }}</a>
                             @endif
                         </div>
 
@@ -61,6 +66,7 @@
                             <button type="submit" class="btn btn-primary"
                                 style="background-color: rgb(41, 50, 137);">{{ __('Login') }}</button>
                         </div>
+
                         <div class="text-center">
                             <span>OR</span>
                         </div>
@@ -73,22 +79,30 @@
             </div>
         </div>
     </div>
+    </div>
 
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password');
+            const togglePasswordIcon = document.querySelector('#togglePasswordIcon');
 
-            // Toggle the type attribute
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+            togglePassword.addEventListener('click', function(e) {
+                // toggle the type attribute
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                // toggle the eye / eye slash icon
+                togglePasswordIcon.classList.toggle('bi-eye');
+                togglePasswordIcon.classList.toggle('bi-eye-slash');
+            });
 
-            // Toggle the eye icon
-            eyeIcon.classList.toggle('bi-eye');
-            eyeIcon.classList.toggle('bi-eye-slash');
+            // Remove is-invalid class on input
+            document.querySelectorAll('.is-invalid').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    this.classList.remove('is-invalid');
+                });
+            });
         });
     </script>
-
-    <!-- Include the Lottie Player Script -->
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 @endsection

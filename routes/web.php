@@ -11,7 +11,9 @@ Route::get('/', function () {
 });
 
 // Route for the admin login form
-Route::get('/admin', [LoginController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::get('/admin', function () {
+    return view('auth.admin-login');
+})->name('admin.login');
 
 // Default authentication routes for users
 Auth::routes();
@@ -45,13 +47,3 @@ Route::get('/doctor/dashboard', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.admin-homepage');
 })->name('admin.dashboard')->middleware('auth');
-
-// Login route
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Home route
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
