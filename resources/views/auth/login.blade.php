@@ -64,7 +64,9 @@
 
                         <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary"
-                                style="background-color: rgb(41, 50, 137);">{{ __('Login') }}</button>
+                                style="background-color: rgb(41, 50, 137);">
+                                <i class="fas fa-sign-in-alt mr-2"></i> {{ __('Login') }}
+                            </button>
                         </div>
 
                         <div class="text-center">
