@@ -53,6 +53,10 @@ Developed and Deployed using Visual Studio Code, Laravel Herd, DBngin, TablePlus
 
 ## Build By
 - [@Amir](https://github.com/amir1611)
+- [@Ajiqo](https://github.com/haziq-danial)
+- [@Satiya](https://github.com/satiyaganes06)
+- [@Yattish](https://github.com/satiyaganes06)
+- [Khai](https://github.com/variablekhai)
 
 
 
