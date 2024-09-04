@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'type'
+        'gender',
+        'date_of_birth',
+        'phone_number',
+        'type',
+        'medical_license_number',
     ];
 
     protected $hidden = [
@@ -24,17 +28,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-   
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'type' => 'integer',
     ];
-
-    
-    protected function type(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) =>  ["patient", "admin", "doctor"][$value],
-        );
-    }
 }

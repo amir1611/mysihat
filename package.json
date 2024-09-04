@@ -16,6 +16,7 @@
     "dependencies": {
         "@lottiefiles/dotlottie-web": "^0.32.0",
         "@tabler/core": "1.0.0-beta20",
-        "@tabler/icons": "^3.14.0"
+        "@tabler/icons": "^3.14.0",
+        "intl-tel-input": "^24.3.6"
     }
 }

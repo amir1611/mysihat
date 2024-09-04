@@ -30,3 +30,28 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 Route::middleware(['auth', 'user-access:doctor'])->group(function () {
     Route::get('/doctor/homepage', [HomeController::class, 'doctorHomepage'])->name('doctor.home');
 });
+
+// Patient dashboard route
+Route::get('/patient/dashboard', function () {
+    return view('patient.patient-homepage');
+})->name('patient.dashboard')->middleware('auth');
+
+// Doctor dashboard route
+Route::get('/doctor/dashboard', function () {
+    return view('doctor.doctor-homepage');
+})->name('doctor.dashboard')->middleware('auth');
+
+// Admin dashboard route
+Route::get('/admin/dashboard', function () {
+    return view('admin.admin-homepage');
+})->name('admin.dashboard')->middleware('auth');
+
+// Login route
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Home route
+Route::get('/home', function () {
+    return view('home');
+})->name('home');

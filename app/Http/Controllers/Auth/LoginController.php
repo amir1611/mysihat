@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -19,34 +18,28 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request): RedirectResponse
+    protected function authenticated(Request $request, $user)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        switch ($user->type) {
+            case 0:
+                return redirect()->route('patient.dashboard');
+            case 1:
+                return redirect()->route('admin.dashboard');
+            case 2:
+                return redirect()->route('doctor.dashboard');
+            default:
+                return redirect('/home');
+        }
+    }
 
-        if (Auth::attempt($credentials)) {
-            $userType = Auth::user()->type;
-            return redirect()->route("{$userType}.homepage");
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
         }
 
-        return redirect()->route('login')->with('error', 'Email-Address And Password Are Wrong.');
-    }
-
-    public function logout(Request $request): RedirectResponse
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/login');
-    }
-
-    public function showAdminLoginForm()
-    {
-        return view('auth.admin-login');
+        return $this->sendFailedLoginResponse($request);
     }
 }
