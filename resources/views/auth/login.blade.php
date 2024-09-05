@@ -42,12 +42,11 @@
                             <label for="password" class="form-label">{{ __('Password') }}</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                <input id="password" type="password"
-                                    class="form-control @error('password') is-invalid @enderror" name="password" required
-                                    autocomplete="current-password" placeholder="Enter your password">
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                    <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
-                                </button>
+                                <input id="password" type="password" class="form-control" name="password" required
+                                    autocomplete="current-password">
+                                <span class="input-group-text">
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                </span>
                             </div>
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -63,8 +62,7 @@
                         </div>
 
                         <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary"
-                                style="background-color: rgb(41, 50, 137);">
+                            <button type="submit" class="btn btn-primary" style="background-color: rgb(41, 50, 137);">
                                 <i class="fas fa-sign-in-alt mr-2"></i> {{ __('Login') }}
                             </button>
                         </div>
@@ -84,26 +82,16 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#password');
-            const togglePasswordIcon = document.querySelector('#togglePasswordIcon');
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
 
-            togglePassword.addEventListener('click', function(e) {
-                // toggle the type attribute
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-                // toggle the eye / eye slash icon
-                togglePasswordIcon.classList.toggle('bi-eye');
-                togglePasswordIcon.classList.toggle('bi-eye-slash');
-            });
-
-            // Remove is-invalid class on input
-            document.querySelectorAll('.is-invalid').forEach(function(input) {
-                input.addEventListener('input', function() {
-                    this.classList.remove('is-invalid');
-                });
-            });
+        togglePassword.addEventListener('click', function(e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye / eye slash icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
         });
     </script>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
