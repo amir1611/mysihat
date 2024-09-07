@@ -28,7 +28,7 @@ class LoginController extends Controller
             case 2:
                 return redirect()->route('doctor.dashboard');
             default:
-                return redirect('/home');
+                return redirect('/');
         }
     }
 
