@@ -18,9 +18,24 @@ Route::get('/admin', function () {
 // Default authentication routes for users
 Auth::routes();
 
-// Dashboard routes with auth middleware
+// Protected routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/patient/dashboard', [HomeController::class, 'patientHomepage'])->name('patient.dashboard');
-    Route::get('/doctor/dashboard', [HomeController::class, 'doctorHomepage'])->name('doctor.dashboard');
-    Route::get('/admin/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
+    // Patient routes
+    Route::prefix('patient')->group(function () {
+        Route::get('/dashboard', [HomeController::class, 'patientHomepage'])->name('patient.dashboard');
+        // Add more patient-specific routes here
+    });
+
+    // Doctor routes
+    Route::prefix('doctor')->group(function () {
+        Route::get('/dashboard', [HomeController::class, 'doctorHomepage'])->name('doctor.dashboard');
+        // Add more doctor-specific routes here
+    });
+
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
+        // Add more admin-specific routes here
+    });
 });
+
