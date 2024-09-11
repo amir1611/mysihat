@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\Auth\LoginController;
 
 // Redirect the root URL to the login page
@@ -37,5 +38,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
         // Add more admin-specific routes here
     });
+
+    // Chatbot routes
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
 });
 
