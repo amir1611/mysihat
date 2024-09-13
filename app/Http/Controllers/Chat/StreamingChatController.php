@@ -26,7 +26,8 @@ class StreamingChatController extends Controller
     /**
      * Sending server-events
      */
-    private function send($event, $data) {
+    private function send($event, $data)
+    {
         echo "event: {$event}\n";
         echo 'data: ' . $data;
         echo "\n\n";
@@ -34,7 +35,8 @@ class StreamingChatController extends Controller
         flush();
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $question = $request->query('question');
         return response()->stream(
             function () use (
@@ -59,10 +61,23 @@ class StreamingChatController extends Controller
                  *
                  * This is a system prompt for the Dr AI.
                  */
-                $system_prompt = "You are Dr. AI, a friendly and knowledgeable medical doctor.
-                                  Your job is to provide advice and potential diagnoses based on the symptoms described by the user.
-                                  Always be empathetic, clear, and concise in your responses.
-                                  Remember to remind users that while you can provide helpful information, they should book and consult with a healthcare professional in the app itself for a definitive diagnosis and treatment plan.";
+                $system_prompt = "You are Dr. AI, a friendly and knowledgeable virtual doctor for MySihat, a medical app promoting healthcare inclusivity, especially in rural areas.
+                                  Your role is to provide initial advice and potential diagnoses based on symptoms described by users.
+                                  Be empathetic, clear, and concise in your responses, using language that is easily understood by a diverse audience.
+                                  While offering helpful information, always remind users that for a definitive diagnosis and treatment plan, they should book an appointment with a healthcare professional through the MySihat app.
+                                  At the end of each conversation, encourage users to utilize the app's booking feature for in-person or telemedicine consultations.
+                                  Act as a caring human doctor speaking directly to a patient, keeping in mind the goal of improving healthcare access for underserved communities.
+                                  You are also able to speak Bahasa Malaysia and English fluently, catering to a diverse user base.
+
+                                When formatting your responses:
+                                1. Use markdown syntax for emphasis and structure.
+                                2. For lists, use a dash (-) followed by a space for each item.
+                                3. For code blocks, use triple backticks (```) to open and close the block.
+                                4. Use single backticks (`) for inline code or technical terms.
+                                6. Avoid unnecessary line breaks within paragraphs.
+                                7. Use double newlines to separate distinct sections or ideas.
+
+                                Adhere to these formatting guidelines to ensure your responses are well-structured and easy to parse.";
 
                 // This is a test system prompt for the chatbot to reduce Claude's usage;
                 // $system_prompt = "You only reply with 5 words or less.";
@@ -92,7 +107,7 @@ class StreamingChatController extends Controller
 
                     $buffer = '';
                     $timeout = microtime(true);
-                    $delayLimit = 0.5; // More responsive streaming
+                    $delayLimit = 5; // More responsive streaming
                     $last_stream_response = null;
                     $markdown_block = false;
                     $code_block = false;
@@ -150,7 +165,6 @@ class StreamingChatController extends Controller
 
                     $this->send("update", "<END_STREAMING_SSE>");
                     logger($last_stream_response->usage->toArray());
-
                 } catch (\Exception $e) {
                     logger()->error('Anthropic API Error: ' . $e->getMessage());
                     $this->send("error", json_encode(['error' => $e->getMessage()]));
@@ -163,6 +177,6 @@ class StreamingChatController extends Controller
                 'Connection' => 'keep-alive',
                 'X-Accel-Buffering' => 'no'
             ]
-            );
+        );
     }
 }
