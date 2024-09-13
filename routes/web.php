@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\Chat\ChatbotController;
+use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 
 // Redirect the root URL to the login page
@@ -41,5 +42,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Chatbot routes
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/send-message', [ChatbotController::class, 'sendMessage'])->name('chat.send');
+
+    Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
 });
 
