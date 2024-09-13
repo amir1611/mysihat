@@ -42,8 +42,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Chatbot routes
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
-    Route::post('/send-message', [ChatbotController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/render-message', [ChatbotController::class, 'render'])->name('chat.render');
 
     Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
+
 });
 
