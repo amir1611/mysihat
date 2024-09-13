@@ -59,13 +59,13 @@ class StreamingChatController extends Controller
                  *
                  * This is a system prompt for the Dr AI.
                  */
-                // $system_prompt = "You are Dr. AI, a friendly and knowledgeable medical doctor.
-                //                   Your job is to provide advice and potential diagnoses based on the symptoms described by the user.
-                //                   Always be empathetic, clear, and concise in your responses.
-                //                   Remember to remind users that while you can provide helpful information, they should book and consult with a healthcare professional in the app itself for a definitive diagnosis and treatment plan.";
+                $system_prompt = "You are Dr. AI, a friendly and knowledgeable medical doctor.
+                                  Your job is to provide advice and potential diagnoses based on the symptoms described by the user.
+                                  Always be empathetic, clear, and concise in your responses.
+                                  Remember to remind users that while you can provide helpful information, they should book and consult with a healthcare professional in the app itself for a definitive diagnosis and treatment plan.";
 
                 // This is a test system prompt for the chatbot to reduce Claude's usage;
-                $system_prompt = "You only reply with 5 words or less.";
+                // $system_prompt = "You only reply with 5 words or less.";
 
                 /**
                  * @var float $temperature The temperature setting for the chatbot's response generation.
@@ -90,21 +90,67 @@ class StreamingChatController extends Controller
                         'stream' => true
                     ]);
 
+                    $buffer = '';
+                    $timeout = microtime(true);
+                    $delayLimit = 0.5; // More responsive streaming
+                    $last_stream_response = null;
+                    $markdown_block = false;
+                    $code_block = false;
+                    $list_item = false;
+
                     foreach ($stream as $response) {
                         $text = $response->choices[0]->delta->content;
+                        $buffer .= $text;
+
                         if (connection_aborted()) {
                             break;
                         }
-                        $data = [
-                            'text' => $text
-                        ];
-                        $this->send("update", json_encode($data));
-                        $result_text = $text;
+
+                        // Check for markdown-specific patterns
+                        if (preg_match('/```/', $text)) {
+                            $code_block = !$code_block;
+                        }
+                        if (preg_match('/^\s*[-*+]\s/', $text)) {
+                            $list_item = true;
+                        }
+                        if (preg_match('/^\s*#/', $text)) {
+                            $markdown_block = true;
+                        }
+
+                        $should_send = false;
+
+                        // Determine if we should send the buffer
+                        if ($code_block && preg_match('/\n$/', $buffer)) {
+                            $should_send = true; // Send at the end of each line in a code block
+                        } elseif ($list_item && preg_match('/\n$/', $buffer)) {
+                            $should_send = true; // Send at the end of each list item
+                        } elseif ($markdown_block && preg_match('/\n\s*$/', $buffer)) {
+                            $should_send = true; // Send after a newline following a markdown block
+                        } elseif (preg_match('/[.!?]\s*$/', $buffer)) {
+                            $should_send = true; // Send at the end of a sentence
+                        } elseif ((microtime(true) - $timeout) > $delayLimit) {
+                            $should_send = true; // Send after delay limit
+                        }
+
+                        if ($should_send) {
+                            $this->send("update", json_encode(['text' => $buffer]));
+                            $buffer = '';
+                            $timeout = microtime(true);
+                            $markdown_block = false;
+                            $list_item = false;
+                        }
+
                         $last_stream_response = $response;
+                    }
+
+                    // Send any remaining buffer
+                    if (!empty($buffer)) {
+                        $this->send("update", json_encode(['text' => $buffer]));
                     }
 
                     $this->send("update", "<END_STREAMING_SSE>");
                     logger($last_stream_response->usage->toArray());
+
                 } catch (\Exception $e) {
                     logger()->error('Anthropic API Error: ' . $e->getMessage());
                     $this->send("error", json_encode(['error' => $e->getMessage()]));

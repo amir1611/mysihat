@@ -8,6 +8,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>MySihat Chat</title>
         <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
 
     <body>

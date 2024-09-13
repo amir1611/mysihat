@@ -1,3 +1,4 @@
+// skipcq: JS-0241
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
@@ -93,7 +94,7 @@ $(document).ready(function () {
 
     function updateMessage(id, text) {
         var $messageContent = $("#" + id + " .message-content");
-        $messageContent.append(text);
+        $messageContent.append(marked.parse(text));
         scrollToBottom();
     }
 
