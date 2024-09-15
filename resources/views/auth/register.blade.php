@@ -28,7 +28,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="row mb-3">
@@ -225,6 +225,21 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3" id="medical_license_document_container" style="display: none;">
+                                <label for="medical_license_document" class="col-md-4 col-form-label text-md-end">{{ __('Medical License Document') }}</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-file-pdf"></i></span>
+                                        <input id="medical_license_document" type="file" class="form-control @error('medical_license_document') is-invalid @enderror" name="medical_license_document" accept=".pdf">
+                                    </div>
+                                    @error('medical_license_document')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -243,6 +258,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const typeSelect = document.getElementById('type');
             const medicalLicenseContainer = document.getElementById('medical_license_container');
+            const medicalLicenseDocumentContainer = document.getElementById('medical_license_document_container');
             const togglePassword = document.getElementById('togglePassword');
             const password = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -251,18 +267,20 @@
             const genderInput = document.getElementById('gender');
             const phoneInput = document.getElementById('phone_number');
 
-            function toggleMedicalLicenseField() {
+            function toggleDoctorFields() {
                 if (typeSelect.value === 'doctor') {
                     medicalLicenseContainer.style.display = 'flex';
+                    medicalLicenseDocumentContainer.style.display = 'flex';
                 } else {
                     medicalLicenseContainer.style.display = 'none';
+                    medicalLicenseDocumentContainer.style.display = 'none';
                 }
             }
 
-            typeSelect.addEventListener('change', toggleMedicalLicenseField);
+            typeSelect.addEventListener('change', toggleDoctorFields);
 
             // Call the function on page load to set the initial state
-            toggleMedicalLicenseField();
+            toggleDoctorFields();
 
             // Toggle password visibility
             togglePassword.addEventListener('click', function() {
@@ -296,8 +314,9 @@
 
             // Gender icon change
             icNumberInput.addEventListener('input', function() {
-                if (this.value.length === 12) {
-                    const lastDigit = parseInt(this.value.slice(-1));
+                const icNumber = this.value.replace(/\D/g, ''); // Remove non-digit characters
+                if (icNumber.length >= 12) {
+                    const lastDigit = parseInt(icNumber.slice(-1));
                     if (lastDigit % 2 === 0) {
                         genderInput.value = 'Female';
                         genderIcon.className = 'fas fa-venus';

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('type')->default(0);
             /* Users: 0=>Patient, 1=>Admin, 2=>doctor */
+            $table->string('medical_license_document')->nullable();
         });
     }
 
@@ -23,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('type');
+            $table->dropColumn('medical_license_document');
         });
     }
 };

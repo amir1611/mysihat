@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 
-// Redirect the root URL to the login page
+// Redirect the root URL to the home page
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('auth.home');
+})->name('auth.home');
 
 // Route for the admin login form
 Route::get('/admin', function () {

@@ -6,8 +6,8 @@
             <!-- Left Lottie Section -->
             <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center">
                 <!-- Lottie Animation -->
-                <dotlottie-player src="https://lottie.host/56123689-d2b0-47ff-bd88-06557ddbaa78/QdasAAWTiE.json"
-                    background="transparent" speed="1" style="width: 600px; height: 600px" direction="1" playMode="normal"
+                <dotlottie-player src="https://lottie.host/4ca02c2a-915a-408f-981b-4847c39bd39b/PNPb5apqOM.json"
+                    background="transparent" speed="1" style="width: 650px; height: 650px" direction="1" playMode="normal"
                     loop autoplay></dotlottie-player>
             </div>
             <!-- Right Form Section -->
