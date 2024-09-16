@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Chat\ChatbotController;
+use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 
 // Redirect the root URL to the home page
@@ -37,5 +39,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
         // Add more admin-specific routes here
     });
+
+    // Chatbot routes
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/render-message', [ChatbotController::class, 'render'])->name('chat.render');
+
+    Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
+
 });
 
