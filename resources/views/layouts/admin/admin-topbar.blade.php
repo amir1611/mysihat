@@ -28,7 +28,7 @@
 
 
 
-                <a href="{{ route('admin.dashboard') }}"
+                <a href="{{ route('admin.profile') }}"
                     style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
                     <i class="fas fa-user" style="margin-right: 8px;"></i>
                     My Profile
