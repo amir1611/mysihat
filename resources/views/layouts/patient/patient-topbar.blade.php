@@ -5,12 +5,11 @@
             <i class="fa fa-bars"></i>
         </button>
         <div class="dropdown-menu shadow animated--grow-in" aria-labelledby="sidebarToggleTop">
-            <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i> Dashboard
-            </a>
-            <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-fw fa-cog"></i> Settings
-            </a>
+            @foreach (config('patient-navigation.items') as $item)
+                <a class="dropdown-item" href="{{ route($item['route']) }}">
+                    <i class="{{ $item['icon'] }}"></i> {{ $item['name'] }}
+                </a>
+            @endforeach
         </div>
     </div>
 
@@ -28,15 +27,15 @@
 
 
 
-                <!-- My Profile Link -->
-                <a href="{{ route('admin.dashboard') }}"
+
+                <a href="{{ route('patient.dashboard') }}"
                     style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
-                    <i class="fas fa-user" style="margin-right: 8px;"></i> <!-- Profile icon -->
+                    <i class="fas fa-user" style="margin-right: 8px;"></i>
                     My Profile
                 </a>
 
-                <hr style="margin: 5px 0;"> <!-- Optional horizontal line for separation -->
-                <!-- Logout Link -->
+                <hr style="margin: 5px 0;">
+
                 <a href="#" data-toggle="modal" data-target="#logoutModal"
                     style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
                     <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>

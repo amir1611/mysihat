@@ -37,5 +37,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
         // Add more admin-specific routes here
     });
+
+    // Debug configuration route
+    Route::get('/debug-config', function () {
+        return config('admin-navigation.items');
+    });
 });
 
