@@ -33,7 +33,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
 
-                @include('layouts.partials.patient-topbar')
+                @include('layouts.partials.topbar')
 
 
                 <div class="container-fluid">

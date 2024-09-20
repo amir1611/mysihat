@@ -1,13 +1,10 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+<nav style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: white;">
     <!-- Hamburger Menu for Mobile View -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-bars"></i>
-    </button>
-
-    <!-- Dropdown for Mobile Menu -->
     <div class="dropdown d-md-none">
-        <div class="dropdown-menu dropdown-menu-left shadow animated--grow-in" aria-labelledby="sidebarToggleTop">
+        <button id="sidebarToggleTop" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="dropdown-menu shadow animated--grow-in" aria-labelledby="sidebarToggleTop">
             <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i> Dashboard
             </a>
@@ -17,19 +14,50 @@
         </div>
     </div>
 
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-black small">{{ Auth::user()->name }}</span>
-                <img class="img-profile rounded-circle" src="{{ asset('build/assets/profile-circle.svg') }}" alt="Profile">
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: flex-end; margin-left: auto;">
+        <li style="position: relative; margin-left: 20px;">
+            <a href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                style="text-decoration: none; color: black; display: flex; align-items: center;">
+                <span style="display: inline-block;  margin-right: 10px;">{{ Auth::user()->name }}</span>
+                <img src="{{ asset('build/assets/profile-circle.svg') }}" alt="Profile"
+                    style="width: 40px; height: 40px; border-radius: 50%;">
             </a>
 
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            <div style="position: absolute; top: 160px; right: 0; transform: translateY(-100%); background: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 150px; max-width: 200px; z-index: 1000; padding: 10px; display: none;"
+                id="dropdownMenu">
+
+
+
+                <!-- My Profile Link -->
+                <a href="{{ route('admin.dashboard') }}"
+                    style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
+                    <i class="fas fa-user" style="margin-right: 8px;"></i> <!-- Profile icon -->
+                    My Profile
+                </a>
+
+                <hr style="margin: 5px 0;"> <!-- Optional horizontal line for separation -->
+                <!-- Logout Link -->
+                <a href="#" data-toggle="modal" data-target="#logoutModal"
+                    style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
                     Logout
                 </a>
             </div>
         </li>
     </ul>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userDropdown = document.getElementById('userDropdown');
+        if (userDropdown) {
+            userDropdown.addEventListener('click', function() {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' :
+                        'block';
+                }
+            });
+        }
+    });
+</script>

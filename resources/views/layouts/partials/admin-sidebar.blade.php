@@ -2,8 +2,7 @@
 
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
         <div class="sidebar-brand-icon">
-            <img src="{{ asset('build/assets/logo-mysihat-white.svg') }}" alt="MySihat Logo"
-                style="width: 180px; height: auto;">
+            <img src="{{ asset('build/assets/logo-mysihat-white.svg') }}" alt="MySihat Logo" class="img-fluid" style="max-width: 100%; height: auto;">
         </div>
     </a>
 
