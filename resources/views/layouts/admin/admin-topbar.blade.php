@@ -22,7 +22,7 @@
                     style="width: 40px; height: 40px; border-radius: 50%;">
             </a>
 
-            <div style="position: absolute; top: 160px; right: 0; transform: translateY(-100%); background: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 150px; max-width: 200px; z-index: 1000; padding: 10px; display: none;"
+            <div style="position: absolute; top: 160px; right: 0; transform: translateY(-100%); background: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 200px; max-width: 200px; z-index: 1000; padding: 10px; display: none;"
                 id="dropdownMenu">
 
 
@@ -34,6 +34,12 @@
                     My Profile
                 </a>
 
+                <hr style="margin: 5px 0;">
+                <a href="{{ route('admin.change.password') }}"
+                    style="text-decoration: none; color: black; display: flex; align-items: center; padding: 8px 12px; width: 100%;">
+                    <i class="fas fa-key" style="margin-right: 8px;"></i>
+                    Change Password
+                </a>
                 <hr style="margin: 5px 0;">
 
                 <a href="#" data-toggle="modal" data-target="#logoutModal"

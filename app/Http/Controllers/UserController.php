@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash; // Import Hash facade
 use App\Http\Controllers\Controller;
 use App\Models\User; // Ensure the User model is imported
 
@@ -90,5 +91,96 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('patient.profile')->with('success', 'Profile updated successfully.');
+    }
+
+    // New method for showing change password form
+    public function showChangePasswordForm()
+    {
+        return view('manageProfile.patient.patient-change-password');
+    }
+
+    // New method for handling password change
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if the user is authenticated and is an instance of User
+        if (!$user instanceof User) {
+            return redirect()->route('patient.profile')->with('error', 'User not found.');
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save(); // This should work now
+
+        return redirect()->route('patient.profile')->with('success', 'Password changed successfully.');
+    }
+
+    // New method for showing doctor change password form
+    public function showDoctorChangePasswordForm()
+    {
+        return view('manageProfile.doctor.doctor-change-password'); // Ensure this view exists
+    }
+
+    // New method for handling doctor password change
+    public function changeDoctorPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            return redirect()->route('doctor.profile')->with('error', 'User not found.');
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return redirect()->route('doctor.profile')->with('success', 'Password changed successfully.');
+    }
+
+    // New method for showing admin change password form
+    public function showAdminChangePasswordForm()
+    {
+        return view('manageProfile.admin.admin-change-password'); // Ensure this view exists
+    }
+
+    // New method for handling admin password change
+    public function changeAdminPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            return redirect()->route('admin.profile')->with('error', 'User not found.');
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return redirect()->route('admin.profile')->with('success', 'Password changed successfully.');
     }
 }
