@@ -11,6 +11,11 @@ return [
             'icon' => 'fas fa-fw fa-cog',
             'route' => 'patient.dashboard',
         ],
+        [
+            'name' => 'Booking List',
+            'icon' => 'fas fa-fw fa-calendar-alt',
+            'route' => 'patient.booking.list',
+        ],
         
     ],
 ];

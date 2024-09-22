@@ -7,6 +7,8 @@ use App\Http\Controllers\Chat\ChatbotController;
 use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Booking\BookingController;
+
 
 // Redirect the root URL to the home page
 Route::get('/', function () {
@@ -35,6 +37,9 @@ Route::middleware(['auth'])->group(function () {
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('patient.change.password');
         Route::post('/change-password', [UserController::class, 'changePassword'])->name('patient.change.password.update');
+
+        // Route for booking list
+        Route::get('/booking-list', [BookingController::class, 'getBookingList'])->name('patient.booking.list');
     });
 
     // Doctor routes
