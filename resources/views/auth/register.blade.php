@@ -175,7 +175,7 @@
                                             name="phone_number" value="{{ old('phone_number') }}" required
                                             placeholder="Enter your phone number">
                                     </div>
-                                    
+
                                     @error('phone_number')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -226,11 +226,14 @@
                             </div>
 
                             <div class="row mb-3" id="medical_license_document_container" style="display: none;">
-                                <label for="medical_license_document" class="col-md-4 col-form-label text-md-end">{{ __('Medical License Document') }}</label>
+                                <label for="medical_license_document"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Medical License Document') }}</label>
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-file-pdf"></i></span>
-                                        <input id="medical_license_document" type="file" class="form-control @error('medical_license_document') is-invalid @enderror" name="medical_license_document" accept=".pdf">
+                                        <input id="medical_license_document" type="file"
+                                            class="form-control @error('medical_license_document') is-invalid @enderror"
+                                            name="medical_license_document" accept=".pdf">
                                     </div>
                                     @error('medical_license_document')
                                         <span class="invalid-feedback" role="alert">
@@ -279,10 +282,10 @@
 
             typeSelect.addEventListener('change', toggleDoctorFields);
 
-            // Call the function on page load to set the initial state
+
             toggleDoctorFields();
 
-            // Toggle password visibility
+
             togglePassword.addEventListener('click', function() {
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
@@ -290,7 +293,7 @@
                 eyeIcon.classList.toggle('bi-eye-slash');
             });
 
-            // Highlight fields with errors
+
             document.querySelectorAll('.is-invalid').forEach(function(element) {
                 element.addEventListener('input', function() {
                     this.classList.remove('is-invalid');
@@ -298,23 +301,23 @@
                 });
             });
 
-            // Code for confirm password
+
             const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
             const confirmPassword = document.querySelector('#password-confirm');
             const confirmEyeIcon = document.querySelector('#confirmEyeIcon');
 
             toggleConfirmPassword.addEventListener('click', function(e) {
-                // toggle the type attribute
+
                 const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
                 confirmPassword.setAttribute('type', type);
-                // toggle the eye slash icon
+
                 confirmEyeIcon.classList.toggle('bi-eye');
                 confirmEyeIcon.classList.toggle('bi-eye-slash');
             });
 
-            // Gender icon change
+
             icNumberInput.addEventListener('input', function() {
-                const icNumber = this.value.replace(/\D/g, ''); // Remove non-digit characters
+                const icNumber = this.value.replace(/\D/g, '');
                 if (icNumber.length >= 12) {
                     const lastDigit = parseInt(icNumber.slice(-1));
                     if (lastDigit % 2 === 0) {
@@ -331,15 +334,15 @@
             });
 
             phoneInput.addEventListener('input', function(e) {
-                // Remove any non-digit characters
+
                 this.value = this.value.replace(/\D/g, '');
 
-                // Ensure the input doesn't exceed 10 digits
+
                 if (this.value.length > 10) {
                     this.value = this.value.slice(0, 10);
                 }
 
-                // Update the placeholder to guide the user
+
                 if (this.value.length === 0) {
                     this.placeholder = "Enter your phone number";
                 } else {
@@ -347,7 +350,6 @@
                 }
             });
 
-            // Format the phone number when the form is submitted
             document.querySelector('form').addEventListener('submit', function(e) {
                 phoneInput.value = '+60' + phoneInput.value;
             });

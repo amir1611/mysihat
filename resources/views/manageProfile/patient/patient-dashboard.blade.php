@@ -1,4 +1,4 @@
-@extends('layouts.patient-layout')
+@extends('layouts.patient.patient-layout')
 
 @section('content')
     <h1 class="h3 mb-4 text-gray-800">Patient Dashboard</h1>
