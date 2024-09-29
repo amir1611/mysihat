@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Appointment\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -21,6 +22,9 @@ Auth::routes();
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
+    // Common
+    Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
+    
     // Patient routes
     Route::prefix('patient')->group(function () {
         // Route for the patient dashboard
