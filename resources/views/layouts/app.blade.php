@@ -4,31 +4,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'MySihat') }}</title>
-
-    <!-- Fonts -->
+    <title>MySihat</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('build/assets/mysihat-icon.svg') }}">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    
-    <!-- Include Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-    
-    <!-- Include Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @yield('styles')
 </head>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: rgb(41, 50, 137);">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+                    <img src="{{ asset('build/assets/mysihat-icon.svg') }}" alt="MySihat Icon" height="30" class="me-2">
                     MySihat
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -36,15 +30,17 @@
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto"></ul>
-
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">
+                                        <i class="fas fa-sign-in-alt me-1"></i>{{ __('Login') }}
+                                    </a>
+                                </li>
+                            @endif
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
@@ -56,14 +52,12 @@
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -74,11 +68,39 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 </body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const changingText = document.getElementById('changingText');
+        const words = ['time', 'where'];
+        let currentIndex = 0;
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % words.length;
+            setTimeout(() => {
+                changingText.textContent = words[currentIndex];
+            }, 2000);
+        }, 4000);
+        new Swiper('.news-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                bulletClass: 'swiper-pagination-bullet',
+                bulletActiveClass: 'swiper-pagination-bullet-active',
+            },
+        });
+    });
+</script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </html>

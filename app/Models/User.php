@@ -21,7 +21,8 @@ class User extends Authenticatable
         'phone_number',
         'type',
         'medical_license_number',
-        'ic_number', 
+        'ic_number',
+        'medical_license_document'
     ];
 
     protected $hidden = [

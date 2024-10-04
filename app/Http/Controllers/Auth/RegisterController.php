@@ -36,6 +36,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'type' => ['required', 'string', 'in:patient,doctor'],
             'medical_license_number' => ['required_if:type,doctor', 'string', 'nullable'],
+            'medical_license_document' => ['required_if:type,doctor', 'file', 'mimes:pdf', 'max:2048', 'nullable'],
             'date_of_birth' => ['required', 'date'],
             'phone_number' => ['required', 'string', 'regex:/^\+60[0-9]{9,10}$/'],
         ]);
@@ -57,6 +58,12 @@ class RegisterController extends Controller
                 'type' => $data['type'] === 'doctor' ? 2 : 0,
                 'medical_license_number' => $data['type'] === 'doctor' ? $data['medical_license_number'] : null,
             ]);
+            
+            if ($data['type'] === 'doctor' && isset($data['medical_license_document'])) {
+                $path = $data['medical_license_document']->store('medical_licenses', 'public');
+                $user->medical_license_document = $path;
+                $user->save();
+            }
             
             Log::info('User created successfully: ' . $user->id);
             return $user;

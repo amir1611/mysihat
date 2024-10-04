@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid d-flex align-items-center" style="margin-top:80px; background-color: #f7f8fc;">
         <div class="row w-100">
-            <!-- Right Form Section -->
+           
             <div class="col-md-12 d-flex justify-content-center align-items-center">
                 <div class="card p-4" style="width: 40%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     <div class="text-center mb-4">
@@ -50,7 +50,7 @@
                             @enderror
                         </div>
 
-                        <!-- Add this div for extra spacing -->
+                       
                         <div class="mb-4"></div>
 
                         <div class="d-grid">
@@ -72,10 +72,10 @@
             const eyeIcon = document.querySelector('#eyeIcon');
 
             togglePassword.addEventListener('click', function (e) {
-                // toggle the type attribute
+               
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
-                // toggle the eye slash icon
+              
                 eyeIcon.classList.toggle('bi-eye');
                 eyeIcon.classList.toggle('bi-eye-slash');
             });

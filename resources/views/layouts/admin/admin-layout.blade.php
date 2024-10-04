@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'MySihat') }}</title>
+    <title>MySihat</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('build/assets/mysihat-icon.svg') }}">
 
 
     <link
@@ -28,12 +29,12 @@
 <body id="page-top">
     <div id="wrapper">
 
-        @include('layouts.partials.doctor-sidebar')
+        @include('layouts.admin.admin-sidebar')
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
 
-                @include('layouts.partials.doctor-topbar')
+                @include('layouts.admin.admin-topbar')
 
 
                 <div class="container-fluid">
