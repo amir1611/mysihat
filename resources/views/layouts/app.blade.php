@@ -34,6 +34,12 @@
                     <ul class="navbar-nav me-auto"></ul>
                     <ul class="navbar-nav ms-auto">
                         @guest
+                     
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('health-articles') }}">
+                                <i class="fas fa-book-medical me-1"></i>{{ __('Health Articles') }}
+                            </a>
+                        </li>
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">

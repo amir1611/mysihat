@@ -16,6 +16,11 @@ Route::get('/admin', function () {
     return view('auth.admin-login');
 })->name('admin.login');
 
+//Route for health article
+Route::get('/health-articles', function () {
+    return view('auth.health-article');
+})->name('health-articles');
+
 // Default authentication routes for users
 Auth::routes();
 
