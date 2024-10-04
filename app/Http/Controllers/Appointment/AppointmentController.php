@@ -17,5 +17,10 @@ class AppointmentController extends Controller
         return view('appointment.appointment_list');
     }
 
+    public function appointmentCreatePage()
+    {
+        return view('appointment.appointment_create');
+    }
+
    
 }

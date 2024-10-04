@@ -5,7 +5,12 @@
 
 
 
-<h1 class="h3 my-4 text-gray-800">Appointment</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1 class="h3 my-4 text-gray-800">Appointment</h1>
+  <a href="{{ route('appointmentCreate') }}">
+    <button class="btn btn-primary h-0" style="padding: 5px; height:min-content">Add Appointment</button>
+  </a>
+</div>
 
 
 <table class="table align-middle mb-0 bg-dark">

@@ -24,6 +24,7 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     // Common
     Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
+    Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
     
     // Patient routes
     Route::prefix('patient')->group(function () {
