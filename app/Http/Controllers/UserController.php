@@ -64,6 +64,12 @@ class UserController extends Controller
         return redirect()->route('doctor.profile')->with('success', 'Profile updated successfully.');
     }
 
+    // New method for showing doctor appointment time slot
+    public function doctorAppointmentTimeSlot()
+    {
+        return view('appointment.appointment-time-slot');
+    }
+
     // New method for patient profile edit
     public function editPatientProfile()
     {

@@ -9,6 +9,31 @@
     .step.active {
         display: block;
     }
+
+    /* .btn {
+        line-height: 1.5;
+        padding: 0.375rem 0.75rem;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    } */
+    .fixed-height-btn {
+    height: 40px; /* Set a fixed height */
+    width: fit-content; /* Set a fixed width */
+    padding: 10px 20px; /* Adjust padding as needed */
+    box-sizing: border-box; /* Ensure padding and border are included in the height */
+}
+
+    .fixed-height-btn:active {
+        height: 40px; /* Maintain the same height on click */
+        width: fit-content; /* Maintain the same width on click */
+    }
+ 
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
 </style>
 
 <div class="container mt-5">
@@ -39,24 +64,52 @@
 
                 </div>
 
-                <!-- Step 2: Appointment Details -->
+             <!-- Step 2: Appointment Details -->
+<div class="step">
+    <h4 class="mb-4">Step 2: Appointment Details</h4>
+    
+    <!-- Doctor Selection Button -->
+    <div class="mb-4">
+        <button type="button" class="btn btn-primary btn-sm fixed-height-btn" data-mdb-toggle="modal" data-mdb-target="#doctorModal">
+            Select a Doctor
+        </button>
+        <input type="hidden" id="selectedDoctor" required>
+        <div id="selectedDoctorName" class="mt-2 text-muted"></div>
+    </div>
 
-                <div class="step">
-                    <h4>Step 2: Appointment Details</h4>
-                    <div class="mb-4">
-                        <label for="doctor" class="form-label">Select a Doctor</label>
-                        <select class="form-select" id="doctor" required>
-                            <option value="">Select a doctor</option>
-                            <option value="1">Dr. John Doe</option>
-                            <option value="2">Dr. Jane Smith</option>
-                            <option value="3">Dr. Michael Johnson</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="appointmentTime" class="form-label">Preferred Appointment Time</label>
-                        <input type="datetime-local" class="form-control" id="appointmentTime" required>
-                    </div>
+    <!-- Appointment Time -->
+    <div class="mb-4">
+        <label for="appointmentTime" class="form-label">Preferred Appointment Time</label>
+        <input type="datetime-local" class="form-control" id="appointmentTime" required>
+    </div>
+</div>
+
+<!-- Doctor Selection Modal -->
+<div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="doctorModalLabel">Select a Doctor</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Department Filter -->
+                <div class="mb-4">
+                    <label for="department" class="form-label">Filter by Department</label>
+                    <select class="form-select" id="department">
+                        <option value="">All Departments</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="neurology">Neurology</option>
+                        <option value="pediatrics">Pediatrics</option>
+                    </select>
                 </div>
+                <div class="row" id="doctorList">
+                    <!-- Doctor cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -83,7 +136,8 @@
     </div>
 </div>
 
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     var currentStep = 0; // Current step is set to be the first step (0)
     showStep(currentStep); // Display the current step
@@ -141,5 +195,73 @@
         return valid;
     }
 </script>
+<script>
+    // Sample doctor data
+    const doctors = [
+        { id: 1, name: "Dr. John Doe", department: "cardiology", image: "https://mdbootstrap.com/img/new/avatars/2.jpg" },
+        { id: 2, name: "Dr. Jane Smith", department: "neurology", image: "https://mdbootstrap.com/img/new/avatars/5.jpg" },
+        { id: 3, name: "Dr. Michael Johnson", department: "pediatrics", image: "https://mdbootstrap.com/img/new/avatars/8.jpg" },
+        { id: 4, name: "Dr. Emily Brown", department: "cardiology", image: "https://mdbootstrap.com/img/new/avatars/6.jpg" },
+        { id: 4, name: "Dr. Emily Brown", department: "cardiology", image: "https://mdbootstrap.com/img/new/avatars/6.jpg" },
+        { id: 4, name: "Dr. Emily Brown", department: "cardiology", image: "https://mdbootstrap.com/img/new/avatars/6.jpg" },
+    ];
+
+    // Function to create doctor cards
+    function createDoctorCard(doctor) {
+        return `
+            <div class="col-md-6 mb-4" data-department="${doctor.department}">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="${doctor.image}" class="rounded-circle me-3" alt="${doctor.name}" style="width: 60px; height: 60px; object-fit: cover;">
+                        <div>
+                            <h5 class="card-title mb-0">${doctor.name}</h5>
+                            <p class="card-text text-muted">${doctor.department}</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-sm w-100 select-doctor" data-doctor-id="${doctor.id}" data-doctor-name="${doctor.name}">Select</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Populate doctor list
+    function populateDoctorList() {
+        const doctorList = document.getElementById('doctorList');
+        doctorList.innerHTML = doctors.map(createDoctorCard).join('');
+    }
+
+    // Filter doctors by department
+    document.getElementById('department').addEventListener('change', function() {
+        const selectedDepartment = this.value;
+        const doctorCards = document.querySelectorAll('#doctorList > div');
+        
+        doctorCards.forEach(card => {
+            if (selectedDepartment === '' || card.dataset.department === selectedDepartment) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Handle doctor selection
+    document.getElementById('doctorList').addEventListener('click', function(e) {
+        if (e.target.classList.contains('select-doctor')) {
+            const doctorId = e.target.dataset.doctorId;
+            const doctorName = e.target.dataset.doctorName;
+            document.getElementById('selectedDoctor').value = doctorId;
+            document.getElementById('selectedDoctorName').textContent = `Selected: ${doctorName}`;
+            document.querySelector('#doctorModal .btn-close').click();
+        }
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        populateDoctorList();
+    });
+</script>
+
 
 @endsection

@@ -45,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
         // Route for the doctor dashboard
         Route::get('/dashboard', [HomeController::class, 'doctorHomepage'])->name('doctor.dashboard');
 
+        // Route for the doctor appointment time slot
+        Route::get('/appointment-time-slot', [UserController::class, 'doctorAppointmentTimeSlot'])->name('doctor.appointment.time.slot');
+
         // Route for doctor profile
         Route::get('/profile', [UserController::class, 'editDoctorProfile'])->name('doctor.profile');
         Route::post('/profile', [UserController::class, 'updateDoctorProfile'])->name('doctor.profile.update');
