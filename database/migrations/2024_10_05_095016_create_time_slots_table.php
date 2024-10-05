@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
             $table->integer('doctor_id');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->integer('duration')->nullable();
+            $table->dateTime('time_slot');
+            $table->string('time_period');
             $table->string('status');
-            $table->string('day');
             $table->integer('appointment_id')->nullable();
             $table->timestamps();
         });

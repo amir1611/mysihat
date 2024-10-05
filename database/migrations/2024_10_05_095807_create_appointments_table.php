@@ -15,8 +15,8 @@ class CreateAppointmentsTable extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->integer('patient_id');
-            $table->integer('doctor_id');
+            $table->unsignedBigInteger('patient_id'); // Changed to unsignedBigInteger
+            $table->unsignedBigInteger('doctor_id');  // Changed to unsignedBigInteger
             $table->text('reason');
             $table->string('medical_conditions_record')->nullable();
             $table->text('current_medications')->nullable();
@@ -26,8 +26,8 @@ class CreateAppointmentsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('doctor_id')->references('id')->on('users')->onDelete('set null');
+            // $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('doctor_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="container mt-5">
     <!-- Title and Add Slot Button -->
     <div class="d-flex justify-content-between align-items-center">
@@ -10,8 +11,8 @@
     </div>
 
     <!-- Time Slot Table -->
-    <table class="table align-middle mb-0 bg-white">
-        <thead class="bg-light">
+    <table class="table align-middle mb-0">
+        <thead>
             <tr>
                 <th>Date</th>
                 <th>Time Slots</th>
@@ -24,7 +25,7 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center">
-                        
+
                         <div class="">
                             <p class="fw-bold mb-1">2024-10-05</p>
                         </div>
@@ -68,11 +69,13 @@
                         <input type="time" class="form-control mb-2" id="timeSlot1" required>
                     </div>
 
-                    <!-- Add Another Time Slot Button -->
-                    <button type="button" class="btn btn-secondary mb-3" id="addTimeSlot">Add Another Slot</button>
+                    <div class="mt-5">
+                        <!-- Add Another Time Slot Button -->
+                    <button type="button" class="btn btn-secondary " id="addTimeSlot">Add Another Slot</button>
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary">Save Slots</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -118,29 +121,59 @@
 
         // Check if editing or adding new
         if (editingRow) {
-            editingRow.cells[0].querySelector('.fw-bold').innerText = date;
-            editingRow.cells[0].querySelector('.text-muted').innerText = formattedSlots;
-            editingRow.cells[1].innerText = formattedSlots;
-            editingRow = null; // Reset after editing
+            // Update existing slot
+            const slotId = editingRow.dataset.id; // Assuming you have a data-id attribute for the row
+            fetch(`/time-slots/${slotId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                },
+                body: JSON.stringify({ date, timeSlots })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    editingRow.cells[0].querySelector('.fw-bold').innerText = date;
+                    editingRow.cells[1].innerText = formattedSlots;
+                    editingRow = null; // Reset after editing
+                } else {
+                    alert('Error updating slot');
+                }
+            });
         } else {
             // Create new table row
-            const newRow = document.createElement("tr");
-            newRow.innerHTML = `
-                <td>
-                    <div class="d-flex align-items-center">
-                        
-                            <p class="fw-bold mb-1">${date}</p>
-                       
-                    </div>
-                </td>
-                <td>${formattedSlots}</td>
-                <td><span class="badge badge-success rounded-pill d-inline">Available</span></td>
-                <td>
-                    <button class="btn btn-link btn-sm btn-rounded edit-slot-btn">Edit</button>
-                    <button class="btn btn-link btn-sm btn-rounded text-danger delete-slot-btn">Delete</button>
-                </td>
-            `;
-            document.getElementById("slotTableBody").appendChild(newRow);
+            fetch('/time-slots', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                },
+                body: JSON.stringify({ date, timeSlots })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const newRow = document.createElement("tr");
+                    newRow.dataset.id = data.slot.id; // Assuming the response contains the new slot ID
+                    newRow.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <p class="fw-bold mb-1">${date}</p>
+                            </div>
+                        </td>
+                        <td>${formattedSlots}</td>
+                        <td><span class="badge badge-success rounded-pill d-inline">Available</span></td>
+                        <td>
+                            <button class="btn btn-link btn-sm btn-rounded edit-slot-btn">Edit</button>
+                            <button class="btn btn-link btn-sm btn-rounded text-danger delete-slot-btn">Delete</button>
+                        </td>
+                    `;
+                    document.getElementById("slotTableBody").appendChild(newRow);
+                } else {
+                    alert('Error adding slot');
+                }
+            });
         }
 
         // Close modal and reset form
@@ -160,7 +193,21 @@
 
         if (target.classList.contains("delete-slot-btn")) {
             // Delete the row
-            target.closest("tr").remove();
+            const slotId = target.closest("tr").dataset.id; // Get the slot ID
+            fetch(`/time-slots/${slotId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    target.closest("tr").remove();
+                } else {
+                    alert('Error deleting slot');
+                }
+            });
         } else if (target.classList.contains("edit-slot-btn")) {
             // Edit the row
             editingRow = target.closest("tr");
