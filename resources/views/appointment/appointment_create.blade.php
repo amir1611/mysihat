@@ -36,7 +36,7 @@
     }
 </style>
 
-<form action="">
+<form >
     <div class="container mt-5">
         <div class="card shadow-lg border-0">
             <div class="card-header bg-primary text-white">
