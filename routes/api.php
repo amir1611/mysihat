@@ -13,3 +13,6 @@ Route::get('/time-slots', [TimeSlotController::class, 'index']); // Get all time
         Route::put('/time-slots/{id}', [TimeSlotController::class, 'update']); // Update an existing time slot
         Route::delete('/time-slots/{id}', [TimeSlotController::class, 'destroy']); // Delete a time slot
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'Hello World!']);
+});

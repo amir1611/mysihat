@@ -123,7 +123,7 @@
         if (editingRow) {
             // Update existing slot
             const slotId = editingRow.dataset.id; // Assuming you have a data-id attribute for the row
-            fetch(`/time-slots/${slotId}`, {
+            fetch(`/api/time-slots/${slotId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,7 +143,7 @@
             });
         } else {
             // Create new table row
-            fetch('/time-slots', {
+            fetch('/api/time-slots', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -171,7 +171,9 @@
                     `;
                     document.getElementById("slotTableBody").appendChild(newRow);
                 } else {
+                    console.log(data.error);
                     alert('Error adding slot');
+                    
                 }
             });
         }
@@ -194,7 +196,7 @@
         if (target.classList.contains("delete-slot-btn")) {
             // Delete the row
             const slotId = target.closest("tr").dataset.id; // Get the slot ID
-            fetch(`/time-slots/${slotId}`, {
+            fetch(`/api/time-slots/${slotId}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
