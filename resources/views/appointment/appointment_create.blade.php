@@ -29,112 +29,114 @@
         height: 40px; /* Maintain the same height on click */
         width: fit-content; /* Maintain the same width on click */
     }
- 
+
     .modal-body {
         max-height: 70vh;
         overflow-y: auto;
     }
 </style>
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title mb-0">Book a Doctor's Appointment</h3>
-        </div>
-        <div class="card-body">
-            <form id="appointmentForm">
-
-                <!-- Step 2: Medical Information -->
-                <div class="step">
-                    <h4>Step 1: Medical Information</h4>
-                    <div class="mb-4">
-                        <label for="reason" class="form-label">Reason for Visit</label>
-                        <textarea class="form-control" id="reason" rows="3" placeholder="Describe your symptoms" required></textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label for="medicalConditionsFile" class="form-label">Upload Medical Records (Optional)</label>
-                        <input type="file" class="form-control" id="medicalConditionsFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png">
-                        <small class="form-text text-muted">Accepted file types: PDF, DOC, DOCX, TXT, JPG, PNG</small>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="medications" class="form-label">Current Medications (Optional)</label>
-                        <textarea class="form-control" id="medications" rows="2" placeholder="Enter medications you are taking"></textarea>
-                    </div>
-
-                </div>
-
-             <!-- Step 2: Appointment Details -->
-<div class="step">
-    <h4 class="mb-4">Step 2: Appointment Details</h4>
-    
-    <!-- Doctor Selection Button -->
-    <div class="mb-4">
-        <button type="button" class="btn btn-primary btn-sm fixed-height-btn" data-mdb-toggle="modal" data-mdb-target="#doctorModal">
-            Select a Doctor
-        </button>
-        <input type="hidden" id="selectedDoctor" required>
-        <div id="selectedDoctorName" class="mt-2 text-muted"></div>
-    </div>
-
-    <!-- Appointment Time -->
-    <div class="mb-4">
-        <label for="appointmentTime" class="form-label">Preferred Appointment Time</label>
-        <input type="datetime-local" class="form-control" id="appointmentTime" required>
-    </div>
-</div>
-
-<!-- Doctor Selection Modal -->
-<div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="doctorModalLabel">Select a Doctor</h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+<form action="">
+    <div class="container mt-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Book a Doctor's Appointment</h3>
             </div>
-            <div class="modal-body">
-                <!-- Department Filter -->
-                <div class="mb-4">
-                    <label for="department" class="form-label">Filter by Department</label>
-                    <select class="form-select" id="department">
-                        <option value="">All Departments</option>
-                        <option value="cardiology">Cardiology</option>
-                        <option value="neurology">Neurology</option>
-                        <option value="pediatrics">Pediatrics</option>
-                    </select>
+            <div class="card-body">
+                <form id="appointmentForm">
+
+                    <!-- Step 2: Medical Information -->
+                    <div class="step">
+                        <h4>Step 1: Medical Information</h4>
+                        <div class="mb-4">
+                            <label for="reason" class="form-label">Reason for Visit</label>
+                            <textarea class="form-control" id="reason" rows="3" placeholder="Describe your symptoms" required></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="medicalConditionsFile" class="form-label">Upload Medical Records (Optional)</label>
+                            <input type="file" class="form-control" id="medicalConditionsFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png">
+                            <small class="form-text text-muted">Accepted file types: PDF, DOC, DOCX, TXT, JPG, PNG</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="medications" class="form-label">Current Medications (Optional)</label>
+                            <textarea class="form-control" id="medications" rows="2" placeholder="Enter medications you are taking"></textarea>
+                        </div>
+
+                    </div>
+
+                 <!-- Step 2: Appointment Details -->
+    <div class="step">
+        <h4 class="mb-4">Step 2: Appointment Details</h4>
+
+        <!-- Doctor Selection Button -->
+        <div class="mb-4">
+            <button type="button" class="btn btn-primary btn-sm fixed-height-btn" data-mdb-toggle="modal" data-mdb-target="#doctorModal">
+                Select a Doctor
+            </button>
+            <input type="hidden" id="selectedDoctor" required>
+            <div id="selectedDoctorName" class="mt-2 text-muted"></div>
+        </div>
+
+        <!-- Appointment Time -->
+        <div class="mb-4">
+            <label for="appointmentTime" class="form-label">Preferred Appointment Time</label>
+            <input type="datetime-local" class="form-control" id="appointmentTime" required>
+        </div>
+    </div>
+
+    <!-- Doctor Selection Modal -->
+    <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="doctorModalLabel">Select a Doctor</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="row" id="doctorList">
-                    <!-- Doctor cards will be dynamically inserted here -->
+                <div class="modal-body">
+                    <!-- Department Filter -->
+                    <div class="mb-4">
+                        <label for="department" class="form-label">Filter by Department</label>
+                        <select class="form-select" id="department">
+                            <option value="">All Departments</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="neurology">Neurology</option>
+                            <option value="pediatrics">Pediatrics</option>
+                        </select>
+                    </div>
+                    <div class="row" id="doctorList">
+                        <!-- Doctor cards will be dynamically inserted here -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
-                <!-- Step 3: Emergency Contact -->
-                <div class="step">
-                    <h4>Step 3: Emergency Contact</h4>
-                    <div class="mb-4">
-                        <label for="emergencyContact" class="form-label">Emergency Contact Name</label>
-                        <input type="text" class="form-control" id="emergencyContact" placeholder="Enter emergency contact's name" required>
+                    <!-- Step 3: Emergency Contact -->
+                    <div class="step">
+                        <h4>Step 3: Emergency Contact</h4>
+                        <div class="mb-4">
+                            <label for="emergencyContact" class="form-label">Emergency Contact Name</label>
+                            <input type="text" class="form-control" id="emergencyContact" placeholder="Enter emergency contact's name" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="emergencyPhone" class="form-label">Emergency Contact Number</label>
+                            <input type="tel" class="form-control" id="emergencyPhone" placeholder="Enter emergency contact's number" required>
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <label for="emergencyPhone" class="form-label">Emergency Contact Number</label>
-                        <input type="tel" class="form-control" id="emergencyPhone" placeholder="Enter emergency contact's number" required>
-                    </div>
-                </div>
 
-                <!-- Navigation Buttons -->
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                </div>
-            </form>
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -236,7 +238,7 @@
     document.getElementById('department').addEventListener('change', function() {
         const selectedDepartment = this.value;
         const doctorCards = document.querySelectorAll('#doctorList > div');
-        
+
         doctorCards.forEach(card => {
             if (selectedDepartment === '' || card.dataset.department === selectedDepartment) {
                 card.style.display = 'block';
