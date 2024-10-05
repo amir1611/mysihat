@@ -30,7 +30,15 @@ Route::middleware(['auth'])->group(function () {
     // Common
     Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
     Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
-    
+
+    // Time slot routes
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/time-slots', [TimeSlotController::class, 'index']); // Get all time slots
+        Route::post('/time-slots', [TimeSlotController::class, 'store']); // Create a new time slot
+        Route::put('/time-slots/{id}', [TimeSlotController::class, 'update']); // Update an existing time slot
+        Route::delete('/time-slots/{id}', [TimeSlotController::class, 'destroy']); // Delete a time slot
+    });
+
     // Patient routes
     Route::prefix('patient')->group(function () {
         // Route for the patient dashboard
@@ -39,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
         // Route for patient profile
         Route::get('/profile', [UserController::class, 'editPatientProfile'])->name('patient.profile');
         Route::post('/profile', [UserController::class, 'updatePatientProfile'])->name('patient.profile.update');
-        
+
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('patient.change.password');
         Route::post('/change-password', [UserController::class, 'changePassword'])->name('patient.change.password.update');
@@ -56,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
         // Route for doctor profile
         Route::get('/profile', [UserController::class, 'editDoctorProfile'])->name('doctor.profile');
         Route::post('/profile', [UserController::class, 'updateDoctorProfile'])->name('doctor.profile.update');
-        
+
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showDoctorChangePasswordForm'])->name('doctor.change.password');
         Route::post('/change-password', [UserController::class, 'changeDoctorPassword'])->name('doctor.change.password.update');
