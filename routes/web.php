@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 
+
 // Redirect the root URL to the home page
 Route::get('/', function () {
     return view('auth.home');
@@ -30,14 +31,6 @@ Route::middleware(['auth'])->group(function () {
     // Common
     Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
     Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
-
-    // Time slot routes
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/time-slots', [TimeSlotController::class, 'index']); // Get all time slots
-        Route::post('/time-slots', [TimeSlotController::class, 'store']); // Create a new time slot
-        Route::put('/time-slots/{id}', [TimeSlotController::class, 'update']); // Update an existing time slot
-        Route::delete('/time-slots/{id}', [TimeSlotController::class, 'destroy']); // Delete a time slot
-    });
 
     // Patient routes
     Route::prefix('patient')->group(function () {
