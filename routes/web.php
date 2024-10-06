@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     // Common
     Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
     Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
     // Patient routes
     Route::prefix('patient')->group(function () {
