@@ -1,4 +1,5 @@
 <?php
+
 return [
     'items' => [
         [
@@ -9,7 +10,7 @@ return [
         [
             'name' => 'Appointment Time Slot',
             'icon' => 'fas fa-fw fa-clock',
-            'route' => 'doctor.appointment.time.slot',
+            'route' => 'time-slots.index',
         ],
         [
             'name' => 'Setting',

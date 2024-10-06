@@ -14,8 +14,11 @@ class TimeSlot extends Model
 
     // Specify the fillable fields
     protected $fillable = [
+        'doctor_id',
         'date',
-        'time_slots',
+        'time_slot',
+        'status',
+        'appointment_id',
     ];
 
     // Cast the time_slots attribute to an array

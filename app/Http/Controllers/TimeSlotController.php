@@ -3,78 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeSlot; // Make sure to create a TimeSlot model
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 
 class TimeSlotController extends Controller
 {
-    // Get all time slots
     public function index()
     {
-        $timeSlots = TimeSlot::all();
-        return response()->json(['success' => true, 'slots' => $timeSlots]);
+        $timeSlots = TimeSlot::where('doctor_id', Auth::user()->id)->get();
+
+        return view('appointment.appointment-time-slot', compact('timeSlots'));
     }
 
-    // Store a new time slot
     public function store(Request $request)
     {
-        
+
         try {
-            // Validate the request
-            $request->validate([
-                'date' => 'required|date',
-                'timeSlots' => 'required|array',
-                'timeSlots.*' => 'required|string', // Validate each time slot
-            ]);
-    
-            // Check if any of the provided time slots already exist for the given date
-            foreach ($request->timeSlots as $timeSlot) {
-                if (TimeSlot::where('date', $request->date)->where('time_slot', $timeSlot)->exists()) {
-                    return response()->json(['success' => false, 'message' => "Time slot $timeSlot already exists for this date"], 400);
-                }
-            }
-    
-            // Save each time slot individually
-            $savedSlots = [];
-            foreach ($request->timeSlots as $timeSlot) {
-                dd($request->all());
-                $savedSlots[] = TimeSlot::create([
-                    'doctor_id' => 2,
+            // Insert the new time slots
+            foreach ($request->time_slot as $slot) {
+
+                TimeSlot::create([
+                    'doctor_id' => Auth::user()->id,
                     'date' => $request->date,
-                    'time_slot' => $timeSlot,
+                    'time_slot' => $slot,
+                    'status' => true,
                 ]);
             }
-    
-            return response()->json(['success' => true, 'slots' => $savedSlots]);
+
+            return redirect()->back()->with('success', 'Time slots created successfully.');
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'An error occurred while creating time slots.');
         }
     }
 
-    // Update an existing time slot
-    public function update(Request $request, $id)
+    public function edit($id)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'timeSlots' => 'required|array',
-            'timeSlots.*' => 'required|string', // Validate each time slot
-        ]);
+        $timeSlot = TimeSlot::find($id);
 
-        $timeSlot = TimeSlot::findOrFail($id);
-        $timeSlot->update([
-            'date' => $request->date,
-            'time_slots' => json_encode($request->timeSlots), // Update time slots as JSON
-        ]);
-
-        return response()->json(['success' => true]);
+        return response()->json($timeSlot);
     }
 
-    // Delete a time slot
+    public function update(Request $request, $id)
+    {
+        // Find the time slot entry by ID
+        $existingSlot = TimeSlot::findOrFail($id);
+
+        // Delete all existing time slots for the same doctor and date (you can adjust this logic based on your needs)
+        TimeSlot::where('doctor_id', Auth::user()->id)
+            ->where('date', $existingSlot->date)
+            ->delete();
+
+        // Insert the new time slots
+        foreach ($request->time_slot as $slot) {
+            TimeSlot::create([
+                'doctor_id' => Auth::user()->id,  // Update doctor_id in case it was changed
+                'date' => $request->date,            // Update date in case it was changed
+                'time_slot' => $slot,
+                'status' => true,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Time slots updated successfully.');
+    }
+
     public function destroy($id)
     {
-        $timeSlot = TimeSlot::findOrFail($id);
-        $timeSlot->delete();
+        TimeSlot::find($id)->delete();
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Time slot deleted successfully.');
     }
 }
