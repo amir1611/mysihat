@@ -1,6 +1,3 @@
-@extends('layouts.patient-layout')
-
-@section('content')
 
     <head>
         <meta charset="UTF-8">
@@ -15,7 +12,7 @@
         <div class="chat-container">
             <div class="chat-messages" id="chatMessages">
                 @include('chatbot.partials.chatbubble', [
-                    'message' => 'Welcome to MySihat, I am Dr.AI. How can I assist you today?',
+                    'message' => 'Welcome to MySihat, I am MySihat Bot. How can I assist you today?',
                     'className' => 'claude-message',
                     'sender' => 'Dr. AI',
                     'avatarUrl' => 'https://ui-avatars.com/api/?name=Dr. AI&background=random&color=ffffff',
@@ -33,4 +30,4 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('js/chat.js') }}"></script>
     </body>
-@endsection
+
