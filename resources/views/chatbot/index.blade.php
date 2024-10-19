@@ -14,8 +14,8 @@
                 @include('chatbot.partials.chatbubble', [
                     'message' => 'Welcome to MySihat, I am MySihat Bot. How can I assist you today?',
                     'className' => 'claude-message',
-                    'sender' => 'Dr. AI',
-                    'avatarUrl' => 'https://ui-avatars.com/api/?name=Dr. AI&background=random&color=ffffff',
+                    'sender' => 'MySihat Bot',
+                    'avatarUrl' => 'https://ui-avatars.com/api/?name=MySihat Bot&background=random&color=ffffff',
                 ])
             </div>
             <div class="input-area">
