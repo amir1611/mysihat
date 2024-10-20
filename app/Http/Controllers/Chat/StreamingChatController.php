@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Chat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Anthropic\Anthropic;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class StreamingChatController extends Controller
 {
     protected $anthropic;
+    protected $conversation = [];
 
     public function __construct()
     {
@@ -38,9 +42,20 @@ class StreamingChatController extends Controller
     public function index(Request $request)
     {
         $question = $request->query('question');
+
+        $userId = $request->user()->id;
+
+        // Retrieve the conversation from the session or initialize if not present
+        $conversation = Session::get('conversation', []);
+
+        // Add the user's question to the conversation
+        $conversation[] = ['role' => 'user', 'content' => $question];
+
         return response()->stream(
             function () use (
-                $question
+                $question,
+                $userId,
+                &$conversation
             ) {
                 set_time_limit(0); // To prevent script timeout
                 ignore_user_abort(true); // To keep the script running even if the user closes the browser
@@ -59,9 +74,9 @@ class StreamingChatController extends Controller
 
                 /**
                  *
-                 * This is a system prompt for the Dr AI.
+                 * This is a system prompt for the MySihat Bot.
                  */
-                $system_prompt = "You are Dr. AI, a friendly and knowledgeable virtual doctor for MySihat, a medical app promoting healthcare inclusivity, especially in rural areas.
+                $system_prompt = "You are MySihat Bot, a friendly and knowledgeable virtual doctor for MySihat, a medical app promoting healthcare inclusivity, especially in rural areas.
                                   Your role is to provide initial advice and potential diagnoses based on symptoms described by users.
                                   Be empathetic, clear, and concise in your responses, using language that is easily understood by a diverse audience.
                                   While offering helpful information, always remind users that for a definitive diagnosis and treatment plan, they should book an appointment with a healthcare professional through the MySihat app.
@@ -76,10 +91,12 @@ class StreamingChatController extends Controller
                                 4. Use single backticks (`) for inline code or technical terms.
                                 6. Avoid unnecessary line breaks within paragraphs.
                                 7. Use double newlines to separate distinct sections or ideas.
+                                8. Do not answer other questions or providing unrelated information.
+                                9. Keep your responses concise and to the point.
 
                                 Adhere to these formatting guidelines to ensure your responses are well-structured and easy to parse.";
 
-                // This is a test system prompt for the chatbot to reduce Claude's usage;
+                //This is a test system prompt for the chatbot to reduce Claude's usage;
                 // $system_prompt = "You only reply with 5 words or less.";
 
                 /**
@@ -105,6 +122,7 @@ class StreamingChatController extends Controller
                         'stream' => true
                     ]);
 
+                    $full_response = '';
                     $buffer = '';
                     $timeout = microtime(true);
                     $delayLimit = 5; // More responsive streaming
@@ -116,6 +134,7 @@ class StreamingChatController extends Controller
                     foreach ($stream as $response) {
                         $text = $response->choices[0]->delta->content;
                         $buffer .= $text;
+                        $full_response .= $text;
 
                         if (connection_aborted()) {
                             break;
@@ -163,7 +182,15 @@ class StreamingChatController extends Controller
                         $this->send("update", json_encode(['text' => $buffer]));
                     }
 
+                    // Add the AI's response to the conversatiom
+                    $conversation[] = ['role' => 'assistant', 'content' => $full_response];
+
+                    // Store the conversation in the session
+                    Session::put('conversation', $conversation);
+                    Session::save();
+
                     $this->send("update", "<END_STREAMING_SSE>");
+                    Log::info('Conversation Log', ['conversation' => $conversation]);
                     logger($last_stream_response->usage->toArray());
                 } catch (\Exception $e) {
                     logger()->error('Anthropic API Error: ' . $e->getMessage());
@@ -178,5 +205,79 @@ class StreamingChatController extends Controller
                 'X-Accel-Buffering' => 'no'
             ]
         );
+    }
+
+    public function summarizeAndStore(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        // Retrieve conversation from session
+        $conversation = Session::get('conversation', []);
+
+        // Log the conversation before summarization
+        Log::info('Conversation Before Summarization', ['conversation' => $conversation]);
+
+        // Generate summary
+        $summary = $this->generateSummary($conversation);
+
+        // Store summary in database
+        $this->storeSummary($userId, $summary);
+
+        return response()->json(['summary' => $summary]);
+    }
+
+    private function generateSummary($conversation)
+    {
+
+        $summaryPrompt = "Summarize the medical conversation concisely in markdown format. Include:
+- Patient symptoms
+- Relevant medical history
+- Current medications
+- Advice/recommendations given
+- Next steps/actions required
+
+Use only information present in the conversation. Keep the summary brief and structured for quick comprehension by medical personnel.";
+
+
+        $conversationText = "";
+        foreach ($conversation as $message) {
+            $conversationText .= "\n{$message['role']}: {$message['content']}";
+        }
+
+        Log::info('Conversation text for summary', ['text' => $conversationText]);
+
+        try {
+            $response = $this->anthropic->chat()->create([
+                'model' => 'claude-3-sonnet-20240229',
+                'system' => $summaryPrompt,
+                'max_tokens' => 500,
+                'temperature' => 0,
+                'messages' => [
+                    ['role' => 'user', 'content' => $conversationText]
+                ]
+            ]);
+
+            $summary = $response->choices[0]->message->content;
+            Log::info("Generated Summary", ['summary' => $summary]);
+
+            return $summary;
+        } catch (\Exception $e) {
+            logger()->error('Summary Generation Error: ' . $e->getMessage());
+            return "Error generating summary.";
+        }
+    }
+
+    private function storeSummary($userId, $summary)
+    {
+        try {
+            DB::table('medical_records')->insert([
+                'user_id' => $userId,
+                'summary' => $summary,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Exception $e) {
+            logger()->error('Database Error: ' . $e->getMessage());
+        }
     }
 }

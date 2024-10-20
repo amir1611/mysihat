@@ -1,15 +1,22 @@
 body {
     background-color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .chat-container {
     max-width: 900px;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .chat-messages {
@@ -25,8 +32,6 @@ body {
 .input-area {
     background-color: #ffffff;
     padding: 1rem;
-    position: sticky;
-    bottom: 0;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
@@ -67,7 +72,7 @@ body {
 
 .message {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .message-avatar {
@@ -106,20 +111,32 @@ body {
     animation: ellipsis 2s infinite;
 }
 
+#summary-container {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-height: 30vh;
+    overflow-y: auto;
+    display: none;
+}
+
+.summary-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.summary-content {
+    font-size: 14px;
+    color: #333;
+}
+
 @keyframes ellipsis {
-    0% {
-        width: 0.25em;
-    }
-    25% {
-        width: 0.5em;
-    }
-    50% {
-        width: 0.75em;
-    }
-    75% {
-        width: 1em;
-    }
-    100% {
-        width: 0.25em;
-    }
+    0% { width: 0.25em; }
+    25% { width: 0.5em; }
+    50% { width: 0.75em; }
+    75% { width: 1em; }
+    100% { width: 0.25em; }
 }

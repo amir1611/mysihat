@@ -52,8 +52,8 @@ $(document).ready(function () {
             {
                 message: '<div class="loading-dots">...</div>',
                 className: "claude-message",
-                sender: "Dr. AI",
-                avatarUrl: "https://ui-avatars.com/api/?name=Dr. AI&background=random&color=ffffff",
+                sender: "MySihat Bot",
+                avatarUrl: "https://img.freepik.com/premium-vector/medical-robot-android_111928-2.jpg",
                 id: responseBubbleId,
             },
             function (data) {
@@ -67,6 +67,64 @@ $(document).ready(function () {
         source.addEventListener("update", (event) => {
             if (event.data === "<END_STREAMING_SSE>") {
                 source.close();
+
+                // Ask if the user would like to book a tele appointment
+                let appointmentPromptId = "appointment-prompt-" + Date.now();
+                $.post(
+                    "/render-message",
+                    {
+                        message: 'Would you like to book an online appointment with a medical professional?',
+                        className: "claude-message",
+                        sender: "MySihat Bot",
+                        avatarUrl: "https://img.freepik.com/premium-vector/medical-robot-android_111928-2.jpg",
+                        id: appointmentPromptId,
+                    },
+                    function (data) {
+                        $("#chatMessages").append(data);
+                        scrollToBottom();
+
+                        // Add Yes and No buttons
+                        let buttonsHtml = `
+                            <div id="appointment-buttons" style="margin-top: 10px; text-align: center;">
+                                <button id="yesButton" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer;">Yes</button>
+                                <button id="noButton" style="background-color: #f44336; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer;">No</button>
+                            </div>
+                        `;
+                        $("#" + appointmentPromptId + " .message-content").append(buttonsHtml);
+
+                        $("#yesButton").click(function () {
+                            // Unhide the summary-container
+                            $("#summary-container").show();
+
+                            // Display loading state in the summary content
+                            $('#summaryContent').html('<div class="loading-dots">...</div>');
+
+                            // Handle Yes button click
+                            $.post('/chat/summarize', function(response) {
+                                $('#summaryContent').html(marked.parse(response.summary));
+                            });
+                        });
+
+                        $("#noButton").click(function () {
+                            // Handle No button click
+                            $("#appointment-buttons").remove();
+                            $.post(
+                                "/render-message",
+                                {
+                                    message: 'No thank you. I have no further questions.',
+                                    className: "user-message",
+                                    sender: "You",
+                                    avatarUrl: "https://ui-avatars.com/api/?name=Nurul&background=random&color=ffffff",
+                                },
+                                function (data) {
+                                    $("#chatMessages").append(data);
+                                    scrollToBottom();
+                                }
+                            );
+                        });
+                    }
+                );
+
                 return;
             }
 
