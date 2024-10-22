@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Chat\ChatbotController;
+use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 
@@ -34,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
         // Route for patient profile
         Route::get('/profile', [UserController::class, 'editPatientProfile'])->name('patient.profile');
         Route::post('/profile', [UserController::class, 'updatePatientProfile'])->name('patient.profile.update');
-        
+
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('patient.change.password');
         Route::post('/change-password', [UserController::class, 'changePassword'])->name('patient.change.password.update');
@@ -48,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
         // Route for doctor profile
         Route::get('/profile', [UserController::class, 'editDoctorProfile'])->name('doctor.profile');
         Route::post('/profile', [UserController::class, 'updateDoctorProfile'])->name('doctor.profile.update');
-        
+
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showDoctorChangePasswordForm'])->name('doctor.change.password');
         Route::post('/change-password', [UserController::class, 'changeDoctorPassword'])->name('doctor.change.password.update');
@@ -68,4 +70,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/change-password', [UserController::class, 'showAdminChangePasswordForm'])->name('admin.change.password');
         Route::post('/change-password', [UserController::class, 'changeAdminPassword'])->name('admin.change.password.update');
     });
+
+    // Chatbot routes
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/render-message', [ChatbotController::class, 'render'])->name('chat.render');
+
+    Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
+    Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore']);
+
 });

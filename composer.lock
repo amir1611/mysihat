@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c28bd53aa983979ed317472a70e51b53",
+    "content-hash": "65c43ce08b9146a17b83c546a8dda1cf",
     "packages": [
+        {
+            "name": "ahmadrosid/anthropic-php",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ahmadrosid/anthropic-php.git",
+                "reference": "ce496288f550930b947742de0dc7c4f749eb1d38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ahmadrosid/anthropic-php/zipball/ce496288f550930b947742de0dc7c4f749eb1d38",
+                "reference": "ce496288f550930b947742de0dc7c4f749eb1d38",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Anthropic\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ahmadrosid",
+                    "email": "alahmadrosid@gmail.com"
+                }
+            ],
+            "description": "Anthropic PHP Client",
+            "support": {
+                "issues": "https://github.com/ahmadrosid/anthropic-php/issues",
+                "source": "https://github.com/ahmadrosid/anthropic-php/tree/v1.0.0"
+            },
+            "time": "2024-03-19T04:37:12+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",
@@ -8540,5 +8583,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

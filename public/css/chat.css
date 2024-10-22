@@ -1,0 +1,142 @@
+body {
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.input-area {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#messageInput {
+    flex-grow: 1;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+
+#sendButton {
+    background-color: #10a37f;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+#sendButton i {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+#sendButton:hover {
+    background-color: #0d8267;
+}
+
+#sendButton:focus {
+    outline: none;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.message-avatar {
+    margin-right: 10px;
+}
+
+.message-avatar img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.message-content-wrapper {
+    flex-grow: 1;
+}
+
+.message-sender {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.message-content {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.user-message .message-content {
+    background-color: #dcf8c6;
+}
+
+.loading-dots {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: ellipsis 2s infinite;
+}
+
+#summary-container {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-height: 30vh;
+    overflow-y: auto;
+    display: none;
+}
+
+.summary-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.summary-content {
+    font-size: 14px;
+    color: #333;
+}
+
+@keyframes ellipsis {
+    0% { width: 0.25em; }
+    25% { width: 0.5em; }
+    50% { width: 0.75em; }
+    75% { width: 1em; }
+    100% { width: 0.25em; }
+}
