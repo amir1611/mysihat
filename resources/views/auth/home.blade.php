@@ -113,63 +113,45 @@
         </div>
 
 
+        @php
+            $response = Http::get('https://newsapi.org/v2/top-headlines', [
+                'category' => 'health',
+                'apiKey' => env('NEWS_API_KEY'),
+            ]);
+
+            $data = $response->json();
+            $articles = collect($data['articles'] ?? [])->filter(function ($article) {
+                return !empty($article['title']) && !empty($article['description']) && !empty($article['url']);
+            })->take(4);
+        @endphp
+
         <h2 class="text-center mb-4">Health Articles</h2>
         <div class="news-swiper swiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="news-card">
-                        <img src="{{ asset('build/assets/mentalhealth.svg') }}" class="news-card-img" alt="Mental Health">
-                        <div class="news-card-body">
-                            <h5 class="news-card-title">How to take care of mental health</h5>
-                            <p class="news-card-text">Prioritize self-care, manage stress, connect with others, and seek
-                                support to maintain strong mental health.</p>
-                            <p class="news-card-date"><small>1 September 2024</small></p>
-                            <a href="#" class="btn btn-primary">Read More</a>
+                @if ($response->successful() && $articles->count() > 0)
+                    @foreach ($articles as $article)
+                        <div class="swiper-slide">
+                            <div class="news-card">
+                                <img src="{{ $article['urlToImage'] ?? asset('build/assets/placeholder.svg') }}" class="news-card-img" alt="{{ $article['title'] }}">
+                                <div class="news-card-body">
+                                    <h5 class="news-card-title">{{ Str::limit($article['title'], 50) }}</h5>
+                                    <p class="news-card-text">{{ Str::limit($article['description'], 100) }}</p>
+                                    <p class="news-card-date"><small>{{ \Carbon\Carbon::parse($article['publishedAt'])->format('j F Y') }}</small></p>
+                                    <a href="{{ $article['url'] }}" target="_blank" class="btn btn-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="swiper-slide">
+                        <div class="news-card">
+                            <div class="news-card-body">
+                                <h5 class="news-card-title">No articles available</h5>
+                                <p class="news-card-text">Unable to fetch health articles at the moment. Please try again later.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="news-card">
-                        <img src="{{ asset('build/assets/disease.svg') }}" class="news-card-img"
-                            alt="Communicable and
-                                Non-Communicable Diseases">
-                        <div class="news-card-body">
-                            <h5 class="news-card-title">Communicable and
-                                Non-Communicable Diseases</h5>
-                            <p class="news-card-text">
-                                Communicable diseases spread through infections, while non-communicable diseases stem from
-                                lifestyle or genetics, both needing prevention and management.</p>
-                            <p class="news-card-date"><small>2 September 2024</small></p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="news-card">
-                        <img src="{{ asset('build/assets/healthyhabits.svg') }}" class="news-card-img"
-                            alt="et's learn about healthy habits">
-                        <div class="news-card-body">
-                            <h5 class="news-card-title">Let's learn about healthy habits</h5>
-                            <p class="news-card-text">Healthy habits include eating a balanced diet, exercising regularly,
-                                staying hydrated, getting enough sleep, and managing stress effectively.</p>
-                            <p class="news-card-date"><small>3 September 2024</small></p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="news-card">
-                        <img src="{{ asset('build/assets/substance.svg') }}" class="news-card-img"
-                            alt="Substance Abuse Awareness Program">
-                        <div class="news-card-body">
-                            <h5 class="news-card-title">Substance Awareness Program</h5>
-                            <p class="news-card-text">A Substance Abuse Awareness Program educates on the risks of drug
-                                misuse and promotes prevention and recovery resources</p>
-                            <p class="news-card-date"><small>4 September 2024</small></p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
+                @endif
             </div>
             <div class="swiper-pagination"></div>
         </div>

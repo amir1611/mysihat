@@ -8,14 +8,17 @@
         ]);
 
         $data = $response->json();
-        $articles = $data['articles'] ?? [];
+        $articles = collect($data['articles'] ?? [])->filter(function ($article) {
+            // Filter out articles that do not have a title, description, or URL
+            return !empty($article['title']) && !empty($article['description']) && !empty($article['url']);
+        });
     @endphp
 
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Health News Articles</h1>
         <br>
 
-        @if ($response->successful() && count($articles) > 0)
+        @if ($response->successful() && $articles->count() > 0)
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
                 @foreach ($articles as $article)
                     <div class="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg"
@@ -37,11 +40,9 @@
                                 {{ $article['title'] ?? 'No Title' }}
                             </a>
 
-                            @if (!empty($article['description']))
-                                <p style="margin-top: 12px; color: #4B5563; text-align:justify; flex-grow: 1;">
-                                    {{ $article['description'] }}
-                                </p>
-                            @endif
+                            <p style="margin-top: 12px; color: #4B5563; text-align:justify; flex-grow: 1;">
+                                {{ $article['description'] }}
+                            </p>
 
                             <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
                                 @if (!empty($article['author']))
@@ -56,12 +57,10 @@
                                 @endif
                             </div>
 
-                            @if (!empty($article['url']))
-                                <a href="{{ $article['url'] }}" target="_blank"
-                                    style="margin-top: 16px; background-color: rgb(41, 50, 137); color: white; padding: 8px 16px; border-radius: 9999px; text-align: center; font-size: 14px; font-weight: 600; text-decoration: none; display: block;">
-                                    Read Full Article
-                                </a>
-                            @endif
+                            <a href="{{ $article['url'] }}" target="_blank"
+                                style="margin-top: 16px; background-color: rgb(41, 50, 137); color: white; padding: 8px 16px; border-radius: 9999px; text-align: center; font-size: 14px; font-weight: 600; text-decoration: none; display: block;">
+                                Read Full Article
+                            </a>
                         </div>
                     </div>
                 @endforeach
