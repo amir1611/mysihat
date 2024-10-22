@@ -123,16 +123,26 @@ body {
     max-height: 30vh;
     overflow-y: auto;
     display: none;
+    transition: all 0.3s ease-out;
+}
+
+#summary-container[open] {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .summary-title {
     font-weight: bold;
     margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .summary-content {
     font-size: 14px;
     color: #333;
+    padding-top: 10px;
+    font-family: 'Arial', sans-serif;
 }
 
 @keyframes ellipsis {

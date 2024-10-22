@@ -93,16 +93,34 @@ $(document).ready(function () {
                         $("#" + appointmentPromptId + " .message-content").append(buttonsHtml);
 
                         $("#yesButton").click(function () {
-                            // Unhide the summary-container
-                            $("#summary-container").show();
-
-                            // Display loading state in the summary content
-                            $('#summaryContent').html('<div class="loading-dots">...</div>');
-
                             // Handle Yes button click
-                            $.post('/chat/summarize', function(response) {
-                                $('#summaryContent').html(marked.parse(response.summary));
-                            });
+                            $("#appointment-buttons").remove();
+                            $.post(
+                                "/render-message",
+                                {
+                                    message: 'Yes, I would like to book an online appointment.',
+                                    className: "user-message",
+                                    sender: "You",
+                                    avatarUrl: "https://ui-avatars.com/api/?name=Nurul&background=random&color=ffffff",
+                                },
+                                function (data) {
+                                    $("#chatMessages").append(data);
+                                    scrollToBottom();
+                                    
+                                    // Show and expand the summary container
+                                    $("#summary-container").show();
+                                    $("#summary-container").attr("open", true);
+                                    
+                                    // Display loading state in the summary content
+                                    $("#summaryContent").html('<div class="loading-dots">...</div>');
+                                    
+                                    // Fetch and display the appointment summary
+                                    $.post('/chat/summarize', function(response) {
+                                        $("#summaryContent").html(marked.parse(response.summary));
+                                        scrollToBottom();
+                                    });
+                                }
+                            );
                         });
 
                         $("#noButton").click(function () {
