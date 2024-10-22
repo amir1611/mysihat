@@ -7,6 +7,11 @@ return [
             'route' => 'patient.chatbot',
         ],
         [
+            'name' => 'Appointment',
+            'icon' => 'fas fa-fw fa-cog',
+            'route' => 'appointmentList',
+        ],
+        [
             'name' => 'Setting',
             'icon' => 'fas fa-fw fa-cog',
             'route' => 'patient.profile',

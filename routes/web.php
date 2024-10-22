@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Appointment\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\Chat\ChatbotController;
 use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TimeSlotController;
+
 
 // Redirect the root URL to the home page
 Route::get('/', function () {
@@ -28,6 +31,11 @@ Auth::routes();
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
+    // Common
+    Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
+    Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
     // Patient routes
     Route::prefix('patient')->group(function () {
         // Route for patient profile
@@ -46,6 +54,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('doctor')->group(function () {
         // Route for the doctor dashboard
         Route::get('/dashboard', [HomeController::class, 'doctorHomepage'])->name('doctor.dashboard');
+
+        // Route for the doctor appointment time slot
+        Route::get('/appointment-time-slot', [UserController::class, 'doctorAppointmentTimeSlot'])->name('doctor.appointment.time.slot');
 
         // Route for doctor profile
         Route::get('/profile', [UserController::class, 'editDoctorProfile'])->name('doctor.profile');
