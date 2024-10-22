@@ -14,18 +14,18 @@
         <div class="chat-container">
             <div class="chat-messages" id="chatMessages">
                 @include('chatbot.partials.chatbubble', [
-                    'message' => 'Welcome to MySihat, I am MySihat Bot. How can I assist you today?',
+                    'message' => $greeting,
                     'className' => 'claude-message',
                     'sender' => 'MySihat Bot',
-                    'avatarUrl' => 'https://img.freepik.com/premium-vector/medical-robot-android_111928-2.jpg',
+                    'avatarUrl' => '/build/assets/mysihatbot.png',
                 ])
             </div>
-            <div id="summary-container">
-                <div class="summary-title">Summary</div>
+            <details id="summary-container">
+                <summary class="summary-title">Summary</summary>
                 <div class="summary-content" id="summaryContent"></div>
-            </div>
+            </details>
             <div class="input-area">
-                <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
+                <input type="text" id="messageInput" class="form-control" placeholder="Message MySihat Bot...">
                 <button class="btn" type="button" id="sendButton">
                     <i class="fas fa-arrow-up"></i>
                 </button>
@@ -37,4 +37,3 @@
         <script src="{{ asset('js/chat.js') }}"></script>
     </body>
 @endsection
-

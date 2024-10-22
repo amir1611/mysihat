@@ -53,7 +53,7 @@ $(document).ready(function () {
                 message: '<div class="loading-dots">...</div>',
                 className: "claude-message",
                 sender: "MySihat Bot",
-                avatarUrl: "https://img.freepik.com/premium-vector/medical-robot-android_111928-2.jpg",
+                'avatarUrl' :'/build/assets/mysihatbot.png',
                 id: responseBubbleId,
             },
             function (data) {
@@ -76,7 +76,7 @@ $(document).ready(function () {
                         message: 'Would you like to book an online appointment with a medical professional?',
                         className: "claude-message",
                         sender: "MySihat Bot",
-                        avatarUrl: "https://img.freepik.com/premium-vector/medical-robot-android_111928-2.jpg",
+                        'avatarUrl' :'/build/assets/mysihatbot.png',
                         id: appointmentPromptId,
                     },
                     function (data) {

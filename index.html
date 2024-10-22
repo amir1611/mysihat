@@ -1,0 +1,34 @@
+<!-- Remove or hide the sidebar -->
+<div class="dark hidden bg-gray-900 md:flex md:w-[260px] md:flex-col" style="display: none;">
+  <!-- Sidebar content -->
+</div>
+
+<!-- Main content area -->
+<div class="flex h-full flex-1 flex-col md:pl-[260px]" style="padding-left: 0; width: 100%;">
+  <!-- Chat area -->
+  <div class="flex flex-col items-center text-sm dark:bg-gray-800" style="width: 100%; max-width: none;">
+    <!-- Individual message containers -->
+    <div class="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800" style="max-width: 95%; margin: 0 auto;">
+      <!-- Message content -->
+      <div class="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto" style="max-width: 100%;">
+        <div class="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]" style="width: 100%;">
+          <div class="markdown prose w-full break-words dark:prose-invert light" style="width: 100%;">
+            <!-- Message text -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Repeat for other messages -->
+  </div>
+  
+  <!-- Input area -->
+  <div class="absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white dark:bg-gray-800 md:!bg-transparent dark:md:bg-vert-dark-gradient" style="max-width: 95%; margin: 0 auto;">
+    <form class="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6" style="max-width: 100%;">
+      <div class="relative flex h-full flex-1 md:flex-col" style="width: 100%;">
+        <div class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]" style="width: 100%;">
+          <textarea tabindex="0" data-id="root" rows="1" class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent pl-2 md:pl-0" style="max-height: 200px; height: 24px; overflow-y: hidden;"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

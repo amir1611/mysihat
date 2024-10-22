@@ -2,15 +2,14 @@
 return [
     'items' => [
         [
-            'name' => 'Dashboard',
-            'icon' => 'fas fa-fw fa-tachometer-alt',
-            'route' => 'patient.dashboard',
+            'name' => 'Chatbot',
+            'icon' => 'fas fa-fw fa-comments',
+            'route' => 'patient.chatbot',
         ],
         [
             'name' => 'Setting',
             'icon' => 'fas fa-fw fa-cog',
-            'route' => 'patient.dashboard',
+            'route' => 'patient.profile',
         ],
-        
     ],
 ];

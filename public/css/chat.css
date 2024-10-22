@@ -9,7 +9,7 @@ body {
 }
 
 .chat-container {
-    max-width: 900px;
+    max-width: 800px;
     width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -47,7 +47,7 @@ body {
 }
 
 #sendButton {
-    background-color: #10a37f;
+    background-color: #101fa3;
     border: none;
     cursor: pointer;
     padding: 0.5rem 1rem;
@@ -98,10 +98,12 @@ body {
     background-color: #f0f0f0;
     border-radius: 10px;
     padding: 10px;
+    max-width: fit-content;
+    color: #000;
 }
 
 .user-message .message-content {
-    background-color: #dcf8c6;
+    background-color: #cdc6f8;
 }
 
 .loading-dots {
@@ -139,4 +141,23 @@ body {
     50% { width: 0.75em; }
     75% { width: 1em; }
     100% { width: 0.25em; }
+}
+
+.user-message .message-avatar {
+    display: none;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.user-message .message-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-message .message-content {
+    background-color: #c6cdf8;
+    margin-left: auto;
 }

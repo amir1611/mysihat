@@ -20,16 +20,12 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        switch ($user->type) {
-            case 0:
-                return redirect()->route('patient.dashboard');
-            case 1:
-                return redirect()->route('admin.dashboard');
-            case 2:
-                return redirect()->route('doctor.dashboard');
-            default:
-                return redirect('/');
+        if ($user->type == 0) { // Assuming 0 is the type for patients
+            return redirect()->route('patient.chatbot');
         }
+        
+        // Handle other user types (admin, doctor) as needed
+        return redirect('/home'); // or any default redirect
     }
 
     public function login(Request $request)

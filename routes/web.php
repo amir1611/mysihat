@@ -30,9 +30,6 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     // Patient routes
     Route::prefix('patient')->group(function () {
-        // Route for the patient dashboard
-        Route::get('/dashboard', [HomeController::class, 'patientHomepage'])->name('patient.dashboard');
-
         // Route for patient profile
         Route::get('/profile', [UserController::class, 'editPatientProfile'])->name('patient.profile');
         Route::post('/profile', [UserController::class, 'updatePatientProfile'])->name('patient.profile.update');
@@ -40,6 +37,9 @@ Route::middleware(['auth'])->group(function () {
         // Route for changing password
         Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('patient.change.password');
         Route::post('/change-password', [UserController::class, 'changePassword'])->name('patient.change.password.update');
+
+        // Add this line to define the patient.chatbot route
+        Route::get('/chatbot', [ChatbotController::class, 'index'])->name('patient.chatbot');
     });
 
     // Doctor routes
@@ -76,6 +76,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/render-message', [ChatbotController::class, 'render'])->name('chat.render');
 
     Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
-    Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore']);
+    Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore'])->middleware('auth');
 
 });

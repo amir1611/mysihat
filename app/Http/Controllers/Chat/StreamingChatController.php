@@ -214,9 +214,6 @@ class StreamingChatController extends Controller
         // Retrieve conversation from session
         $conversation = Session::get('conversation', []);
 
-        // Log the conversation before summarization
-        Log::info('Conversation Before Summarization', ['conversation' => $conversation]);
-
         // Generate summary
         $summary = $this->generateSummary($conversation);
 
