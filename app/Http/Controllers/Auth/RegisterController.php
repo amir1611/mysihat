@@ -39,6 +39,11 @@ class RegisterController extends Controller
             'medical_license_document' => ['required_if:type,doctor', 'file', 'mimes:pdf', 'max:2048', 'nullable'],
             'date_of_birth' => ['required', 'date'],
             'phone_number' => ['required', 'string', 'regex:/^\+60[0-9]{9,10}$/'],
+            'expertise' => ['required_if:type,doctor', 'string', 'in:Pediatrician,Cardiologist,Neurologist,
+            Orthopedic Surgeon,Gynecologist,Radiologist,Oncologist,Surgeon,Anesthesiologist,Gastroenterologist,
+            Dermatologist,Endocrinologist,Nephrologist,Urologist,Pulmonologist,Ophthalmologist,Otolaryngologist,
+            Hematologist,Pathologist,Psychiatrist,Infectious Disease Specialist,Physiotherapist,Intensivist,
+            Neonatologist,Geriatrician,Dietitian,Pharmacist,Rheumatologist,Plastic Surgeon,Palliative Care Specialist,Burn Specialist,Rehabilitation Specialist'],
         ]);
     }
 
@@ -57,6 +62,7 @@ class RegisterController extends Controller
                 'phone_number' => $data['phone_number'], 
                 'type' => $data['type'] === 'doctor' ? 2 : 0,
                 'medical_license_number' => $data['type'] === 'doctor' ? $data['medical_license_number'] : null,
+                'expertise' => $data['type'] === 'doctor' ? $data['expertise'] : null,
             ]);
             
             if ($data['type'] === 'doctor' && isset($data['medical_license_document'])) {

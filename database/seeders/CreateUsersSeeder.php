@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CreateUsersSeeder extends Seeder
 {
@@ -15,6 +16,10 @@ class CreateUsersSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $users = [
             // Admin
             [
@@ -28,31 +33,8 @@ class CreateUsersSeeder extends Seeder
                 'type' => 1, // Admin type
                 'email_verified_at' => Carbon::now(),
             ],
-            // Doctors
-            [
-                'name' => 'Siti',
-                'ic_number' => '750515-08-5678',
-                'email' => 'siti@mysihat.com',
-                'password' => bcrypt('1234'),
-                'gender' => 'female',
-                'date_of_birth' => '1975-05-15',
-                'phone_number' => '60123456790',
-                'type' => 2, // Doctor type
-                'medical_license_number' => 'MMC54321',
-                'email_verified_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Raj',
-                'ic_number' => '800820-14-9012',
-                'email' => 'raj@mysihat.com',
-                'password' => bcrypt('1234'),
-                'gender' => 'male',
-                'date_of_birth' => '1980-08-20',
-                'phone_number' => '60123456791',
-                'type' => 2, // Doctor type
-                'medical_license_number' => 'MMC65432',
-                'email_verified_at' => Carbon::now(),
-            ],
+      
+ 
             // Patients
             [
                 'name' => 'Nurul',

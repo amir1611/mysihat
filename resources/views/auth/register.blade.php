@@ -206,6 +206,55 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3" id="expertise_container" style="display: none;">
+                                <label for="expertise" class="col-md-4 col-form-label text-md-end">{{ __('Expertise') }}</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-md"></i></span>
+                                        <select id="expertise" name="expertise" class="form-select @error('expertise') is-invalid @enderror">
+                                            <option value="">Select your expertise</option>
+                                            <option value="Pediatrician">Pediatrician</option>
+                                            <option value="Cardiologist">Cardiologist</option>
+                                            <option value="Neurologist">Neurologist</option>
+                                            <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                                            <option value="Obstetrician/Gynecologist">Gynecologist</option>
+                                            <option value="Radiologist">Radiologist</option>
+                                            <option value="Oncologist">Oncologist</option>
+                                            <option value="Surgeon">Surgeon</option>
+                                            <option value="Anesthesiologist">Anesthesiologist</option>
+                                            <option value="Gastroenterologist">Gastroenterologist</option>
+                                            <option value="Dermatologist">Dermatologist</option>
+                                            <option value="Endocrinologist">Endocrinologist</option>
+                                            <option value="Nephrologist">Nephrologist</option>
+                                            <option value="Urologist">Urologist</option>
+                                            <option value="Pulmonologist">Pulmonologist</option>
+                                            <option value="Ophthalmologist">Ophthalmologist</option>
+                                            <option value="Otolaryngologist">Otolaryngologist</option>
+                                            <option value="Hematologist">Hematologist</option>
+                                            <option value="Pathologist">Pathologist</option>
+                                            <option value="Psychiatrist">Psychiatrist</option>
+                                            <option value="Infectious Disease Specialist">Infectious Disease Specialist</option>
+                                            <option value="Physiotherapist">Physiotherapist</option>
+                                            <option value="Intensivist">Intensivist</option>
+                                            <option value="Neonatologist">Neonatologist</option>
+                                            <option value="Geriatrician">Geriatrician</option>
+                                            <option value="Dietitian">Dietitian</option>
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Rheumatologist">Rheumatologist</option>
+                                            <option value="Plastic Surgeon">Plastic Surgeon</option>
+                                            <option value="Palliative Care Specialist">Palliative Care Specialist</option>
+                                            <option value="Burn Specialist">Burn Specialist</option>
+                                            <option value="Rehabilitation Specialist">Rehabilitation Specialist</option>
+                                        </select>
+                                    </div>
+                                    @error('expertise')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-3" id="medical_license_container" style="display: none;">
                                 <label for="medical_license_number"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Medical License Number') }}</label>
@@ -243,6 +292,8 @@
                                 </div>
                             </div>
 
+                            
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -274,9 +325,11 @@
                 if (typeSelect.value === 'doctor') {
                     medicalLicenseContainer.style.display = 'flex';
                     medicalLicenseDocumentContainer.style.display = 'flex';
+                    document.getElementById('expertise_container').style.display = 'flex';
                 } else {
                     medicalLicenseContainer.style.display = 'none';
                     medicalLicenseDocumentContainer.style.display = 'none';
+                    document.getElementById('expertise_container').style.display = 'none';
                 }
             }
 
