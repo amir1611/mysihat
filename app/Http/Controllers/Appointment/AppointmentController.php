@@ -33,36 +33,28 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request
         $request->validate([
-            'reason' => 'required|string',
-            'medical_conditions_record' => 'nullable|file|mimes:pdf,doc,docx,txt,jpg,jpeg,png|max:2048',
+            'doctor_id' => 'required|exists:users,id',
+            'appointment_date' => 'required|date',
+            'appointment_time' => 'required',
+            'medical_records' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
             'current_medications' => 'nullable|string',
-            'appointment_time' => 'required|date_format:Y-m-d\TH:i',
-            'emergency_contact_name' => 'required|string|max:255',
-            'emergency_contact_number' => 'required|string|max:255',
-            'selected_doctor' => 'required|exists:users,id',
         ]);
 
-        // Handle file upload
-        $medicalConditionsRecordPath = null;
-        if ($request->hasFile('medical_conditions_record')) {
-            $medicalConditionsRecordPath = $request->file('medical_conditions_record')->store('medical_records', 'public');
+        $appointment = new Appointment();
+        $appointment->patient_id = Auth::id();
+        $appointment->doctor_id = $request->doctor_id;
+        $appointment->appointment_time = $request->appointment_date . ' ' . $request->appointment_time;
+        $appointment->current_medications = $request->current_medications;
+
+        if ($request->hasFile('medical_records')) {
+            $path = $request->file('medical_records')->store('medical_records', 'public');
+            $appointment->medical_conditions_record = $path;
         }
 
-        // Save the appointment
-        $appointment = Appointment::create([
-            'patient_id' => Auth::id(),
-            'doctor_id' => $request->input('selected_doctor'),
-            'reason' => $request->input('reason'),
-            'medical_conditions_record' => $medicalConditionsRecordPath,
-            'current_medications' => $request->input('current_medications'),
-            'appointment_time' => $request->input('appointment_time'),
-            'emergency_contact_name' => $request->input('emergency_contact_name'),
-            'emergency_contact_number' => $request->input('emergency_contact_number'),
-        ]);
+        $appointment->save();
 
-        return redirect()->route('appointment.appointment_list')->with('success', 'Appointment booked successfully.');
+        return response()->json(['message' => 'Appointment booked successfully']);
     }
    
 }

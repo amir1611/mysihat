@@ -171,3 +171,55 @@ body {
     background-color: #c6cdf8;
     margin-left: auto;
 }
+
+.doctor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.doctor-card {
+    background-color: #d2a76a;
+    border-radius: 25px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.doctor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    margin-right: 15px;
+}
+
+.doctor-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.doctor-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.doctor-card button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}

@@ -45,7 +45,7 @@ $(document).ready(function () {
         let url = `/chat/streaming?question=${queryQuestion}`;
         const source = new EventSource(url);
 
-        // Create a new message bubble for the AI response with loading state
+       
         let responseBubbleId = "ai-response-" + Date.now();
         $.post(
             "/render-message",
@@ -68,7 +68,7 @@ $(document).ready(function () {
             if (event.data === "<END_STREAMING_SSE>") {
                 source.close();
 
-                // Ask if the user would like to book a tele appointment
+                
                 let appointmentPromptId = "appointment-prompt-" + Date.now();
                 $.post(
                     "/render-message",
@@ -83,7 +83,7 @@ $(document).ready(function () {
                         $("#chatMessages").append(data);
                         scrollToBottom();
 
-                        // Add Yes and No buttons
+                  
                         let buttonsHtml = `
                             <div id="appointment-buttons" style="margin-top: 10px; text-align: center;">
                                 <button id="yesButton" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer;">Yes</button>
@@ -93,7 +93,6 @@ $(document).ready(function () {
                         $("#" + appointmentPromptId + " .message-content").append(buttonsHtml);
 
                         $("#yesButton").click(function () {
-                            // Handle Yes button click
                             $("#appointment-buttons").remove();
                             $.post(
                                 "/render-message",
@@ -101,23 +100,15 @@ $(document).ready(function () {
                                     message: 'Yes, I would like to book an online appointment.',
                                     className: "user-message",
                                     sender: "You",
-                                    avatarUrl: "https://ui-avatars.com/api/?name=Nurul&background=random&color=ffffff",
+                                    avatarUrl: "https://ui-avatars.com/api/?name=User&background=random&color=ffffff",
                                 },
                                 function (data) {
                                     $("#chatMessages").append(data);
                                     scrollToBottom();
                                     
-                                    // Show and expand the summary container
-                                    $("#summary-container").show();
-                                    $("#summary-container").attr("open", true);
-                                    
-                                    // Display loading state in the summary content
-                                    $("#summaryContent").html('<div class="loading-dots">...</div>');
-                                    
-                                    // Fetch and display the appointment summary
+                                    // Fetch and display the doctors
                                     $.post('/chat/summarize', function(response) {
-                                        $("#summaryContent").html(marked.parse(response.summary));
-                                        scrollToBottom();
+                                        displayDoctors(response.doctors);
                                     });
                                 }
                             );
@@ -166,6 +157,12 @@ $(document).ready(function () {
                 "Sorry, I couldn't process your request."
             );
         });
+
+        if (message.toLowerCase().includes('book appointment') || message.toLowerCase().includes('schedule appointment')) {
+            $.post('/chat/summarize', function(response) {
+                displayDoctors(response.doctors);
+            });
+        }
     }
 
     function updateMessage(id, text) {
@@ -181,5 +178,78 @@ $(document).ready(function () {
 
     function scrollToBottom() {
         $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+    }
+
+    function displayDoctors(doctors) {
+        let doctorListHtml = '<div class="doctor-list">';
+        doctors.forEach(doctor => {
+            doctorListHtml += `
+                <div class="doctor-card">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random&color=ffffff" alt="${doctor.name}" class="doctor-avatar">
+                    <div class="doctor-info">
+                        <h3>${doctor.name}</h3>
+                        <p>${doctor.expertise}</p>
+                        <button onclick="openBookingModal(${doctor.id})">Book Appointment</button>
+                    </div>
+                </div>
+            `;
+        });
+        doctorListHtml += '</div>';
+
+        $.post(
+            "/render-message",
+            {
+                message: doctorListHtml,
+                className: "claude-message",
+                sender: "MySihat Bot",
+                avatarUrl: '/build/assets/mysihatbot.png',
+            },
+            function (data) {
+                $("#chatMessages").append(data);
+                scrollToBottom();
+            }
+        );
+    }
+
+    function openBookingModal(doctorId) {
+    
+        $('#bookingModal').modal('show');
+        $('#selectedDoctorId').val(doctorId);
+    }
+
+    function submitAppointment() {
+        const form = document.getElementById('appointmentForm');
+        const formData = new FormData(form);
+
+        $.ajax({
+            url: '/appointments',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#bookingModal').modal('hide');
+                displayMessage("Appointment booked successfully!", "claude-message");
+            },
+            error: function(xhr, status, error) {
+                alert("Error booking appointment: " + error);
+            }
+        });
+    }
+
+    function displayMessage(message, className) {
+        $.post(
+            "/render-message",
+            {
+                message: message,
+                className: className,
+                sender: "MySihat Bot",
+                avatarUrl: '/build/assets/mysihatbot.png',
+            },
+            function (data) {
+                $("#chatMessages").append(data);
+                scrollToBottom();
+            }
+        );
     }
 });

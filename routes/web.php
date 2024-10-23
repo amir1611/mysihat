@@ -90,3 +90,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore'])->middleware('auth');
 
 });
+
