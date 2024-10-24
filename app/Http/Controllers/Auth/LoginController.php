@@ -20,16 +20,27 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if ($user->type == 0) { 
+        if ($user->type == 0) {
             return redirect()->route('patient.chatbot');
         }
-        
+
         else if ($user->type == 1) {
             return redirect()->route('admin.dashboard');
         }
 
         else if ($user->type == 2) {
             return redirect()->route('doctor.dashboard');
+        session(['user_info' => $user]);
+
+        switch ($user->type) {
+            case 0:
+                return redirect()->route('patient.dashboard');
+            case 1:
+                return redirect()->route('admin.dashboard');
+            case 2:
+                return redirect()->route('doctor.dashboard');
+            default:
+                return redirect('/');
         }
     }
 
@@ -38,6 +49,8 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
+
+
             return $this->sendLoginResponse($request);
         }
 

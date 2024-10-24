@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
+    Route::resource('time-slots', TimeSlotController::class);
+
+
     // Patient routes
     Route::prefix('patient')->group(function () {
         // Route for patient profile
