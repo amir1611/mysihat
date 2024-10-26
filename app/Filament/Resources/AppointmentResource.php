@@ -7,12 +7,14 @@ use App\Filament\Resources\AppointmentResource\Pages;
 use App\Models\Appointment;
 use App\Models\TimeSlot;
 use App\Models\User;
+use Faker\Provider\ar_EG\Text;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -61,25 +63,26 @@ class AppointmentResource extends Resource
         return [
             Hidden::make('patient_id')
                 ->default(auth()->id()),
-            Select::make('doctor_id')
+            // Select::make('doctor_id')
+            //     ->label('Select Doctor')
+            //     ->required()
+            //     ->preload()
+            //     ->options(function () {
+            //         return User::role(['doctor'])->where('name', '!=', 'Admin')->get()->pluck('name', 'id');
+            //     })
+            //     ->searchable(),
+            TextInput::make('doctor_id')
                 ->label('Select Doctor')
                 ->required()
-                ->preload()
-                ->options(function () {
-                    return User::role(['doctor'])->where('name', '!=', 'Admin')->get()->pluck('name', 'id');
-                })
-                ->searchable(),
+                ->disabled()
+                ->columnSpan(1)
+                ->formatStateUsing(function ($get) {
+                    return User::find($get('doctor_id'))->name;
+                }),
             // View::make('html-content')->view('filament.custom-components.select-modal', [
-            //     'doctor' => User::role(['doctor'])->where('name', '!=', 'Admin')->get(),
+            //     'doctors' => User::role(['doctor'])->where('name', '!=', 'Admin')->get(),
             // ])->columnSpanFull(),
-            // TextInput::make('doctor_id')
-            //     ->label('Select doctor Name')
-            //     ->required()
-            //     ->disabled()
-            //     ->suffix(View::make('html-content')->view('filament.custom-components.select-modal', [
-            //         'doctor' => User::role(['doctor'])->where('name', '!=', 'Admin')->get(),
-            //     ]))
-            //     ->columnSpan(1),
+
             // Actions::make([
             //     Actions\Action::make('Select Doctor')
             //         ->label('Select Doctor')
@@ -316,13 +319,12 @@ class AppointmentResource extends Resource
 
     public static function displayDoctorList(): array
     {
-        //    / $doctorList = User::role(['doctor'])->where('name', '!=', 'Admin')->get();
 
         return User::role(['doctor'])->where('name', '!=', 'Admin')->get()->map(function ($doctor) {
 
             return [
 
-                View::make('filament-forms::components.actions')->view('filament.custom-components.select-modal', ['doctor' => $doctor])->columnSpan(1),
+                View::make('html-content')->view('filament.custom-components.select-modal', ['doctor' => $doctor])->columnSpanFull(),
             ];
         })->flatten()->toArray();
     }

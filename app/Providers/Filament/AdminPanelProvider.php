@@ -26,10 +26,20 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin/test')
+            ->path('management/')
             ->login()
+            ->brandLogo(asset('build/assets/mysihat_logo.png'))
+
+            ->brandLogoHeight('4rem')
             ->colors([
-                'primary' => Color::Blue,
+                'danger' => Color::rgb('rgb(255,0,0)'),
+                'gray' => Color::Gray,
+                'info' => Color::Green,
+                'primary' => Color::Blue, // ,'#2720ff'
+                'success' => Color::Lime,
+                'warning' => Color::rgb('rgb(255,69,0)'),
+                'edit' => Color::Violet,
+                'warning' => Color::Amber,
             ])
             ->font('Poppins')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -37,7 +47,6 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -66,7 +75,7 @@ class AdminPanelProvider extends PanelProvider
                     ->setNavigationGroup('Settings Profile')
                     ->setIcon('heroicon-o-user')
                     ->setSort(10)
-               //     ->canAccess(fn () => auth()->user()->id === 1)
+                    //     ->canAccess(fn () => auth()->user()->id === 1)
                     ->shouldRegisterNavigation(true)
                     ->shouldShowDeleteAccountForm(false)
                     ->shouldShowBrowserSessionsForm()

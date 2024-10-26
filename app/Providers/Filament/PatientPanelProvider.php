@@ -26,7 +26,7 @@ class PatientPanelProvider extends PanelProvider
     {
         return $panel
             ->id('patient')
-            ->path('patient/test')
+            ->path('patient/')
             ->login()
             ->colors([
                 'danger' => Color::rgb('rgb(255,0,0)'),

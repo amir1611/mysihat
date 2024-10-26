@@ -19,7 +19,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: rgb(41, 50, 137);">
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #293289;">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
                     <img src="{{ asset('build/assets/mysihat-icon.svg') }}" alt="MySihat Icon" height="30" class="me-2">
@@ -33,26 +33,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto"></ul>
                     <ul class="navbar-nav ms-auto">
-                        @guest
+                        {{-- @guest
                      
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('health-articles') }}">
                                 <i class="fas fa-book-medical me-1"></i>{{ __('Health Articles') }}
                             </a>
                         </li>
-                            @if (Route::has('login'))
+                            @if (Route::has('login')) --}}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">
+                                    <a class="nav-link" href="{{url('/patient/login')}}">
                                         <i class="fas fa-sign-in-alt me-1"></i>{{ __('Login') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if (Route::has('login'))
+                            {{-- @endif --}}
+                            {{-- @if (Route::has('login')) --}}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
+                                    <a class="nav-link" href="{{url('/management/login')}}">{{ __('Admin Login') }}</a>
                                 </li>
-                            @endif
-                        @else
+                            {{-- @endif --}}
+                        {{-- @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -69,7 +69,7 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                        @endguest --}}
                     </ul>
                 </div>
             </div>

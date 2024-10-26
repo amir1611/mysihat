@@ -9,11 +9,11 @@
                         style="max-width: 100%;" draggable="false">
 
                     <p class="mb-4">Securely care from thousands of high-quality providers accepting patients today.</p>
-                    <button class="btn btn-primary btn-lg glow-button mb-4 custom-button">
+                    <a href="{{url('/patient/chat-bot')}}"><button class="btn btn-primary btn-lg glow-button mb-4 custom-button">
                         <img src="{{ asset('build/assets/mysihatchatbot.png') }}" alt="Chatbot"
                             class="chatbot-icon me-2 pulse-animation">
                         Chat with MySihatBot
-                    </button>
+                    </button></a>
             </div>
             <div class="col-md-6 d-none d-md-block">
                 <dotlottie-player src="https://lottie.host/56123689-d2b0-47ff-bd88-06557ddbaa78/QdasAAWTiE.json"

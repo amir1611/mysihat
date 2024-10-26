@@ -56,7 +56,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         }
 
         if ($panel->getId() === 'admin') {
-            return ! $this->hasRole('admin');
+            return ! $this->hasRole('patient');
         }
 
         return true;
