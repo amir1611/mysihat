@@ -7,7 +7,10 @@
     "require": {
         "php": "^8.2",
         "ahmadrosid/anthropic-php": "^1.0",
+        "bezhansalleh/filament-shield": "^3.2",
         "doctrine/dbal": "^4.1",
+        "filament/filament": "^3.2",
+        "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
@@ -37,7 +40,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

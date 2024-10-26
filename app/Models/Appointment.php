@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,12 +14,12 @@ class Appointment extends Model
 
     // Define the fillable attributes
     protected $fillable = [
-        'id',
         'patient_id',
         'doctor_id',
         'reason',
         'medical_conditions_record',
         'current_medications',
+        'appointment_date',
         'appointment_time',
         'emergency_contact_name',
         'emergency_contact_number',

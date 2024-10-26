@@ -16,10 +16,7 @@ class TimeSlot extends Model
     protected $fillable = [
         'date',
         'time_slots',
-    ];
-
-    // Cast the time_slots attribute to an array
-    protected $casts = [
-        'time_slots' => 'array',
+        'status',
+        'appointment_id',
     ];
 }
