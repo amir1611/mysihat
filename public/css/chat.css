@@ -223,3 +223,21 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
+
+.btn.listening {
+    background-color: #ff4444;
+    color: white;
+}
+
+#micButton {
+    margin-right: 8px;
+    transition: all 0.3s ease;
+}
+
+#micButton:hover {
+    background-color: #f0f0f0;
+}
+
+#micButton.listening:hover {
+    background-color: #ff6666;
+}

@@ -26,6 +26,9 @@
             </details>
             <div class="input-area">
                 <input type="text" id="messageInput" class="form-control" placeholder="Message MySihat Bot...">
+                <button class="btn" type="button" id="micButton">
+                    <i class="fas fa-microphone"></i>
+                </button>
                 <button class="btn" type="button" id="sendButton">
                     <i class="fas fa-arrow-up"></i>
                 </button>
@@ -36,7 +39,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('js/chat.js') }}"></script>
         <script src="{{ asset('js/tts.js')}}"></script>
-
+        <script src="{{ asset('js/speech.js')}}"></script>
     
         <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
             <div class="modal-dialog">
