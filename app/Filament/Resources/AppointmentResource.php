@@ -27,6 +27,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Container\Attributes\Log;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Type\Time;
 
 class AppointmentResource extends Resource
@@ -36,6 +38,15 @@ class AppointmentResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?string $label = 'Appointments';
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (Auth::user()->hasRole('doctor')) {
+            return Appointment::query()->where('doctor_id', auth()->id())->orderBy('created_at', 'desc');
+        }
+
+        return Appointment::query()->where('patient_id', auth()->id())->orderBy('created_at', 'desc');
+    }
 
     public static function form(Form $form): Form
     {

@@ -144,6 +144,8 @@ class CreateAppointment extends CreateRecord
         $time = TimeSlot::find($data['appointment_time']);
         //  dd($time['time_slot']);
         $data['appointment_time'] = $time['time_slot'];
+        $data['doctor_id'] = $this->doctorID;
+        dd($data);
 
         return $data;
     }

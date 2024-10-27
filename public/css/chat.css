@@ -44,7 +44,7 @@
 .input-area {
     background-color: #ffffff;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 20px;
     display: flex;
     justify-content: space-between;
     gap: 0.5rem;

@@ -9,8 +9,13 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
-    protected function afterCreate(): void
+    protected function getRedirectUrl(): string
     {
-        $data = $this->form->getState();
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotificationMessage(): ?string
+    {
+        return 'User created!';
     }
 }

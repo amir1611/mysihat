@@ -104,18 +104,18 @@
                 <p class="text-sm text-gray-600 mb-4">
                     <span class="font-semibold">Specializes in:</span> {{ $doctor->specialization ?? 'N/A' }}
                 </p>
-                <x-filament::button href="http://mysihat.test/patient/test/appointments/create?doctor={{ $doctor->id }}"
+                <x-filament::button href="{{ url('patient/appointments/create?doctor='.$doctor->id) }}"
                                     tag="a"
                                     title="Select" 
                                     class="mt-4 w-full">
-                    Select
+                    Select 
                 </x-filament::button>
             </div>
         </div>
     @endforeach
 </div>
 
-  {{--  <script>
+  {{--  <script> http://mysihat.test/patient/test/appointments/create?doctor={{ $doctor->id }}
     window.addEventListener('open-doctor-modal', event => {
         Livewire.emit('openDoctorModal');
     });
