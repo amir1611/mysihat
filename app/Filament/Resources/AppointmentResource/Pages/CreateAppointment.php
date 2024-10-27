@@ -12,6 +12,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class CreateAppointment extends CreateRecord
 {
@@ -28,7 +29,7 @@ class CreateAppointment extends CreateRecord
         $this->doctorID = request()->query('doctor');
         $this->fillForm(
             [
-                'doctor_id' => $this->doctorID,
+                'ss' => $this->doctorID,
             ]
         );
     }
@@ -49,11 +50,14 @@ class CreateAppointment extends CreateRecord
                     //         return User::role(['doctor'])->where('name', '!=', 'Admin')->get()->pluck('name', 'id');
                     //     })
                     //     ->searchable(),
-                    TextInput::make('doctor_id')
+
+                    Hidden::make('doctor_id')
+                        ->default($this->doctorID),
+                    TextInput::make('ss')
                         ->label('Select Doctor')
-                        ->required()
                         ->disabled()
                         ->columnSpan(1)
+                        ->reactive()
                         ->default(fn() => User::find($this->doctorID)->name),
 
                     // View::make('html-content')->view('filament.custom-components.select-modal', [
@@ -138,16 +142,26 @@ class CreateAppointment extends CreateRecord
         ];
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+    // protected function mutateFormDataBeforeCreate(array $data): array
+    // {
+
+    //     $time = TimeSlot::find($data['appointment_time']);
+    //     //  dd($time['time_slot']);
+    //     $data['appointment_time'] = $time['time_slot'];
+    //     //$data['doctor_id'] = request()->query('doctor');
+
+    //     dd($data);
+    //     return $data;
+    // }
+
+
+    protected function handleRecordCreation(array $data): Model
     {
 
-        $time = TimeSlot::find($data['appointment_time']);
-        //  dd($time['time_slot']);
-        $data['appointment_time'] = $time['time_slot'];
-        $data['doctor_id'] = $this->doctorID;
-        dd($data);
+        $data['appointment_time'] = TimeSlot::find($data['appointment_time'])['time_slot'];
 
-        return $data;
+
+        return parent::handleRecordCreation($data);
     }
 
     protected function getRedirectUrl(): string

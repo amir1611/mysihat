@@ -26,7 +26,7 @@ class ListAppointments extends ListRecords
                     return View::make('html-content')->view('filament.custom-components.select-modal', [
                         'doctors' => $doctors,
                     ])->columnSpanFull();
-                }),
+                })->visible(fn() => ! auth()->user()->hasRole('doctor')),
 
 
             // ->form([

@@ -29,6 +29,8 @@ use Filament\Tables\Table;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use Ramsey\Uuid\Type\Time;
 
 class AppointmentResource extends Resource
@@ -74,14 +76,6 @@ class AppointmentResource extends Resource
         return [
             Hidden::make('patient_id')
                 ->default(auth()->id()),
-            // Select::make('doctor_id')
-            //     ->label('Select Doctor')
-            //     ->required()
-            //     ->preload()
-            //     ->options(function () {
-            //         return User::role(['doctor'])->where('name', '!=', 'Admin')->get()->pluck('name', 'id');
-            //     })
-            //     ->searchable(),
             TextInput::make('doctor_id')
                 ->label('Select Doctor')
                 ->required()
@@ -90,29 +84,7 @@ class AppointmentResource extends Resource
                 ->formatStateUsing(function ($get) {
                     return User::find($get('doctor_id'))->name;
                 }),
-            // View::make('html-content')->view('filament.custom-components.select-modal', [
-            //     'doctors' => User::role(['doctor'])->where('name', '!=', 'Admin')->get(),
-            // ])->columnSpanFull(),
 
-            // Actions::make([
-            //     Actions\Action::make('Select Doctor')
-            //         ->label('Select Doctor')
-            //         ->modalSubmitAction(false)
-            //         ->modalCancelAction(false)
-            //         ->livewireClickHandlerEnabled(true)
-            //         ->extraAttributes([
-            //             // 'wire:click' => '',
-            //         ])
-
-            //         ->form([
-            //             Grid::make()
-            //                 ->columns(2)
-            //                 ->schema(
-            //                     self::displayDoctorList()
-            //                 )
-            //         ])
-            //         ->visible(fn() => !request()->has('doctor_id')),
-            // ])->columnSpanFull(),
 
             DatePicker::make('appointment_date')
                 ->label('Appointment Date')
@@ -238,11 +210,17 @@ class AppointmentResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('patient_id')
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('patient_id')
+                    ->label('Patient Name')
+                    ->hidden(fn() => Auth::user()->hasRole('patient'))
+                    ->formatStateUsing(function ($state) {
+                        return User::find($state)->name;
+                    })
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('doctor_id')
                     ->label('Doctor Name')
+                    ->hidden(fn() => Auth::user()->hasRole('doctor'))
                     ->formatStateUsing(function ($state) {
                         return User::find($state)->name;
                     })
@@ -338,16 +316,5 @@ class AppointmentResource extends Resource
                 View::make('html-content')->view('filament.custom-components.select-modal', ['doctor' => $doctor])->columnSpanFull(),
             ];
         })->flatten()->toArray();
-    }
-
-    protected function displayDoctorList2()
-    {
-        $doctor = User::role(['doctor'])->where('name', '!=', 'Admin')->get();
-        return $doctor;
-    }
-
-    public function testClose()
-    {
-        return $this->dispatch('open-modal', id: 'doctor-modal');
     }
 }
