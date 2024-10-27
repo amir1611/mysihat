@@ -121,7 +121,9 @@
 
             $data = $response->json();
             $articles = collect($data['articles'] ?? [])->filter(function ($article) {
-                return !empty($article['title']) && !empty($article['description']) && !empty($article['url']);
+                return !empty($article['title']) && !empty($article['description']) && !empty($article['url'])
+                    && !str_contains(strtolower($article['title']), '[removed]')
+                    && !str_contains(strtolower($article['description']), '[removed]');
             })->take(4);
         @endphp
 
