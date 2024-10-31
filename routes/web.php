@@ -10,7 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\BmiCalculatorController;
-
+use App\Http\Controllers\BloodSugarCalculatorController;
 
 // Redirect the root URL to the home page
 Route::get('/', function () {
@@ -56,6 +56,10 @@ Route::middleware(['auth'])->group(function () {
         // Inside the patient prefix group
         Route::get('/bmi-calculator', [BmiCalculatorController::class, 'index'])->name('patient.bmi');
         Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
+
+        Route::get('/blood-sugar-calculator', [BloodSugarCalculatorController::class, 'index'])->name('patient.blood-sugar');
+        Route::post('/blood-sugar-calculate', [BloodSugarCalculatorController::class, 'calculate'])->name('blood-sugar.calculate');
+        Route::post('/blood-sugar-analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('bloodSugar.analyze');
     });
 
     // Doctor routes

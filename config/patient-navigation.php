@@ -21,5 +21,10 @@ return [
             'route' => 'patient.bmi',
             'icon' => 'fas fa-calculator'
         ],
+        [
+            'name' => 'Blood Sugar Calculator',
+            'route' => 'patient.blood-sugar',
+            'icon' => 'fas fa-heartbeat '
+        ],
     ],
 ];
