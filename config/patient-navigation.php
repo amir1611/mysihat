@@ -16,5 +16,10 @@ return [
             'icon' => 'fas fa-fw fa-cog',
             'route' => 'patient.profile',
         ],
+        [
+            'name' => 'BMI Calculator',
+            'route' => 'patient.bmi',
+            'icon' => 'fas fa-calculator'
+        ],
     ],
 ];

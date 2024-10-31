@@ -9,6 +9,7 @@ use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TimeSlotController;
+use App\Http\Controllers\BmiCalculatorController;
 
 
 // Redirect the root URL to the home page
@@ -51,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
 
         // Add this line to define the patient.chatbot route
         Route::get('/chatbot', [ChatbotController::class, 'index'])->name('patient.chatbot');
+
+        // Inside the patient prefix group
+        Route::get('/bmi-calculator', [BmiCalculatorController::class, 'index'])->name('patient.bmi');
+        Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
     });
 
     // Doctor routes
