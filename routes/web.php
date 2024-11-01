@@ -60,6 +60,11 @@ Route::middleware(['auth'])->group(function () {
         //blood-sugar-calculator
         Route::get('/blood-sugar-calculator', [BloodSugarCalculatorController::class, 'index'])->name('patient.blood-sugar');
         Route::post('/blood-sugar/analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('blood-sugar.analyze');
+
+        // Health Tools routes
+        Route::get('/health-tools', function() {
+            return view('patient.health-tools');
+        })->name('patient.health-tools');
     });
 
     // Doctor routes
