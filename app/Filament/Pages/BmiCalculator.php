@@ -11,11 +11,13 @@ class BmiCalculator extends Page
 {
     use HasPageShield;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     protected static string $view = 'filament.pages.bmi-calculator';
 
     protected static ?string $title = 'BMI Calculator';
+
+    protected static ?string $navigationGroup = 'Calculators';
 
     protected $user;
 

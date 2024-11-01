@@ -3,10 +3,10 @@
 
 Connected Care – Anytime, Anywhere
 
-
 ## Install
 
 To clone this project
+
 ```bash
     1. Open the Terminal.
     2. Make sure the current directory is '/www'.
@@ -15,6 +15,7 @@ To clone this project
 ```
 
 To setup this project
+
 ```bash
     1. Make sure the current directory is '/<project-name>'.
     2. Type in 'composer install' to install the packages and dependencies.
@@ -28,6 +29,7 @@ To setup this project
 ```
 
 To publish this project
+
 ```bash
     1. Open the copied file and rename it to '.env'.
     2. In the '.env' file, edit the 'DB_DATABASE' value to the new Database name that you   have created.
@@ -37,32 +39,72 @@ To publish this project
 ```
 
 ## Run
+
 ```bash
   1. Type in 'cd <project-name>' to enter the project's directory.
   2. php artisan serve
 ```
-    
-## Download
- - [Laragon](https://laragon.org/download/)
- - [Visual Studio Code](https://code.visualstudio.com/download)
 
+## Download
+
+-   [Laragon](https://laragon.org/download/)
+-   [Visual Studio Code](https://code.visualstudio.com/download)
 
 ## Appendix
+
 Developed and Deployed using Visual Studio Code, Laravel Herd, DBngin, TablePlus and Laravel 11.
 
+## Filemant Setup
+
+-   php artisan migrate:fresh
+-   php artisan shield:install
+
+    1. Yes
+    2. Yes
+    3. Admin
+    4. admin@mysihat.com
+    5. 8 digit password
+
+-   php artisan db:seed
+
+-   Patient Url = http://127.0.0.1:8000/patient/login
+-   Doctor & Admin Url = http://127.0.0.1:8000/management/login
+
+Note:
+
+-   The password for all the patients, doctors and admin is 1234.
+
+Permissions:
+
+    - Patient
+        - Appointment (view, view any, create, update)
+        - All pages
+        - All widgets
+
+    - Doctor
+        - Appointment (view, view any, create, update, delete, delete any)
+        - Time Slot (view, view any, create, update, delete, delete any)
+        - All pages
+        - All widgets
+
+    - Admin
+        - All pages
+        - All widgets
+        - All Resources
 
 ## Build By
-- [@Amir](https://github.com/amir1611)
-- [@Ajiqo](https://github.com/haziq-danial)
-- [@Satiya](https://github.com/satiyaganes06)
-- [@Yattish](https://github.com/satiyaganes06)
-- [Khai](https://github.com/variablekhai)
 
-
+-   [@Amir](https://github.com/amir1611)
+-   [@Ajiqo](https://github.com/haziq-danial)
+-   [@Satiya](https://github.com/satiyaganes06)
+-   [@Yattish](https://github.com/satiyaganes06)
+-   [Khai](https://github.com/variablekhai)
 
 ## Documentation
- - [Laravel](https://laravel.com/docs/10.x)
- - [Visual Studio Code](https://code.visualstudio.com/docs)
+
+-   [Laravel](https://laravel.com/docs/10.x)
+-   [Visual Studio Code](https://code.visualstudio.com/docs)
 
 ## License
+
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

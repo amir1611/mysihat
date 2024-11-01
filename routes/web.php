@@ -6,6 +6,7 @@ use App\Http\Controllers\Chat\ChatbotController;
 use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Models\BloodSugarCalculatorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -87,4 +88,7 @@ Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
 Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore'])->middleware('auth');
 
 Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
+
+Route::post('/blood-sugar-calculate', [BloodSugarCalculatorController::class, 'calculate'])->name('blood-sugar.calculate');
+Route::post('/blood-sugar/analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('blood-sugar.analyze');
 // });
