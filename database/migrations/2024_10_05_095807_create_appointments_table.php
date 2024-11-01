@@ -23,7 +23,7 @@ class CreateAppointmentsTable extends Migration
             $table->dateTime('appointment_time');
             $table->string('emergency_contact_name');
             $table->string('emergency_contact_number');
-            $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled', 'completed'])->default('pending');
+            //$table->enum('status', ['pending', 'approved', 'rejected', 'cancelled', 'completed'])->default('pending');
             $table->timestamps();
 
             // Foreign key constraints

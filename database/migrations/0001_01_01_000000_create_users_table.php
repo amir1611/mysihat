@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('gender');
-            $table->date('date_of_birth');
-            $table->string('phone_number');
+            $table->string('gender')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('medical_license_number')->nullable();
-            $table->string('ic_number')->unique();
+            $table->string('ic_number')->unique()->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

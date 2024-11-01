@@ -2,17 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class CreateUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -26,15 +24,14 @@ class CreateUsersSeeder extends Seeder
                 'name' => 'Admin',
                 'ic_number' => '800101-14-1234',
                 'email' => 'admin@mysihat.com',
-                'password' => bcrypt('1234'),
+                'password' => bcrypt('password'),
                 'gender' => 'male',
                 'date_of_birth' => '1980-01-01',
                 'phone_number' => '60123456789',
-                'type' => 1, // Admin type
+                'type' => 0, // Admin type
                 'email_verified_at' => Carbon::now(),
             ],
-      
- 
+
             // Patients
             [
                 'name' => 'Nurul',
@@ -44,7 +41,7 @@ class CreateUsersSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1990-07-25',
                 'phone_number' => '60123456792',
-                'type' => 0, // Patient type
+                'type' => 1, // Patient type
                 'email_verified_at' => Carbon::now(),
             ],
             [
@@ -55,13 +52,22 @@ class CreateUsersSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1995-11-30',
                 'phone_number' => '60123456793',
-                'type' => 0, // Patient type
+                'type' => 1, // patient type
                 'email_verified_at' => Carbon::now(),
             ],
         ];
 
         foreach ($users as $user) {
-            User::create($user);
+            $savedUser = User::firstOrCreate(
+                ['email' => $user['email']],
+                $user
+            );
+
+            if ($savedUser->type == 1) {
+                $savedUser->assignRole('patient');
+            } elseif ($savedUser->type == 2) {
+                $savedUser->assignRole('doctor');
+            }
         }
     }
 }

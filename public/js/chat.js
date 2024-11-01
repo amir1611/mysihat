@@ -59,7 +59,7 @@ $(document).ready(function () {
 
                     // Fetch and display the doctors
                     $.post('/chat/summarize', function(response) {
-                        displayDoctors(response.doctors);
+                        displayDoctors(response.doctors, response.summaryId);
                     });
                 });
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
 
         if (message.toLowerCase().includes('book appointment') || message.toLowerCase().includes('schedule appointment')) {
             $.post('/chat/summarize', function(response) {
-                displayDoctors(response.doctors);
+                displayDoctors(response.doctors, response.summaryId);
             });
         }
     }
@@ -119,16 +119,18 @@ $(document).ready(function () {
         $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
     }
 
-    function displayDoctors(doctors) {
+    function displayDoctors(doctors, summaryId) {
+        let url = "/patient/appointments/create?doctor=";
+        let summaryParameter = "&summaryId=" + summaryId;
         let doctorListHtml = '<div class="doctor-list">';
         doctors.forEach(doctor => {
             doctorListHtml += `
                 <div class="doctor-card">
                     <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random&color=ffffff" alt="${doctor.name}" class="doctor-avatar">
                     <div class="doctor-info">
-                        <h3>${doctor.name}</h3>
-                        <p>${doctor.expertise}</p>
-                        <button onclick="openBookingModal(${doctor.id})">Book Appointment</button>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">${doctor.name}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">${doctor.expertise}</p>
+                        <a href="${url + doctor.id + summaryParameter}" class="inline-block mt-2"><button class="px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 transition duration-300">Book Appointment</button></a>
                     </div>
                 </div>
             `;

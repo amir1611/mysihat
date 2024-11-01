@@ -40,6 +40,7 @@ class PatientPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->brandLogo(asset('build/assets/mysihat_logo.png'))
+            ->darkModeBrandLogo(asset('build/assets/mysihat_logo_dark.png'))
             ->brandLogoHeight('4rem')
             ->viteTheme('resources/css/filament/patient/theme.css')
             ->font('Poppins')
@@ -85,7 +86,7 @@ class PatientPanelProvider extends PanelProvider
                 FilamentFullCalendarPlugin::make()
                     ->selectable()
                     ->editable()
-                    ->timezone('Asia/Kuala_Lumpur')
+                    ->timezone('Asia/Kuala_Lumpur'),
             ]);
     }
 }

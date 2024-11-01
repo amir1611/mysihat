@@ -3,10 +3,13 @@
 namespace App\Filament\Resources\AppointmentResource\Pages;
 
 use App\Filament\Resources\AppointmentResource;
+use App\Models\MedicalRecord;
 use App\Models\TimeSlot;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\Wizard\Step;
@@ -22,11 +25,20 @@ class CreateAppointment extends CreateRecord
 
     protected $doctorID;
 
+    protected $summaryID;
+
     //mount
     public function mount(): void
     {
         $this->authorizeAccess();
         $this->doctorID = request()->query('doctor');
+
+        if (request()->query('summaryId')) {
+            //   dd(request()->query('summaryId'));
+            $this->summaryID = request()->query('summaryId');
+
+        }
+
         $this->fillForm(
             [
                 'ss' => $this->doctorID,
@@ -58,7 +70,7 @@ class CreateAppointment extends CreateRecord
                         ->disabled()
                         ->columnSpan(1)
                         ->reactive()
-                        ->default(fn() => User::find($this->doctorID)->name),
+                        ->default(fn () => User::find($this->doctorID)->name),
 
                     // View::make('html-content')->view('filament.custom-components.select-modal', [
                     //     'doctors' => User::role(['doctor'])->where('name', '!=', 'Admin')->get(),
@@ -120,7 +132,8 @@ class CreateAppointment extends CreateRecord
                             $selectedDate = $get('date');
 
                             if ($selectedDate) {
-                                $timeSlots = TimeSlot::where('date', $selectedDate)->pluck('time_slot', 'id');
+                                // dd($this->doctorID);
+                                $timeSlots = TimeSlot::where('doctor_id', $get('doctor_id'))->where('date', $selectedDate)->where('status', 'available')->pluck('time_slot', 'id');
 
                                 $formattedTimeSlots = $timeSlots->sort()->map(function ($time) {
                                     return \Carbon\Carbon::createFromFormat('H:i:s', $time)->format('h:i A'); // 24-hour format
@@ -132,11 +145,29 @@ class CreateAppointment extends CreateRecord
                             return [];
                         }),
 
-
                 ]),
 
             Step::make('Medical Information')
-                ->schema(AppointmentResource::getMedicalInformation()),
+                ->schema([
+                    Textarea::make('reason')
+                        ->label('Reason for Appointment')
+                        ->required()
+                        ->rows(3)
+                        ->default($this->summaryID != null ? MedicalRecord::find($this->summaryID)->summary : '')
+                        ->columnSpanFull(),
+
+                    Textarea::make('current_medications')
+                        ->label('Current Medications (Optional)')
+                        ->rows(2)
+                        ->columnSpanFull(),
+
+                    FileUpload::make('medical_conditions_record')
+                        ->label('Upload Medical Records (Optional)')
+                        ->directory('medical_records')
+                        ->openable(true)
+                        ->panelAspectRatio('4:3')
+                        ->panelLayout('integrated'),
+                ]),
             Step::make('Emergency Contact')
                 ->schema(AppointmentResource::getEmergencyContact()),
         ];
@@ -154,14 +185,17 @@ class CreateAppointment extends CreateRecord
     //     return $data;
     // }
 
-
     protected function handleRecordCreation(array $data): Model
     {
-
         $data['appointment_time'] = TimeSlot::find($data['appointment_time'])['time_slot'];
 
-
         return parent::handleRecordCreation($data);
+    }
+
+    // after create
+    public function afterCreate(): void
+    {
+        TimeSlot::find($this->data['appointment_time'])->update(['status' => 'booked']);
     }
 
     protected function getRedirectUrl(): string

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Chat;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Anthropic\Anthropic;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\MedicalRecord;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
 
 class StreamingChatController extends Controller
 {
     protected $anthropic;
+
     protected $conversation = [];
 
     public function __construct()
@@ -20,7 +21,7 @@ class StreamingChatController extends Controller
         $headers = [
             'anthropic-version' => '2023-06-01',
             'content-type' => 'application/json',
-            'x-api-key' => env('ANTHROPIC_API_KEY')
+            'x-api-key' => env('ANTHROPIC_API_KEY'),
         ];
 
         $this->anthropic = Anthropic::factory()
@@ -31,7 +32,7 @@ class StreamingChatController extends Controller
     private function send($event, $data)
     {
         echo "event: {$event}\n";
-        echo 'data: ' . $data;
+        echo 'data: '.$data;
         echo "\n\n";
         ob_flush();
         flush();
@@ -50,13 +51,12 @@ class StreamingChatController extends Controller
         return response()->stream(
             function () use (
                 $question,
-                $userId,
                 &$conversation
             ) {
                 set_time_limit(0);
                 ignore_user_abort(true);
 
-                $result_text = "";
+                $result_text = '';
                 $last_stream_response = null;
 
                 $model = 'claude-3-sonnet-20240229';
@@ -86,8 +86,8 @@ class StreamingChatController extends Controller
                 $messages = [
                     [
                         'role' => 'user',
-                        'content' => $question
-                    ]
+                        'content' => $question,
+                    ],
                 ];
 
                 try {
@@ -97,7 +97,7 @@ class StreamingChatController extends Controller
                         'max_tokens' => $max_tokens,
                         'temperature' => $temperature,
                         'messages' => $messages,
-                        'stream' => true
+                        'stream' => true,
                     ]);
 
                     $full_response = '';
@@ -119,7 +119,7 @@ class StreamingChatController extends Controller
                         }
 
                         if (preg_match('/```/', $text)) {
-                            $code_block = !$code_block;
+                            $code_block = ! $code_block;
                         }
                         if (preg_match('/^\s*[-*+]\s/', $text)) {
                             $list_item = true;
@@ -143,7 +143,7 @@ class StreamingChatController extends Controller
                         }
 
                         if ($should_send) {
-                            $this->send("update", json_encode(['text' => $buffer]));
+                            $this->send('update', json_encode(['text' => $buffer]));
                             $buffer = '';
                             $timeout = microtime(true);
                             $markdown_block = false;
@@ -153,8 +153,8 @@ class StreamingChatController extends Controller
                         $last_stream_response = $response;
                     }
 
-                    if (!empty($buffer)) {
-                        $this->send("update", json_encode(['text' => $buffer]));
+                    if (! empty($buffer)) {
+                        $this->send('update', json_encode(['text' => $buffer]));
                     }
 
                     $conversation[] = ['role' => 'assistant', 'content' => $full_response];
@@ -162,12 +162,12 @@ class StreamingChatController extends Controller
                     Session::put('conversation', $conversation);
                     Session::save();
 
-                    $this->send("update", "<END_STREAMING_SSE>");
+                    $this->send('update', '<END_STREAMING_SSE>');
                     Log::info('Conversation Log', ['conversation' => $conversation]);
                     logger($last_stream_response->usage->toArray());
                 } catch (\Exception $e) {
-                    logger()->error('Anthropic API Error: ' . $e->getMessage());
-                    $this->send("error", json_encode(['error' => $e->getMessage()]));
+                    logger()->error('Anthropic API Error: '.$e->getMessage());
+                    $this->send('error', json_encode(['error' => $e->getMessage()]));
                 }
             },
             200,
@@ -175,7 +175,7 @@ class StreamingChatController extends Controller
                 'Content-Type' => 'text/event-stream',
                 'Cache-Control' => 'no-cache',
                 'Connection' => 'keep-alive',
-                'X-Accel-Buffering' => 'no'
+                'X-Accel-Buffering' => 'no',
             ]
         );
     }
@@ -192,28 +192,28 @@ class StreamingChatController extends Controller
 
         $doctors = $this->getDoctorsByExpertise($expertise);
 
-        $this->storeSummary($userId, $summary);
+        $summaryId = $this->storeSummary($userId, $summary);
 
         return response()->json([
             'summary' => $summary,
-            'doctors' => $doctors
+            'doctors' => $doctors,
+            'summaryId' => $summaryId,
         ]);
     }
 
     private function generateSummary($conversation)
     {
 
-        $summaryPrompt = "Summarize the medical conversation concisely in markdown format. Include:
+        $summaryPrompt = 'Summarize the medical conversation concisely in markdown format. Include:
 - Patient symptoms
 - Relevant medical history
 - Current medications
 - Advice/recommendations given
 - Next steps/actions required
 
-Use only information present in the conversation. Keep the summary brief and structured for quick comprehension by medical personnel.";
+Use only information present in the conversation. Keep the summary brief and structured for quick comprehension by medical personnel.';
 
-
-        $conversationText = "";
+        $conversationText = '';
         foreach ($conversation as $message) {
             $conversationText .= "\n{$message['role']}: {$message['content']}";
         }
@@ -227,31 +227,32 @@ Use only information present in the conversation. Keep the summary brief and str
                 'max_tokens' => 500,
                 'temperature' => 0,
                 'messages' => [
-                    ['role' => 'user', 'content' => $conversationText]
-                ]
+                    ['role' => 'user', 'content' => $conversationText],
+                ],
             ]);
 
             $summary = $response->choices[0]->message->content;
-            Log::info("Generated Summary", ['summary' => $summary]);
+            Log::info('Generated Summary', ['summary' => $summary]);
 
             return $summary;
         } catch (\Exception $e) {
-            logger()->error('Summary Generation Error: ' . $e->getMessage());
-            return "Error generating summary.";
+            logger()->error('Summary Generation Error: '.$e->getMessage());
+
+            return 'Error generating summary.';
         }
     }
 
     private function storeSummary($userId, $summary)
     {
         try {
-            DB::table('medical_records')->insert([
+            $summaryData = MedicalRecord::create([
                 'user_id' => $userId,
                 'summary' => $summary,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
+
+            return $summaryData->id;
         } catch (\Exception $e) {
-            logger()->error('Database Error: ' . $e->getMessage());
+            logger()->error('Database Error: '.$e->getMessage());
         }
     }
 
@@ -289,7 +290,7 @@ Use only information present in the conversation. Keep the summary brief and str
             'Plastic Surgeon' => ['cosmetic surgery', 'reconstruction', 'burn repair', 'cleft palate', 'breast augmentation', 'rhinoplasty', 'facelift', 'liposuction', 'hand surgery', 'microsurgery', 'body contouring', 'scar revision', 'transgender surgery'],
             'Palliative Care Specialist' => ['end-of-life care', 'pain relief', 'symptom management', 'hospice', 'quality of life', 'advance care planning', 'bereavement support', 'spiritual care', 'comfort care', 'terminal illness', 'palliative sedation'],
             'Burn Specialist' => ['burn injury', 'skin graft', 'wound care', 'thermal injury', 'chemical burns', 'electrical burns', 'inhalation injury', 'burn shock', 'burn reconstruction', 'hypertrophic scarring', 'burn rehabilitation', 'fluid resuscitation'],
-            'Rehabilitation Specialist' => ['recovery', 'physical therapy', 'occupational therapy', 'stroke rehabilitation', 'spinal cord injury', 'traumatic brain injury', 'amputee rehabilitation', 'cardiac rehabilitation', 'pulmonary rehabilitation', 'pediatric rehabilitation']
+            'Rehabilitation Specialist' => ['recovery', 'physical therapy', 'occupational therapy', 'stroke rehabilitation', 'spinal cord injury', 'traumatic brain injury', 'amputee rehabilitation', 'cardiac rehabilitation', 'pulmonary rehabilitation', 'pediatric rehabilitation'],
         ];
 
         $matchedExpertise = [];
@@ -306,6 +307,7 @@ Use only information present in the conversation. Keep the summary brief and str
         }
 
         arsort($matchedExpertise);
+
         return key($matchedExpertise);
     }
 
@@ -314,17 +316,17 @@ Use only information present in the conversation. Keep the summary brief and str
         $query = User::where('type', 2);
 
         if ($expertise !== 'General Practitioner') {
-            $query->where(function($q) use ($expertise) {
-                $q->where('expertise', 'like', '%' . $expertise . '%')
-                  ->orWhere('expertise', 'like', '%General Practitioner%');
+            $query->where(function ($q) use ($expertise) {
+                $q->where('expertise', 'like', '%'.$expertise.'%')
+                    ->orWhere('expertise', 'like', '%General Practitioner%');
             });
         }
 
-        return $query->orderByRaw("CASE 
+        return $query->orderByRaw("CASE
                     WHEN expertise LIKE '%$expertise%' THEN 1
                     WHEN expertise LIKE '%General Practitioner%' THEN 2
                     ELSE 3 END")
-                     ->limit(5)
-                     ->get(['id', 'name', 'expertise']);
+            ->limit(5)
+            ->get(['id', 'name', 'expertise']);
     }
 }
