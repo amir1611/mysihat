@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class TimeSlotResource extends Resource
@@ -16,6 +17,15 @@ class TimeSlotResource extends Resource
     protected static ?string $model = TimeSlot::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clock';
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (Auth::user()->hasRole('doctor')) {
+            return TimeSlot::query()->where('doctor_id', auth()->id())->orderBy('created_at', 'desc');
+        }
+
+        return TimeSlot::query()->orderBy('created_at', 'desc');
+    }
 
     public static function form(Form $form): Form
     {

@@ -74,7 +74,7 @@ Note:
 
 -   The password for all the patients, doctors and admin is 1234.
 
-Permissions:
+Permissions: (Login as admin to set the permissions)
 
     - Patient
         - Appointment (view, view any, create, update)
@@ -91,6 +91,8 @@ Permissions:
         - All pages
         - All widgets
         - All Resources
+
+At last, don't forget to run `npm run dev`.
 
 ## Build By
 
