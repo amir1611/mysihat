@@ -10,7 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\BmiCalculatorController;
-
+use App\Http\Controllers\BloodSugarCalculatorController;
 
 // Redirect the root URL to the home page
 Route::get('/', function () {
@@ -53,9 +53,18 @@ Route::middleware(['auth'])->group(function () {
         // Add this line to define the patient.chatbot route
         Route::get('/chatbot', [ChatbotController::class, 'index'])->name('patient.chatbot');
 
-        // Inside the patient prefix group
+       //bmi-calculator
         Route::get('/bmi-calculator', [BmiCalculatorController::class, 'index'])->name('patient.bmi');
         Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
+
+        //blood-sugar-calculator
+        Route::get('/blood-sugar-calculator', [BloodSugarCalculatorController::class, 'index'])->name('patient.blood-sugar');
+        Route::post('/blood-sugar/analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('blood-sugar.analyze');
+
+        // Health Tools routes
+        Route::get('/health-tools', function() {
+            return view('patient.health-tools');
+        })->name('patient.health-tools');
     });
 
     // Doctor routes
