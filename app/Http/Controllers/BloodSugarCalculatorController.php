@@ -14,17 +14,16 @@ class BloodSugarCalculatorController extends Controller
         $user = Auth::user();
         $age = Carbon::parse($user->date_of_birth)->age;
         $levels = BloodSugarLevel::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Order by most recent
+            ->orderBy('created_at', 'desc') 
             ->get();
 
-        // Analyze each level and add status
         foreach ($levels as $level) {
             $level->status = $this->analyzeBloodSugar($level->level);
         }
 
-        // Calculate the average blood sugar level
+  
         $averageLevel = $levels->avg('level');
-        $averageStatus = $this->analyzeBloodSugar($averageLevel); // Get status based on average
+        $averageStatus = $this->analyzeBloodSugar($averageLevel); 
 
         return view('patient.blood-sugar-calculator', [
             'user' => $user,
@@ -37,43 +36,40 @@ class BloodSugarCalculatorController extends Controller
 
     public function analyze(Request $request)
     {
-        $request->validate([
-            'bloodSugarLevel' => 'required|numeric|min:0',
-        ]);
+        try {
+            $request->validate([
+                'blood_sugar' => 'required|numeric|min:0'
+            ]);
 
-        $user = Auth::user();
-        $bloodSugarLevel = (float) $request->bloodSugarLevel; // Convert to float
+            $bloodSugar = new BloodSugarLevel();
+            $bloodSugar->user_id = Auth::id();
+            $bloodSugar->level = $request->blood_sugar;
+            $bloodSugar->save();
 
-        // Save the blood sugar level
-        BloodSugarLevel::create([
-            'user_id' => $user->id,
-            'level' => $bloodSugarLevel,
-        ]);
+            $status = $this->analyzeBloodSugar($bloodSugar->level);
+            $healthRisk = $this->getHealthRisk($status);
 
-        // Analyze the blood sugar level
-        $status = $this->analyzeBloodSugar($bloodSugarLevel);
-        $healthRisk = $this->getHealthRisk($status);
-
-        // Retrieve blood sugar levels for the user
-        $levels = BloodSugarLevel::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Order by most recent
-            ->get();
-
-
-        return response()->json([
-            'bloodSugarLevel' => $bloodSugarLevel,
-            'status' => $status,
-            'healthRisk' => $healthRisk,
-            'levels' => $levels, // Return all levels for the overview
-        ]);
+            return response()->json([
+                'success' => true,
+                'bloodSugarLevel' => $bloodSugar->level,
+                'status' => $status,
+                'healthRisk' => $healthRisk,
+                'message' => 'Blood sugar level recorded successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error analyzing blood sugar level'
+            ], 500);
+        }
     }
 
     private function analyzeBloodSugar($level)
     {
-        // Adjust thresholds for mmol/L
-        if ($level < 4.0) return 'low'; // Below 4.0 mmol/L is low
-        if ($level >= 4.0 && $level <= 7.8) return 'normal'; // 4.0 to 7.8 mmol/L is normal
-        return 'high'; // Above 7.8 mmol/L is high
+       
+        if ($level < 4.0) return 'low';
+        if ($level >= 4.0 && $level <= 7.8) return 'normal'; 
+        return 'high'; 
     }
     private function getHealthRisk($status)
     {

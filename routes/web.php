@@ -53,13 +53,13 @@ Route::middleware(['auth'])->group(function () {
         // Add this line to define the patient.chatbot route
         Route::get('/chatbot', [ChatbotController::class, 'index'])->name('patient.chatbot');
 
-        // Inside the patient prefix group
+       //bmi-calculator
         Route::get('/bmi-calculator', [BmiCalculatorController::class, 'index'])->name('patient.bmi');
         Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
 
+        //blood-sugar-calculator
         Route::get('/blood-sugar-calculator', [BloodSugarCalculatorController::class, 'index'])->name('patient.blood-sugar');
-        Route::post('/blood-sugar-calculate', [BloodSugarCalculatorController::class, 'calculate'])->name('blood-sugar.calculate');
-        Route::post('/blood-sugar-analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('bloodSugar.analyze');
+        Route::post('/blood-sugar/analyze', [BloodSugarCalculatorController::class, 'analyze'])->name('blood-sugar.analyze');
     });
 
     // Doctor routes
