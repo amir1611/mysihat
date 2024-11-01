@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Appointment\AppointmentController;
+use App\Http\Controllers\BmiCalculatorController;
 use App\Http\Controllers\Chat\ChatbotController;
 use App\Http\Controllers\Chat\StreamingChatController;
 use App\Http\Controllers\HomeController;
@@ -85,4 +86,5 @@ Route::post('/render-message', [ChatbotController::class, 'render'])->name('chat
 Route::get('/chat/streaming', [StreamingChatController::class, 'index']);
 Route::post('/chat/summarize', [StreamingChatController::class, 'summarizeAndStore'])->middleware('auth');
 
+Route::post('/bmi-calculate', [BmiCalculatorController::class, 'calculate'])->name('bmi.calculate');
 // });
