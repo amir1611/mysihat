@@ -232,3 +232,24 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+.btn.listening {
+    background-color: #ff4444;
+    color: white;
+}
+#micButton {
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+#micButton:hover {
+    background-color: rgb(212, 212, 212);
+}
+#micButton.listening:hover {
+    background-color: rgb(255, 82, 82);
+}

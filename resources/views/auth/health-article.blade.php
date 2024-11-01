@@ -10,18 +10,22 @@
         $data = $response->json();
         $articles = collect($data['articles'] ?? [])->filter(function ($article) {
             // Filter out articles that do not have a title, description, or URL
-            return !empty($article['title']) && !empty($article['description']) && !empty($article['url']);
+            return !empty($article['title']) &&
+                !empty($article['description']) &&
+                !empty($article['url']) &&
+                !str_contains(strtolower($article['title']), '[removed]') &&
+                !str_contains(strtolower($article['description']), '[removed]');
         });
     @endphp
 
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Health News Articles</h1>
+    <div class="container px-4 py-8 mx-auto">
+        <h1 class="mb-8 text-3xl font-bold text-center text-gray-800">Health News Articles</h1>
         <br>
 
         @if ($response->successful() && $articles->count() > 0)
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
                 @foreach ($articles as $article)
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg"
+                    <div class="overflow-hidden transition-transform duration-300 bg-white shadow-md rounded-xl hover:shadow-lg"
                         style="display: flex; flex-direction: column; height: 100%;">
                         @if (!empty($article['urlToImage']))
                             <div style="flex-shrink: 0;">
@@ -44,7 +48,8 @@
                                 {{ $article['description'] }}
                             </p>
 
-                            <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                            <div
+                                style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
                                 @if (!empty($article['author']))
                                     <span style="font-size: 12px; color: #6B7280; font-style: italic;">
                                         By {{ $article['author'] }}

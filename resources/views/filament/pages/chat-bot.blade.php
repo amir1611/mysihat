@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-       
+
     </head>
 
     <div class="chat-container">
@@ -24,8 +24,11 @@
         </details>
         <div class="input-area">
             <input type="text" id="messageInput" class="form-control" placeholder="Message MySihat Bot...">
+            <button class="btn" type="button" id="micButton">
+                <x-filament::icon icon="heroicon-m-microphone" wire:target="search" class="w-5 h-5 text-red-500 " />
+            </button>
             <button class="btn" type="button" id="sendButton">
-                <x-filament::icon icon="heroicon-m-magnifying-glass" wire:target="search" class="h-5 w-5 text-white " />
+                <x-filament::icon icon="heroicon-m-magnifying-glass" wire:target="search" class="w-5 h-5 text-white " />
             </button>
         </div>
     </div>
@@ -33,8 +36,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/chat.js') }}"></script>
-    <script src="{{ asset('js/tts.js')}}"></script>
-
+    <script src="{{ asset('js/tts.js') }}"></script>
+    <script src="{{ asset('js/speech.js') }}"></script>
 
     {{-- <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
