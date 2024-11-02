@@ -30,7 +30,6 @@ class AdminPanelProvider extends PanelProvider
             ->path('management/')
             ->login()
             ->brandLogo(asset('build/assets/mysihat_logo.png'))
-
             ->brandLogoHeight('4rem')
             ->colors([
                 'danger' => Color::rgb('rgb(255,0,0)'),
@@ -50,8 +49,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -85,7 +84,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentFullCalendarPlugin::make()
                     ->selectable()
                     ->editable()
-                    ->timezone('Asia/Kuala_Lumpur')
+                    ->timezone('Asia/Kuala_Lumpur'),
             ]);
     }
 }
