@@ -19,7 +19,7 @@ class BloodSugarLevel extends Page
 
     protected static ?string $title = 'Blood Sugar Level Calculator';
 
-    protected static ?string $navigationGroup = 'Calculators';
+    protected static bool $shouldRegisterNavigation = false;
 
     public User $user;
 

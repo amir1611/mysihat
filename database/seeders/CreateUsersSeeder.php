@@ -24,7 +24,7 @@ class CreateUsersSeeder extends Seeder
                 'name' => 'Admin',
                 'ic_number' => '800101-14-1234',
                 'email' => 'admin@mysihat.com',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('1234'),
                 'gender' => 'male',
                 'date_of_birth' => '1980-01-01',
                 'phone_number' => '60123456789',

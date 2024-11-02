@@ -17,7 +17,7 @@ class BmiCalculator extends Page
 
     protected static ?string $title = 'BMI Calculator';
 
-    protected static ?string $navigationGroup = 'Calculators';
+    protected static bool $shouldRegisterNavigation = false;
 
     protected $user;
 
