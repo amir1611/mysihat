@@ -19,8 +19,9 @@ class ViewAppointment extends ViewRecord
     {
         return [
             Actions\EditAction::make()->color('edit')
-                ->visible(fn ($record) => auth()->user()->hasRole('patient')),
-            Actions\Action::make('join_meeting')->label('Join Meeting')->url(fn () => $this->record->google_meeting_link)->color('success'),
+                ->visible(fn ($record) => auth()->user()->hasRole('patient') && $record->status === 'pending'),
+            Actions\Action::make('join_meeting')->label('Join Meeting')->url(fn () => $this->record->google_meeting_link)->color('success')
+                ->visible(fn ($record) => $record->status !== 'cancelled'),
 
             Actions\Action::make('Cancel Appointment')
                 ->requiresConfirmation()
