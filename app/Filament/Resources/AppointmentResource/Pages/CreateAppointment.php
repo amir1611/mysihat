@@ -215,6 +215,7 @@ class CreateAppointment extends CreateRecord
         // dd($meetings);
         $data['appointment_time'] = TimeSlot::find($data['appointment_time'])['time_slot'];
         $data['status'] = 'pending';
+        $data['google_meeting_link'] = $this->createGoogleMeeting();
 
         return parent::handleRecordCreation($data);
     }
@@ -244,5 +245,26 @@ class CreateAppointment extends CreateRecord
         return Notification::make()
             ->success()
             ->title($title);
+    }
+
+    private function createGoogleMeeting(): string
+    {
+        $links = [
+            'https://meet.google.com/cit-qiug-fsc',
+            'https://meet.google.com/gnm-cesd-vry',
+            'https://meet.google.com/xfz-gdmu-mmz',
+            'https://meet.google.com/qeu-efug-mjm',
+            'https://meet.google.com/cxd-kwum-zuj',
+            'https://meet.google.com/grs-suqz-bne',
+            'https://meet.google.com/vus-ogrr-xww',
+            'https://meet.google.com/zxm-vtce-ihz',
+            'https://meet.google.com/mgy-rwin-zuu',
+            'https://meet.google.com/wfq-sgtj-osq',
+            'https://meet.google.com/mgd-umwr-tme',
+        ];
+
+        $randomLink = $links[array_rand($links)];
+
+        return $randomLink;
     }
 }

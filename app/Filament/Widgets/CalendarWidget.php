@@ -28,10 +28,10 @@ class CalendarWidget extends FullCalendarWidget
                     ->start($event->appointment_date)
                     ->end($event->appointment_date)
                 //  ->toArray()
-                // ->url(
-                //     url: EventResource::getUrl(name: 'view', parameters: ['record' => $event]),
-                //     shouldOpenUrlInNewTab: true
-                // )
+                    ->url(
+                        url: $event->google_meeting_link,
+                        shouldOpenUrlInNewTab: true
+                    )
             )
             ->toArray();
     }

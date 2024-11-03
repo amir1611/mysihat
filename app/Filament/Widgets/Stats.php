@@ -13,8 +13,18 @@ class Stats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Appointments', auth()->user()->role === 'patient' ? Appointment::where('patient_id', auth()->id())->count() : Appointment::where('doctor_id', auth()->id())->count()),
+            Stat::make('Total Appointments', $this->getAppointmentCount())
+                ->color(auth()->user()->role === 'patient' ? 'info' : 'gray'),
 
         ];
+    }
+
+    public function getAppointmentCount(): int
+    {
+        if (auth()->user()->hasRole('patient')) {
+            return Appointment::where('patient_id', auth()->id())->count();
+        }
+
+        return Appointment::where('doctor_id', auth()->id())->count();
     }
 }

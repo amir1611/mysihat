@@ -23,6 +23,7 @@ class Appointment extends Model
         'appointment_time',
         'emergency_contact_name',
         'emergency_contact_number',
+        'google_meeting_link',
         'status',
     ];
 
