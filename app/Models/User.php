@@ -65,4 +65,5 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     // {
     //     return str_ends_with($this->email, 'admin@mysihat.com') && $this->hasVerifiedEmail();
     // }
+
 }
