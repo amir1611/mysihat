@@ -7,7 +7,7 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/css/filament/patient/theme.css',
-                // 'resources/js/app.js',
+               // 'resources/js/app.js',
                 // 'resources/js/*'
             ],
             refresh: true,
