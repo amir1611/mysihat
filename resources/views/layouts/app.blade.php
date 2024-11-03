@@ -9,8 +9,9 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('build/assets/mysihat-icon.svg') }}">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -22,7 +23,8 @@
         <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #293289;">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <img src="{{ asset('build/assets/mysihat-icon.svg') }}" alt="MySihat Icon" height="30" class="me-2">
+                    <img src="{{ asset('build/assets/mysihat-icon.svg') }}" alt="MySihat Icon" height="30"
+                        class="me-2">
                     MySihat
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -34,24 +36,24 @@
                     <ul class="navbar-nav me-auto"></ul>
                     <ul class="navbar-nav ms-auto">
                         {{-- @guest
-                     
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('health-articles') }}">
                                 <i class="fas fa-book-medical me-1"></i>{{ __('Health Articles') }}
                             </a>
                         </li>
                             @if (Route::has('login')) --}}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{url('/patient/login')}}">
-                                        <i class="fas fa-sign-in-alt me-1"></i>{{ __('Login') }}
-                                    </a>
-                                </li>
-                            {{-- @endif --}}
-                            {{-- @if (Route::has('login')) --}}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{url('/management/login')}}">{{ __('Admin Login') }}</a>
-                                </li>
-                            {{-- @endif --}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/patient/login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i>{{ __('Login') }}
+                            </a>
+                        </li>
+                        {{-- @endif --}}
+                        {{-- @if (Route::has('login')) --}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/management/login') }}">{{ __('Admin Login') }}</a>
+                        </li>
+                        {{-- @endif --}}
                         {{-- @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -109,4 +111,5 @@
     });
 </script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 </html>
