@@ -214,7 +214,7 @@ class CreateAppointment extends CreateRecord
         // ]);
         // dd($meetings);
         $data['appointment_time'] = TimeSlot::find($data['appointment_time'])['time_slot'];
-        $data['status'] = 'pending';
+        $data['status'] = 'approved';
         $data['google_meeting_link'] = $this->createGoogleMeeting();
 
         return parent::handleRecordCreation($data);
