@@ -1,12 +1,11 @@
 {
-  "resources/js/app.js": {
-    "file": "assets/app-DBdvkBoY.js",
-    "name": "app",
-    "src": "resources/js/app.js",
+  "resources/css/filament/patient/theme.css": {
+    "file": "assets/theme-DRVvqARU.css",
+    "src": "resources/css/filament/patient/theme.css",
     "isEntry": true
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-D-sv12UV.css",
+    "file": "assets/app-DK9YYBtZ.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   }
