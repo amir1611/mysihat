@@ -2,20 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\AppointmentStatusEnum;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Models\Appointment;
 use App\Models\TimeSlot;
 use App\Models\User;
-use Faker\Provider\ar_EG\Text;
-use Filament\Actions\Action;
-use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Livewire;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -26,11 +19,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
 use Ramsey\Uuid\Type\Time;
 
 class AppointmentResource extends Resource
@@ -84,7 +74,6 @@ class AppointmentResource extends Resource
                 ->formatStateUsing(function ($get) {
                     return User::find($get('doctor_id'))->name;
                 }),
-
 
             DatePicker::make('appointment_date')
                 ->label('Appointment Date')
@@ -152,6 +141,7 @@ class AppointmentResource extends Resource
                         $formattedTimeSlots = $timeSlots->sort()->map(function ($time) {
                             return \Carbon\Carbon::createFromFormat('H:i:s', $time)->format('h:i A'); // 24-hour format
                         });
+
                         return $formattedTimeSlots;
                     }
 
@@ -162,7 +152,7 @@ class AppointmentResource extends Resource
                 ->required()
                 ->inline()
                 ->columnSpanFull()
-                ->options(fn($get) => [$get('appointment_time') => \Carbon\Carbon::createFromFormat('H:i:s', $get('appointment_time'))->format('h:i A')])
+                ->options(fn ($get) => [$get('appointment_time') => \Carbon\Carbon::createFromFormat('H:i:s', $get('appointment_time'))->format('h:i A')])
                 ->visibleOn('view'),
         ];
     }
@@ -212,7 +202,7 @@ class AppointmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('patient_id')
                     ->label('Patient Name')
-                    ->hidden(fn() => Auth::user()->hasRole('patient'))
+                    ->hidden(fn () => Auth::user()->hasRole('patient'))
                     ->formatStateUsing(function ($state) {
                         return User::find($state)->name;
                     })
@@ -220,7 +210,7 @@ class AppointmentResource extends Resource
 
                 Tables\Columns\TextColumn::make('doctor_id')
                     ->label('Doctor Name')
-                    ->hidden(fn() => Auth::user()->hasRole('doctor'))
+                    ->hidden(fn () => Auth::user()->hasRole('doctor'))
                     ->formatStateUsing(function ($state) {
                         return User::find($state)->name;
                     })
