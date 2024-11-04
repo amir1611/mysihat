@@ -207,7 +207,7 @@ class StreamingChatController extends Controller
 1. Main symptoms or health concerns discussed
 2. Key recommendations or next steps suggested
 
-Keep it brief and clear, focusing only on the most important details from the conversation.';
+Keep it brief and clear, focusing only on the most important details from the conversation. Do not include any information that is not present in the conversation.';
 
         $conversationText = '';
         foreach ($conversation as $message) {
@@ -231,6 +231,7 @@ Keep it brief and clear, focusing only on the most important details from the co
             return $summary;
         } catch (\Exception $e) {
             logger()->error('Summary Generation Error: '.$e->getMessage());
+
             return 'Error generating summary.';
         }
     }
