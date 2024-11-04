@@ -91,7 +91,7 @@
         <div class="w-full max-w-md overflow-hidden bg-white rounded-lg shadow-lg">
             <figure>
                 <img class="object-cover object-center w-full h-64"
-                    src={{ asset('build/assets/Female Doctor Avatar.jpg') }} alt="Doctor Image" />
+                    src={{ asset('build/assets/Female-Doctor-Avatar.jpg') }} alt="Doctor Image" />
             </figure>
             <div class="p-6">
                 <h2 class="mb-2 text-2xl font-bold text-gray-800">{{ $doctor->name }}</h2>
