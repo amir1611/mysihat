@@ -45,9 +45,9 @@ class ListAppointments extends ListRecords
         if (auth()->user()->hasRole('super_admin')) {
             return [
                 'All' => Tab::make(),
-                'Pending' => Tab::make()->modifyQueryUsing(function ($query) {
-                    $query->where('status', 'pending');
-                }),
+                // 'Pending' => Tab::make()->modifyQueryUsing(function ($query) {
+                //     $query->where('status', 'pending');
+                // }),
                 'Approved' => Tab::make()->modifyQueryUsing(function ($query) {
                     $query->where('status', 'approved');
                 }),
