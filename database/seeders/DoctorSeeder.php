@@ -51,6 +51,7 @@ class DoctorSeeder extends Seeder
                         'password' => bcrypt('1234'),
                         'gender' => $gender,
                         'date_of_birth' => Carbon::now()->subYears(rand(30, 60))->format('Y-m-d'),
+                        'avatar_url' => 'doctor-' . $gender . '.png',
                         'phone_number' => '60'.rand(100000000, 199999999),
                         'type' => 2, // Doctor type
                         'medical_license_number' => 'MMC'.rand(10000, 99999),
