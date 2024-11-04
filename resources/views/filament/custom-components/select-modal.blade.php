@@ -95,7 +95,7 @@
                         src={{ asset('build/assets/Male-Doctor-Avatar.png') }} alt="Doctor Image" />
                 @else
                     <img class="object-cover object-center w-full h-64"
-                        src={{ asset('build/assets/female-doc-final.jpg') }} alt="Doctor Image" />
+                        src={{ asset('build/assets/Animated-Female-Nurse.jpg') }} alt="Doctor Image" />
                 @endif
             </figure>
             <div class="p-6">
