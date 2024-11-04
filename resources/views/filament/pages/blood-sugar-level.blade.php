@@ -1,4 +1,18 @@
 <x-filament-panels::page>
+
+    <head>
+        <link rel="icon" type="image/svg+xml" href="{{ asset('build/assets/mysihat-icon.svg') }}">
+
+
+
+
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    </head>
     <div class="container px-4 mx-auto">
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
