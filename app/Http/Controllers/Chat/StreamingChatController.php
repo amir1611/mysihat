@@ -203,28 +203,22 @@ class StreamingChatController extends Controller
 
     private function generateSummary($conversation)
     {
+        $summaryPrompt = 'Create a concise 2-line summary of this medical conversation that captures:
+1. Main symptoms or health concerns discussed
+2. Key recommendations or next steps suggested
 
-        $summaryPrompt = 'Summarize the medical conversation concisely in markdown format. Include:
-- Patient symptoms
-- Relevant medical history
-- Current medications
-- Advice/recommendations given
-- Next steps/actions required
-
-Use only information present in the conversation. Keep the summary brief and structured for quick comprehension by medical personnel.';
+Keep it brief and clear, focusing only on the most important details from the conversation.';
 
         $conversationText = '';
         foreach ($conversation as $message) {
             $conversationText .= "\n{$message['role']}: {$message['content']}";
         }
 
-        Log::info('Conversation text for summary', ['text' => $conversationText]);
-
         try {
             $response = $this->anthropic->chat()->create([
                 'model' => 'claude-3-sonnet-20240229',
                 'system' => $summaryPrompt,
-                'max_tokens' => 500,
+                'max_tokens' => 100,
                 'temperature' => 0,
                 'messages' => [
                     ['role' => 'user', 'content' => $conversationText],
@@ -237,7 +231,6 @@ Use only information present in the conversation. Keep the summary brief and str
             return $summary;
         } catch (\Exception $e) {
             logger()->error('Summary Generation Error: '.$e->getMessage());
-
             return 'Error generating summary.';
         }
     }
