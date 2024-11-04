@@ -90,7 +90,7 @@
     @foreach ($doctors as $doctor)
         <div class="w-full max-w-md overflow-hidden bg-white rounded-lg shadow-lg">
             <figure>
-                @if ($doctor->gender == 'Male')
+                @if ($doctor->gender == 'male')
                     <img class="object-cover object-center w-full h-64"
                         src={{ asset('build/assets/Doctor-Scientist-Avatar.png') }} alt="Doctor Image" />
                 @else
