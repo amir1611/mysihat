@@ -92,7 +92,7 @@
             <figure>
                 @if ($doctor->gender == 'male')
                     <img class="object-cover object-center w-full h-64"
-                        src={{ asset('build/assets/Doctor-Scientist-Avatar.png') }} alt="Doctor Image" />
+                        src={{ asset('build/assets/Male-Doctor-Avatar.png') }} alt="Doctor Image" />
                 @else
                     <img class="object-cover object-center w-full h-64"
                         src={{ asset('build/assets/Female-Doctor-Avatar.jpg') }} alt="Doctor Image" />
