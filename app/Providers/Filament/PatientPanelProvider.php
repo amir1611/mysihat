@@ -78,9 +78,10 @@ class PatientPanelProvider extends PanelProvider
                     ->slug('my-profile')
                     ->setTitle('My Profile')
                     ->setNavigationLabel('My Profile')
-                    ->setNavigationGroup('Settings Profile')
+
+                  //  ->setNavigationGroup('Settings Profile')
                     ->setIcon('heroicon-o-user')
-                    ->setSort(10)
+                    ->setSort(6)
                     //     ->canAccess(fn () => auth()->user()->id === 1)
                     ->shouldRegisterNavigation(true)
                     ->shouldShowDeleteAccountForm(true)

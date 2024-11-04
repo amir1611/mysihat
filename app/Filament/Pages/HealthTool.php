@@ -9,7 +9,7 @@ class HealthTool extends Page
 {
     use HasPageShield;
 
-    protected static ?string $navigationIcon = 'heroicon-o-ellipsis-horizontal';
+    protected static ?string $navigationIcon = 'heroicon-o-beaker';
 
     protected static string $view = 'filament.pages.health-tool';
 
