@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,13 @@ class TimeSlotResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time_slot'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'available' => 'success',
+                        'booked' => 'warning',
+                        'not_available' => 'danger',
+                    }),
                 // Tables\Columns\TextColumn::make('appointment_id')
                 //     ->numeric()
                 //     ->sortable(),
@@ -66,7 +73,15 @@ class TimeSlotResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // based on the status
+                SelectFilter::make('status')
+                    ->options([
+                        'available' => 'Available',
+                        'booked' => 'Booked',
+                        'not_available' => 'Not Available',
+                    ]),
+
+                //By date
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

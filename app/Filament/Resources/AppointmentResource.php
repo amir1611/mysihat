@@ -37,7 +37,11 @@ class AppointmentResource extends Resource
             return Appointment::query()->where('doctor_id', auth()->id())->orderBy('created_at', 'desc');
         }
 
-        return Appointment::query()->where('patient_id', auth()->id())->orderBy('created_at', 'desc');
+        if (Auth::user()->hasRole('patient')) {
+            return Appointment::query()->where('patient_id', auth()->id())->orderBy('created_at', 'desc');
+        }
+
+        return Appointment::query()->orderBy('created_at', 'desc');
     }
 
     public static function form(Form $form): Form
