@@ -50,9 +50,9 @@
                         </li>
                         {{-- @endif --}}
                         {{-- @if (Route::has('login')) --}}
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('/management/login') }}">{{ __('Admin Login') }}</a>
-                        </li>
+                        </li> --}}
                         {{-- @endif --}}
                         {{-- @else
                             <li class="nav-item dropdown">
