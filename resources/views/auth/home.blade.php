@@ -2,14 +2,15 @@
 
 @section('content')
     <div class="container">
-        <div class="row align-items-center mb-5">
-            <div class="col-md-6 text-center text-md-start">
+        <div class="mb-5 row align-items-center">
+            <div class="text-center col-md-6 text-md-start">
                 <h1 class="mb-4"><strong>Connected Care</strong> - Any<span id="changingText">time</span></h1>
-                    <img src="{{ asset('build/assets/mysihat-svg.svg') }}" alt="MySihat Logo" class="img-fluid mb-4"
-                        style="max-width: 100%;" draggable="false">
+                <img src="{{ asset('build/assets/mysihat-svg.svg') }}" alt="MySihat Logo" class="mb-4 img-fluid"
+                    style="max-width: 100%;" draggable="false">
 
-                    <p class="mb-4">Securely care from thousands of high-quality providers accepting patients today.</p>
-                    <a href="{{url('/patient/chat-bot')}}"><button class="btn btn-primary btn-lg glow-button mb-4 custom-button">
+                <p class="mb-4">Securely care from thousands of high-quality providers accepting patients today.</p>
+                <a href="{{ url('/patient/chat-bot') }}"><button
+                        class="mb-4 btn btn-primary btn-lg glow-button custom-button">
                         <img src="{{ asset('build/assets/mysihatchatbot.png') }}" alt="Chatbot"
                             class="chatbot-icon me-2 pulse-animation">
                         Chat with MySihatBot
@@ -23,8 +24,8 @@
         </div>
 
 
-        <div class="bg-white rounded-3 p-4 mb-5 shadow-sm">
-            <h2 class="text-center mb-4"><b>Featured Services</b></h2>
+        <div class="p-4 mb-5 bg-white shadow-sm rounded-3">
+            <h2 class="mb-4 text-center"><b>Featured Services</b></h2>
 
             <div class="row g-4 justify-content-center">
                 @php
@@ -74,10 +75,10 @@
         <br>
         <br>
 
-        <h2 class="text-center mb-4"><b>About Us</b></h2>
-        <div class="row align-items-center mb-5">
+        <h2 class="mb-4 text-center"><b>About Us</b></h2>
+        <div class="mb-5 row align-items-center">
 
-            <div class="col-md-6 d-flex justify-content-center justify-content-md-end align-items-center py-4 py-md-0">
+            <div class="py-4 col-md-6 d-flex justify-content-center justify-content-md-end align-items-center py-md-0">
                 <div class="lottie-wrapper" style="width: 300px; height: 300px;">
                     <dotlottie-player src="https://lottie.host/6456a808-b88a-49a1-8495-275f2ebd4df6/aljFJY1JZv.json"
                         background="transparent" speed="1" style="width: 100%; height: 100%;" direction="1"
@@ -85,7 +86,7 @@
                     </dotlottie-player>
                 </div>
             </div>
-            <div class="col-md-6 text-center text-md-start">
+            <div class="text-center col-md-6 text-md-start">
 
                 <p class="about-mysihat">
                     <b>MySihat</b> developed by InnovateX, is a robust telehealth platform designed
@@ -120,23 +121,32 @@
             ]);
 
             $data = $response->json();
-            $articles = collect($data['articles'] ?? [])->filter(function ($article) {
-                return !empty($article['title']) && !empty($article['description']) && !empty($article['url']);
-            })->take(4);
+            $articles = collect($data['articles'] ?? [])
+                ->filter(function ($article) {
+                    return !empty($article['title']) &&
+                        !empty($article['description']) &&
+                        !empty($article['url']) &&
+                        !str_contains(strtolower($article['title']), '[removed]') &&
+                        !str_contains(strtolower($article['description']), '[removed]');
+                })
+                ->take(4);
         @endphp
 
-        <h2 class="text-center mb-4">Health Articles</h2>
+        <h2 class="mb-4 text-center">Health Articles</h2>
         <div class="news-swiper swiper">
             <div class="swiper-wrapper">
                 @if ($response->successful() && $articles->count() > 0)
                     @foreach ($articles as $article)
                         <div class="swiper-slide">
                             <div class="news-card">
-                                <img src="{{ $article['urlToImage'] ?? asset('build/assets/placeholder.svg') }}" class="news-card-img" alt="{{ $article['title'] }}">
+                                <img src="{{ $article['urlToImage'] ?? asset('build/assets/placeholder.svg') }}"
+                                    class="news-card-img" alt="{{ $article['title'] }}">
                                 <div class="news-card-body">
                                     <h5 class="news-card-title">{{ Str::limit($article['title'], 50) }}</h5>
                                     <p class="news-card-text">{{ Str::limit($article['description'], 100) }}</p>
-                                    <p class="news-card-date"><small>{{ \Carbon\Carbon::parse($article['publishedAt'])->format('j F Y') }}</small></p>
+                                    <p class="news-card-date">
+                                        <small>{{ \Carbon\Carbon::parse($article['publishedAt'])->format('j F Y') }}</small>
+                                    </p>
                                     <a href="{{ $article['url'] }}" target="_blank" class="btn btn-primary">Read More</a>
                                 </div>
                             </div>
@@ -147,7 +157,8 @@
                         <div class="news-card">
                             <div class="news-card-body">
                                 <h5 class="news-card-title">No articles available</h5>
-                                <p class="news-card-text">Unable to fetch health articles at the moment. Please try again later.</p>
+                                <p class="news-card-text">Unable to fetch health articles at the moment. Please try again
+                                    later.</p>
                             </div>
                         </div>
                     </div>
@@ -157,10 +168,10 @@
         </div>
 
 
-        <h2 class="text-center mb-4"><b>Frequently Asked Questions</b></h2>
-        <div class="faq-container mb-5">
+        <h2 class="mb-4 text-center"><b>Frequently Asked Questions</b></h2>
+        <div class="mb-5 faq-container">
             <div class="accordion" id="faqAccordion">
-                <div class="accordion-item mb-3">
+                <div class="mb-3 accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -175,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="accordion-item mb-3">
+                <div class="mb-3 accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -209,7 +220,7 @@
         </div>
 
 
-        <footer class="bg-light text-center mt-4">
+        <footer class="mt-4 text-center bg-light">
             <div class="container">
                 <p class="mb-0">© 2024 InnovateX. All rights reserved for MySihat.</p>
             </div>
