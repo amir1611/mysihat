@@ -1,122 +1,16 @@
 @extends('layouts.patient.patient-layout')
 
-
 @section('content')
-
-
-
-<div class="d-flex justify-content-between align-items-center">
-  <h1 class="h3 my-4 text-gray-800">Appointment</h1>
-  <a href="{{ route('appointmentCreate') }}">
-    <button class="btn btn-primary h-0" style="padding: 5px; height:min-content">Add Appointment</button>
-  </a>
-</div>
-
-
-<table class="table align-middle mb-0 bg-dark">
-  <thead class="bg-light">
-    <tr>
-      <th>Name</th>
-      <th>Title</th>
-      <th>Status</th>
-      <th>Position</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-            alt=""
-            style="width: 45px; height: 45px"
-            class="rounded-circle" />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">John Doe</p>
-            <p class="text-muted mb-0">john.doe@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Software engineer</p>
-        <p class="text-muted mb-0">IT department</p>
-      </td>
-      <td>
-        <span class="badge badge-success rounded-pill d-inline">Active</span>
-      </td>
-      <td>Senior</td>
-      <td>
-        <button type="button" class="btn btn-link btn-sm btn-rounded">
-          Edit
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/6.jpg"
-            class="rounded-circle"
-            alt=""
-            style="width: 45px; height: 45px" />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">Alex Ray</p>
-            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Consultant</p>
-        <p class="text-muted mb-0">Finance</p>
-      </td>
-      <td>
-        <span class="badge badge-primary rounded-pill d-inline">Onboarding</span>
-      </td>
-      <td>Junior</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-link btn-rounded btn-sm fw-bold"
-          data-mdb-ripple-color="dark">
-          Edit
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/7.jpg"
-            class="rounded-circle"
-            alt=""
-            style="width: 45px; height: 45px" />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">Kate Hunington</p>
-            <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Designer</p>
-        <p class="text-muted mb-0">UI/UX</p>
-      </td>
-      <td>
-        <span class="badge badge-warning rounded-pill d-inline">Awaiting</span>
-      </td>
-      <td>Senior</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-link btn-rounded btn-sm fw-bold"
-          data-mdb-ripple-color="dark">
-          Edit
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-
+<section class="appointment-list">
+    <div class="appointment-list-header"><div><span class="eyebrow">CARE SCHEDULE</span><h1>Your appointments</h1><p>See your confirmed requests and plan your next consultation.</p></div><a class="appointment-action" href="{{ route('appointmentCreate') }}"><i class="fas fa-plus mr-1"></i> Book appointment</a></div>
+    @if (session('success'))<div class="alert alert-success border-0 rounded-3">{{ session('success') }}</div>@endif
+    <div class="appointment-list-card">
+        @forelse ($appointments as $appointment)
+            @php($date = \Illuminate\Support\Carbon::parse($appointment->appointment_time))
+            <article class="appointment-list-row"><div class="appointment-date-card"><strong>{{ $date->format('d') }}</strong><span>{{ $date->format('M') }}</span></div><div><h2>Dr. {{ $appointment->doctor?->name ?? 'Care team' }}</h2><p>{{ $appointment->doctor?->expertise ?? 'General consultation' }}</p></div><div class="appointment-kind"><i class="far fa-clock mr-1"></i>{{ $date->format('D, j M · g:i A') }}<br><span>{{ $appointment->reason ?: 'General consultation' }}</span></div><span class="appointment-status">{{ $appointment->status ?? 'Requested' }}</span></article>
+        @empty
+            <div class="appointment-empty"><i class="far fa-calendar-plus"></i><h2>No appointments yet</h2><p>Start with a conversation or book directly with a clinician.</p><a class="appointment-action d-inline-block" href="{{ route('patient.chatbot') }}">Talk to care assistant</a></div>
+        @endforelse
+    </div>
+</section>
 @endsection

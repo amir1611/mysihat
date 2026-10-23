@@ -78,8 +78,12 @@
                         </div>
                         <div class="mb-4">
                             <label for="appointmentTime" class="form-label">Preferred Appointment Time</label>
-                            <input type="date" class="form-control" id="appointmentTime" name="appointment_time"
+                            <input type="date" class="form-control" id="appointmentTime" name="appointment_date"
                                 required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="appointmentTimeValue" class="form-label">Preferred Time</label>
+                            <input type="time" class="form-control" id="appointmentTimeValue" name="appointment_time_value" required>
                         </div>
 
                     </div>
@@ -131,7 +135,7 @@
                                             style="width: 80px; height: 80px; object-fit: cover;">
                                         <div>
                                             <h5 class="card-title mb-1">{{ $doctor->name }}</h5>
-                                            <p class="card-text text-muted mb-2">{{ $doctor->department }}</p>
+                                            <p class="card-text text-muted mb-2">{{ $doctor->expertise ?: 'General Practitioner' }}</p>
                                             <span class="badge bg-primary">Available</span>
                                         </div>
                                     </div>

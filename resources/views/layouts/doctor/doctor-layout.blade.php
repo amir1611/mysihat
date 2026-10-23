@@ -24,48 +24,29 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 </head>
 
-<body id="page-top">
-    <div id="wrapper">
+<body id="page-top" class="clinical-body">
+    <div id="wrapper" class="clinical-shell">
 
         @include('layouts.doctor.doctor-sidebar')
 
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="clinical-content">
             <div id="content">
 
                 @include('layouts.doctor.doctor-topbar')
 
 
-                <div class="container-fluid">
+                <main class="clinical-main">
                     @yield('content')
-                </div>
+                </main>
 
             </div>
 
 
-            @include('layouts.partials.footer')
         </div>
     </div>
-
-
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-
-    @include('layouts.partials.logout-modal')
-
-
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-
     @stack('scripts')
 </body>
 

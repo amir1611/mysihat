@@ -11,6 +11,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\BmiCalculatorController;
 use App\Http\Controllers\BloodSugarCalculatorController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\PrescriptionController;
 
 // Redirect the root URL to the home page
 Route::get('/', function () {
@@ -32,6 +35,23 @@ Auth::routes();
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
+    Route::get('/patient/dashboard', [DashboardController::class, 'patient'])->name('patient.dashboard');
+    Route::get('/patient/records', [DashboardController::class, 'records'])->name('patient.records');
+    Route::get('/patient/care-team', [DashboardController::class, 'careTeam'])->name('patient.care-team');
+    Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
+    Route::get('/marketplace/cart', [MarketplaceController::class, 'cart'])->name('marketplace.cart');
+    Route::post('/marketplace/checkout', [MarketplaceController::class, 'checkout'])->name('marketplace.checkout');
+    Route::post('/marketplace/{product}', [MarketplaceController::class, 'add'])->name('marketplace.add');
+    Route::patch('/marketplace/{product}', [MarketplaceController::class, 'update'])->name('marketplace.update');
+    Route::get('/marketplace/order-confirmed', [MarketplaceController::class, 'success'])->name('marketplace.success');
+    Route::get('/doctor/dashboard', [DashboardController::class, 'doctor'])->name('doctor.dashboard');
+    Route::get('/doctor/appointments', [DashboardController::class, 'doctorAppointments'])->name('doctor.appointments');
+    Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
+    Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescriptions.store');
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
+    Route::get('/admin/users', [DashboardController::class, 'adminUsers'])->name('admin.users');
+    Route::get('/admin/appointments', [DashboardController::class, 'adminAppointments'])->name('admin.appointments');
+
     // Common
     Route::get('/appointmentList', [AppointmentController::class, 'appointmentListPage'])->name('appointmentList');
     Route::get('/appointmentCreate', [AppointmentController::class, 'appointmentCreatePage'])->name('appointmentCreate');
@@ -69,9 +89,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Doctor routes
     Route::prefix('doctor')->group(function () {
-        // Route for the doctor dashboard
-        Route::get('/dashboard', [HomeController::class, 'doctorHomepage'])->name('doctor.dashboard');
-
         // Route for the doctor appointment time slot
         Route::get('/appointment-time-slot', [UserController::class, 'doctorAppointmentTimeSlot'])->name('doctor.appointment.time.slot');
 
@@ -86,9 +103,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin routes
     Route::prefix('admin')->group(function () {
-        //Route for the admin dashboard
-        Route::get('/dashboard', [HomeController::class, 'adminHomepage'])->name('admin.dashboard');
-
 
         // Route for the admin profile
         Route::get('/profile', [UserController::class, 'editProfile'])->name('admin.profile');

@@ -1,0 +1,9 @@
+@extends('layouts.admin.admin-layout')
+
+@section('content')
+<div class="health-dashboard">
+    <section class="dashboard-hero admin-hero"><div><span class="eyebrow">OPERATIONS OVERVIEW</span><h1>A healthier service starts with a clear view.</h1><p>Monitor access, care capacity, and the day’s activity in one place.</p></div></section>
+    <section class="metric-grid"><article class="metric-card accent-blue"><i class="fas fa-users"></i><span>Patients</span><strong>{{ $patientCount }}</strong><small>registered accounts</small></article><article class="metric-card accent-green"><i class="fas fa-user-doctor"></i><span>Care team</span><strong>{{ $doctorCount }}</strong><small>available clinicians</small></article><article class="metric-card accent-violet"><i class="fas fa-calendar-check"></i><span>Appointments</span><strong>{{ $appointmentCount }}</strong><small>{{ $todayAppointments }} scheduled today</small></article></section>
+    <section class="dashboard-grid"><article class="panel panel-wide"><div class="panel-heading"><div><span class="eyebrow">RECENT ACCESS</span><h2>Newest members</h2></div><a href="{{ route('admin.users') }}">Manage people <i class="fas fa-arrow-right"></i></a></div>@foreach($recentUsers as $user)<div class="member-row"><div class="member-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div><div><strong>{{ $user->name }}</strong><p>{{ $user->email }}</p></div><span class="role-badge">{{ ['Patient', 'Administrator', 'Doctor'][$user->type] ?? 'Member' }}</span></div>@endforeach</article><article class="panel care-nudge"><span class="eyebrow">SERVICE SNAPSHOT</span><h2>{{ $todayAppointments }} appointments today</h2><p>Keep an eye on clinician availability and support patients who need timely care.</p><a class="secondary-action" href="{{ route('admin.appointments') }}">Review schedule <i class="fas fa-arrow-right"></i></a></article></section>
+</div>
+@endsection

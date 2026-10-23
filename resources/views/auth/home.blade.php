@@ -114,12 +114,20 @@
 
 
         @php
-            $response = Http::get('https://newsapi.org/v2/top-headlines', [
-                'category' => 'health',
-                'apiKey' => env('NEWS_API_KEY'),
-            ]);
+            $articles = collect();
+            $newsAvailable = false;
 
-            $data = $response->json();
+            try {
+                $response = Http::timeout(3)->get('https://newsapi.org/v2/top-headlines', [
+                    'category' => 'health',
+                    'apiKey' => env('NEWS_API_KEY'),
+                ]);
+                $newsAvailable = $response->successful();
+                $data = $response->json();
+            } catch (\Throwable $exception) {
+                $data = [];
+            }
+
             $articles = collect($data['articles'] ?? [])->filter(function ($article) {
                 return !empty($article['title']) && !empty($article['description']) && !empty($article['url'])
                     && !str_contains(strtolower($article['title']), '[removed]')
@@ -130,7 +138,7 @@
         <h2 class="text-center mb-4">Health Articles</h2>
         <div class="news-swiper swiper">
             <div class="swiper-wrapper">
-                @if ($response->successful() && $articles->count() > 0)
+                @if ($newsAvailable && $articles->count() > 0)
                     @foreach ($articles as $article)
                         <div class="swiper-slide">
                             <div class="news-card">
